@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "942649842117",
+    "project_id": "ebook-library-app",
+    "storage_bucket": "ebook-library-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:942649842117:android:dca71435650ee8f99693ac",
+        "android_client_info": {
+          "package_name": "com.example.e_book_libruary_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCG7f-DA12nypNNbGzX4b-XVyWv8WyUKGY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
