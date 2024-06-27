@@ -22,6 +22,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.e_book_libruary_app.presentation.sign_in.GoogleAuthUiClient
+import com.example.e_book_libruary_app.presentation.sign_in.SignInScreen
+import com.example.e_book_libruary_app.presentation.sign_in.SignInViewModel
 import com.example.e_book_libruary_app.ui.theme.EBook_libruary_appTheme
 import com.google.android.gms.auth.api.identity.Identity
 import kotlinx.coroutines.launch
@@ -29,11 +32,57 @@ import kotlin.math.sign
 
 class MainActivity : ComponentActivity() {
 
+    private val googleAuthUiClient by lazy {
+        GoogleAuthUiClient(
+            context = applicationContext,
+            oneTapClient = Identity.getSignInClient(applicationContext)
+        )
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             EBook_libruary_appTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colors.background
+                ) {
+                    val navController = rememberNavController()
+                    NavHost(navController = navController, startDestination = "sign_in") {
+                        composable("sign_in") {
+                            val viewModel = viewModel<SignInViewModel>()
+                            val state by viewModel.state.collectAsStateWithLifecycle()
 
+                            val launcher = rememberLauncherForActivityResult(
+                                    contract = ActivityResultContracts.StartIntentSenderForResult(),
+                                    onResult = {result ->
+                                        if(result.resultCode == RESULT_OK) {
+                                            lifecycleScope.launch {
+                                                val signInResult = googleAuthUiClient.getSignInWithIntent(
+                                                    intent = result.data ?: return@launch
+                                                )
+                                                viewModel.onSignInResult(signInResult)
+                                            }
+                                        }
+                                    }
+                            )
+
+                            SignInScreen(
+                                state = state,
+                                onSignInClick = {
+                                    lifecycleScope.launch {
+                                        val signInIntentSender = googleAuthUiClient.signIn()
+                                        launcher.launch(
+                                            IntentSenderRequest.Builder(
+                                                signInIntentSender ?: return@launch
+                                            ).build()
+                                        )
+                                    }
+                                }
+                            )
+                        }
+                    }
+                }
             }
         }
     }
