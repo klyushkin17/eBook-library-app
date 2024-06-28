@@ -27,9 +27,11 @@ import com.example.e_book_libruary_app.presentation.sign_in.SignInScreen
 import com.example.e_book_libruary_app.presentation.sign_in.SignInViewModel
 import com.example.e_book_libruary_app.ui.theme.EBook_libruary_appTheme
 import com.google.android.gms.auth.api.identity.Identity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlin.math.sign
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val googleAuthUiClient by lazy {
