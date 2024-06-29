@@ -21,8 +21,7 @@ class BookRepositoryImpl @Inject constructor(
     ): Flow<Resource<List<BookInfo>>> {
         return flow {
             emit(Resource.Loading(true))
-
-            val getBooksRemotely = try{
+            try {
                 val result = api.getSearchedBooks(query = "$query+inauthor:$query")
                 Resource.Success(data = result.toBookInfo())
             } catch (e: IOException) {
@@ -32,18 +31,58 @@ class BookRepositoryImpl @Inject constructor(
                 e.printStackTrace()
                 emit(Resource.Error(message = "Couldn't load data"))
             }
+            emit(Resource.Loading(false))
         }
     }
 
-    override suspend fun getBookInfo(bookId: String): Resource<BookInfo> {
-        TODO("Not yet implemented")
+    override suspend fun getBookInfo(
+        bookId: String
+    ): Resource<BookInfo> {
+        return try {
+            val result = api.getBookInfo(volumeId = bookId)
+            Resource.Success(data = result.toBookInfo())
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Resource.Error(message = "Couldn't load data")
+        } catch (e: HttpException) {
+            e.printStackTrace()
+            Resource.Error(message = "Couldn't load data")
+        }
     }
 
     override suspend fun getNewestBooks(): Flow<Resource<List<BookInfo>>> {
-        TODO("Not yet implemented")
+        return flow {
+            emit(Resource.Loading(true))
+            try {
+                val result = api.getNewestBooks()
+                Resource.Success(data = result.toBookInfo())
+            } catch (e: IOException) {
+                e.printStackTrace()
+                emit(Resource.Error(message = "Couldn't load data"))
+            } catch (e: HttpException) {
+                e.printStackTrace()
+                emit(Resource.Error(message = "Couldn't load data"))
+            }
+            emit(Resource.Loading(false))
+        }
     }
 
-    override suspend fun getBooksByCategory(query: String): Flow<Resource<List<BookInfo>>> {
-        TODO("Not yet implemented")
+    override suspend fun getBooksByCategory(
+        query: String
+    ): Flow<Resource<List<BookInfo>>> {
+        return flow {
+            emit(Resource.Loading(true))
+            try {
+                val result = api.getBooksByCategory(query = "subject:$query")
+                Resource.Success(data = result.toBookInfo())
+            } catch (e: IOException) {
+                e.printStackTrace()
+                emit(Resource.Error(message = "Couldn't load data"))
+            } catch (e: HttpException) {
+                e.printStackTrace()
+                emit(Resource.Error(message = "Couldn't load data"))
+            }
+            emit(Resource.Loading(false))
+        }
     }
 }
