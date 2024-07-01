@@ -21,13 +21,13 @@ class MainViewModel @Inject constructor(
     fun onEvent(event: MainEvent) {
         when(event) {
             is MainEvent.OnSearchIconClick -> {
-                TODO()
+                TODO() // Navigate
             }
             is MainEvent.OnProfileIconClick -> {
-                TODO()
+                TODO() // exit option
             }
             is MainEvent.OnBookClick -> {
-                TODO()
+                TODO() // Navigate
             }
         }
     }
