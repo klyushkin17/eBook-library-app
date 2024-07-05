@@ -15,8 +15,10 @@ import androidx.compose.material.TextField
 import androidx.compose.material.icons.materialIcon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
+import com.example.e_book_libruary_app.R
 import com.example.e_book_libruary_app.domain.model.BookInfo
 
 @Composable
@@ -40,7 +42,7 @@ fun BookElement(
                 )
                 Row {
                     Image(
-                        imageVector = TODO("Star Icon"),
+                        painter = painterResource(id = R.drawable.star_icon),
                         contentDescription = "rating_star"
                     )
                     Text(text = book.rating.toString())
