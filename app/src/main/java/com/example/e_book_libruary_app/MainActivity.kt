@@ -22,12 +22,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.e_book_libruary_app.presentation.main.MainScreen
 import com.example.e_book_libruary_app.presentation.sign_in.GoogleAuthUiClient
 import com.example.e_book_libruary_app.presentation.sign_in.SignInScreen
 import com.example.e_book_libruary_app.presentation.sign_in.SignInViewModel
 import com.example.e_book_libruary_app.ui.theme.EBook_libruary_appTheme
 import com.google.android.gms.auth.api.identity.Identity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlin.math.sign
 
@@ -55,6 +57,12 @@ class MainActivity : ComponentActivity() {
                             val viewModel = viewModel<SignInViewModel>()
                             val state by viewModel.state.collectAsStateWithLifecycle()
 
+                            LaunchedEffect(key1 = Unit) {
+                                if(googleAuthUiClient.getSignedInUser() != null) {
+                                    navController.navigate("main")
+                                }
+                            }
+
                             val launcher = rememberLauncherForActivityResult(
                                     contract = ActivityResultContracts.StartIntentSenderForResult(),
                                     onResult = {result ->
@@ -69,6 +77,19 @@ class MainActivity : ComponentActivity() {
                                     }
                             )
 
+                            LaunchedEffect(key1 = state.isSignInSuccessful) {
+                                if(state.isSignInSuccessful) {
+                                    Toast.makeText(
+                                        applicationContext,
+                                        "Sign in is successful",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+
+                                    navController.navigate("main")
+                                    viewModel.resetState()
+                                }
+                            }
+
                             SignInScreen(
                                 state = state,
                                 onSignInClick = {
@@ -82,6 +103,10 @@ class MainActivity : ComponentActivity() {
                                     }
                                 }
                             )
+                        }
+
+                        composable("main") {
+                            MainScreen(userData = googleAuthUiClient.getSignedInUser())
                         }
                     }
                 }

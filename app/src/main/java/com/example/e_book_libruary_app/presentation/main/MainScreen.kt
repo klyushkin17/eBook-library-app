@@ -30,7 +30,7 @@ import com.example.e_book_libruary_app.presentation.sign_in.UserData
 
 @Composable
 fun MainScreen(
-    userData: UserData,
+    userData: UserData?,
     viewModel: MainViewModel = hiltViewModel()
 ){
     val state = viewModel.state
@@ -49,7 +49,7 @@ fun MainScreen(
                     .weight(80f)
             ){
                 AsyncImage(
-                    model = userData.profilePictureUrl ?: "",
+                    model = userData?.profilePictureUrl ?: "",
                     contentDescription = "user_avatar",
                     modifier = Modifier
                         .size(100.dp)
