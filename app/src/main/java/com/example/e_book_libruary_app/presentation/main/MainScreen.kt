@@ -44,22 +44,17 @@ fun MainScreen(
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp)
         ) {
-            Column(
+            AsyncImage(
+                model = userData?.profilePictureUrl ?: "",
+                contentDescription = "user_avatar",
                 modifier = Modifier
-                    .weight(80f)
-            ){
-                AsyncImage(
-                    model = userData?.profilePictureUrl ?: "",
-                    contentDescription = "user_avatar",
-                    modifier = Modifier
-                        .size(100.dp)
-                        .clip(CircleShape)
-                )
-                Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = "search_icon"
-                )
-            }
+                    .size(100.dp)
+                    .clip(CircleShape)
+            )
+            Icon(
+                imageVector = Icons.Default.Search,
+                contentDescription = "search_icon"
+            )
         }
         Spacer(modifier = Modifier.height(10.dp))
         Row (

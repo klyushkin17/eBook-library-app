@@ -2,7 +2,9 @@ package com.example.e_book_libruary_app.data.mapper
 
 import androidx.compose.runtime.saveable.mapSaver
 import com.example.e_book_libruary_app.data.remote.dto.BookInfoDto
+import com.example.e_book_libruary_app.data.remote.dto.BookListDto
 import com.example.e_book_libruary_app.domain.model.BookInfo
+import com.example.e_book_libruary_app.domain.model.BookList
 
 fun BookInfoDto.toBookInfo(): BookInfo {
     return BookInfo(
@@ -14,6 +16,12 @@ fun BookInfoDto.toBookInfo(): BookInfo {
         pageCount = pageCount,
         mainCategory = mainCategory ?: "",
         rating = rating ?: 0f
+    )
+}
+
+fun BookListDto.toBookList(): BookList {
+    return BookList(
+        bookList = bookList ?: emptyList()
     )
 }
 

@@ -15,6 +15,7 @@ import androidx.compose.material.TextField
 import androidx.compose.material.icons.materialIcon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
@@ -28,7 +29,8 @@ fun BookElement(
 
     Card(
         modifier = Modifier.fillMaxSize(),
-        shape = RoundedCornerShape(5.dp)
+        shape = RoundedCornerShape(5.dp),
+        backgroundColor = Color.Black
     ) {
         Column {
             Box(
@@ -45,7 +47,7 @@ fun BookElement(
                         painter = painterResource(id = R.drawable.star_icon),
                         contentDescription = "rating_star"
                     )
-                    Text(text = book.rating.toString())
+                    Text(/*text = book.rating.toString()*/ "TEST TEXT")
                 }
             }
 

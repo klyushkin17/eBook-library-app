@@ -1,9 +1,12 @@
 package com.example.e_book_libruary_app.data.repository
 
+import android.util.Log
 import coil.network.HttpException
 import com.example.e_book_libruary_app.data.mapper.toBookInfo
+import com.example.e_book_libruary_app.data.mapper.toBookList
 import com.example.e_book_libruary_app.data.remote.BookApi
 import com.example.e_book_libruary_app.domain.model.BookInfo
+import com.example.e_book_libruary_app.domain.model.BookList
 import com.example.e_book_libruary_app.domain.repository.BookRepository
 import com.example.e_book_libruary_app.util.Resource
 import kotlinx.coroutines.flow.Flow
@@ -50,12 +53,13 @@ class BookRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getNewestBooks(): Flow<Resource<List<BookInfo>>> {
+    override suspend fun getNewestBooks(): Flow<Resource<BookList>> {
         return flow {
             emit(Resource.Loading(true))
             try {
                 val result = api.getNewestBooks()
-                Resource.Success(data = result.toBookInfo())
+                Log.d("ServerResponse", result.toString())
+                Resource.Success(data = result.toBookList())
             } catch (e: IOException) {
                 e.printStackTrace()
                 emit(Resource.Error(message = "Couldn't load data"))
