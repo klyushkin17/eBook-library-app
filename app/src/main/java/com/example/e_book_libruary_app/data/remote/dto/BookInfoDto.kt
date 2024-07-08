@@ -16,6 +16,10 @@ data class VolumeInfoDto(
     @field:Json(name = "pageCount") val pageCount: Int,
     @field:Json(name = "mainCategory") val mainCategory: String?,
     @field:Json(name = "averageRating") val rating: Float?,
+    @field:Json(name = "imageLinks") val imageLinks: ImageLinks
+)
+
+data class ImageLinks(
     @field:Json(name = "thumbnail") val imageUrl: String?
 )
 

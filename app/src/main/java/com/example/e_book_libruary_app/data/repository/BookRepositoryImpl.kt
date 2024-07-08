@@ -58,8 +58,8 @@ class BookRepositoryImpl @Inject constructor(
             emit(Resource.Loading(true))
             try {
                 val result = api.getNewestBooks()
-                Log.d("ServerResponse", result.toString())
-                Resource.Success(data = result.toBookList())
+                Log.d("ServerResponse", result.toString().substring(350, 3000))
+                emit(Resource.Success(data = result.toBookList()))
             } catch (e: IOException) {
                 e.printStackTrace()
                 emit(Resource.Error(message = "Couldn't load data"))
