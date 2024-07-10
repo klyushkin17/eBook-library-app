@@ -11,15 +11,15 @@ interface BookApi {
 
     @GET("volumes")
     suspend fun getSearchedBooks(
-        @Query("q") query: String = "",
+        @Query("q") query: String,
         @Query("maxResults") maxResults: Int = 20,
         @Query("orderBy") orderBy: String = "relevance",
         @Query("key") apiKey: String = API_KEY
-    ): List<BookInfoDto>
+    ): BookListDto
 
     @GET("volumes")
     suspend fun getNewestBooks(
-        @Query("q") query: String = "green",
+        @Query("q") query: String = "a",
         @Query("maxResults") maxResults: Int = 20,
         @Query("orderBy") orderBy: String = "newest",
         @Query("key") apiKey: String = API_KEY
@@ -27,11 +27,11 @@ interface BookApi {
 
     @GET("volumes")
     suspend fun getBooksByCategory(
-        @Query("q") query: String = "",
+        @Query("q") query: String,
         @Query("maxResults") maxResults: Int = 20,
         @Query("orderBy") orderBy: String = "relevance",
         @Query("key") apiKey: String = API_KEY
-    ): List<BookInfoDto>
+    ): BookListDto
 
     @GET("volumes")
     suspend fun getBookInfo(

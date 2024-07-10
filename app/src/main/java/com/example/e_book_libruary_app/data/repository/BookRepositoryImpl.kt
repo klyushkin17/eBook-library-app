@@ -26,7 +26,7 @@ class BookRepositoryImpl @Inject constructor(
             emit(Resource.Loading(true))
             try {
                 val result = api.getSearchedBooks(query = "$query+inauthor:$query")
-                Resource.Success(data = result.toBookInfo())
+                Resource.Success(data = result.toBookList())
             } catch (e: IOException) {
                 e.printStackTrace()
                 emit(Resource.Error(message = "Couldn't load data"))
@@ -58,7 +58,6 @@ class BookRepositoryImpl @Inject constructor(
             emit(Resource.Loading(true))
             try {
                 val result = api.getNewestBooks()
-                Log.d("ServerResponse", result.toString().substring(350, 3000))
                 emit(Resource.Success(data = result.toBookList()))
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -73,12 +72,12 @@ class BookRepositoryImpl @Inject constructor(
 
     override suspend fun getBooksByCategory(
         query: String
-    ): Flow<Resource<List<BookInfo>>> {
+    ): Flow<Resource<BookList>> {
         return flow {
             emit(Resource.Loading(true))
             try {
                 val result = api.getBooksByCategory(query = "subject:$query")
-                Resource.Success(data = result.toBookInfo())
+                emit(Resource.Success(data = result.toBookList()))
             } catch (e: IOException) {
                 e.printStackTrace()
                 emit(Resource.Error(message = "Couldn't load data"))

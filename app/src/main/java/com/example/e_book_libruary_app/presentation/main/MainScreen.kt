@@ -81,13 +81,13 @@ fun MainScreen(
             items(1) {
                 BookList(books = state.newBooks, title = "Новинки")
                 Spacer(modifier = Modifier.height(15.dp))
-                BookList(books = state.newBooks, title = "Программирование")
+                BookList(books = state.programmingBooks, title = "Программирование")
                 Spacer(modifier = Modifier.height(15.dp))
-                BookList(books = state.newBooks, title = "Фантастика")
+                BookList(books = state.fantasyBooks, title = "Фантастика")
                 Spacer(modifier = Modifier.height(15.dp))
-                BookList(books = state.newBooks, title = "Искусство")
+                BookList(books = state.artBooks, title = "Искусство")
                 Spacer(modifier = Modifier.height(15.dp))
-                BookList(books = state.newBooks, title = "Биография")
+                BookList(books = state.biographyBooks, title = "Биография")
                 Spacer(modifier = Modifier.height(15.dp))
             }
         }

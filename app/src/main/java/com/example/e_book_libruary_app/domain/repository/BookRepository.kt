@@ -19,5 +19,5 @@ interface BookRepository {
 
     suspend fun getBooksByCategory(
         query: String
-    ): Flow<Resource<List<BookInfo>>>
+    ): Flow<Resource<BookList>>
 }

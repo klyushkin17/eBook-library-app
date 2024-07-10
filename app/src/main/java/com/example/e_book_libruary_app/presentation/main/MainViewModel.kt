@@ -20,7 +20,7 @@ class MainViewModel @Inject constructor(
     var state by mutableStateOf(MainState())
 
     init {
-        getNewestBooks()
+        getBooks()
     }
 
     fun onEvent(event: MainEvent) {
@@ -37,7 +37,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun getNewestBooks() {
+    private fun getBooks() {
         viewModelScope.launch {
             bookRepository
                 .getNewestBooks()
@@ -47,6 +47,76 @@ class MainViewModel @Inject constructor(
                             result.data?.let { books ->
                                 state = state.copy(
                                     newBooks = books.bookList.toBookInfo()
+                                )
+                            }
+                        }
+                        is Resource.Error -> Unit
+                        is Resource.Loading -> Unit
+                    }
+                }
+
+        }
+        viewModelScope.launch {
+            bookRepository
+                .getBooksByCategory("Code")
+                .collect{ result ->
+                    when(result) {
+                        is Resource.Success -> {
+                            result.data?.let { books ->
+                                state = state.copy(
+                                     programmingBooks = books.bookList.toBookInfo()
+                                )
+                            }
+                        }
+                        is Resource.Error -> Unit
+                        is Resource.Loading -> Unit
+                    }
+                }
+        }
+        viewModelScope.launch {
+            bookRepository
+                .getBooksByCategory("Fantasy")
+                .collect{ result ->
+                    when(result) {
+                        is Resource.Success -> {
+                            result.data?.let { books ->
+                                state = state.copy(
+                                    fantasyBooks = books.bookList.toBookInfo()
+                                )
+                            }
+                        }
+                        is Resource.Error -> Unit
+                        is Resource.Loading -> Unit
+                    }
+                }
+        }
+        viewModelScope.launch {
+            bookRepository
+                .getBooksByCategory("Art and Literature")
+                .collect{ result ->
+                    when(result) {
+                        is Resource.Success -> {
+                            result.data?.let { books ->
+                                state = state.copy(
+                                    artBooks = books.bookList.toBookInfo()
+                                )
+                            }
+                        }
+                        is Resource.Error -> Unit
+                        is Resource.Loading -> Unit
+                    }
+                }
+        }
+
+        viewModelScope.launch {
+            bookRepository
+                .getBooksByCategory("Biography Autobiography")
+                .collect{ result ->
+                    when(result) {
+                        is Resource.Success -> {
+                            result.data?.let { books ->
+                                state = state.copy(
+                                    biographyBooks = books.bookList.toBookInfo()
                                 )
                             }
                         }

@@ -10,7 +10,7 @@ fun BookInfoDto.toBookInfo(): BookInfo {
     return BookInfo(
         id = id,
         title = volumeInfo.title,
-        authors = volumeInfo.authors,
+        authors = volumeInfo.authors ?: emptyList(),
         publisher = volumeInfo.publisher ?: "",
         imageUrl = volumeInfo.imageLinks?.imageUrl ?: "",
         description = volumeInfo.description ?: "",
@@ -31,7 +31,7 @@ fun List<BookInfoDto>.toBookInfo(): List<BookInfo> {
         BookInfo(
             id = it.id,
             title = it.volumeInfo.title,
-            authors = it.volumeInfo.authors,
+            authors = it.volumeInfo.authors ?: emptyList(),
             publisher = it.volumeInfo.publisher ?: "",
             imageUrl = it.volumeInfo.imageLinks?.imageUrl ?: "",
             description = it.volumeInfo.description ?: "",
