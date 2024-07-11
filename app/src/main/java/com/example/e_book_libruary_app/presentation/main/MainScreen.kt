@@ -25,6 +25,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,13 +39,24 @@ import androidx.navigation.Navigator
 import coil.compose.AsyncImage
 import com.example.e_book_libruary_app.domain.model.BookInfo
 import com.example.e_book_libruary_app.presentation.sign_in.UserData
+import com.example.e_book_libruary_app.util.UiEvent
 
 @Composable
 fun MainScreen(
     userData: UserData?,
+    onNavigate: (UiEvent.Navigate) -> Unit,
     viewModel: MainViewModel = hiltViewModel()
 ){
     val state = viewModel.state
+
+    LaunchedEffect(key1 = true) {
+        viewModel.uiEvent.collect{event ->
+            when(event) {
+                is UiEvent.Navigate -> onNavigate(event)
+                else -> Unit
+            }
+        }
+    }
 
     Column(
         modifier = Modifier

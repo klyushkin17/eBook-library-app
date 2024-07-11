@@ -27,11 +27,11 @@ import com.example.e_book_libruary_app.presentation.sign_in.GoogleAuthUiClient
 import com.example.e_book_libruary_app.presentation.sign_in.SignInScreen
 import com.example.e_book_libruary_app.presentation.sign_in.SignInViewModel
 import com.example.e_book_libruary_app.ui.theme.EBook_libruary_appTheme
+import com.example.e_book_libruary_app.util.Routes
 import com.google.android.gms.auth.api.identity.Identity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import kotlin.math.sign
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -52,8 +52,8 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     val navController = rememberNavController()
-                    NavHost(navController = navController, startDestination = "sign_in") {
-                        composable("sign_in") {
+                    NavHost(navController = navController, startDestination = Routes.SIGN_IN_SCREEN) {
+                        composable(Routes.SIGN_IN_SCREEN) {
                             val viewModel = viewModel<SignInViewModel>()
                             val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -85,7 +85,7 @@ class MainActivity : ComponentActivity() {
                                         Toast.LENGTH_LONG
                                     ).show()
 
-                                    navController.navigate("main")
+                                    navController.navigate(Routes.MAIN_SCREEN)
                                     viewModel.resetState()
                                 }
                             }
@@ -105,8 +105,13 @@ class MainActivity : ComponentActivity() {
                             )
                         }
 
-                        composable("main") {
-                            MainScreen(userData = googleAuthUiClient.getSignedInUser())
+                        composable(Routes.MAIN_SCREEN) {
+                            MainScreen(
+                                userData = googleAuthUiClient.getSignedInUser(),
+                                onNavigate = {
+                                    navController.navigate(it.route)
+                                }
+                            )
                         }
                     }
                 }
