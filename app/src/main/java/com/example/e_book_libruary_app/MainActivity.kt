@@ -23,6 +23,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.e_book_libruary_app.presentation.main.MainScreen
+import com.example.e_book_libruary_app.presentation.search.SearchScreen
 import com.example.e_book_libruary_app.presentation.sign_in.GoogleAuthUiClient
 import com.example.e_book_libruary_app.presentation.sign_in.SignInScreen
 import com.example.e_book_libruary_app.presentation.sign_in.SignInViewModel
@@ -59,7 +60,7 @@ class MainActivity : ComponentActivity() {
 
                             LaunchedEffect(key1 = Unit) {
                                 if(googleAuthUiClient.getSignedInUser() != null) {
-                                    navController.navigate("main")
+                                    navController.navigate(Routes.MAIN_SCREEN)
                                 }
                             }
 
@@ -108,6 +109,14 @@ class MainActivity : ComponentActivity() {
                         composable(Routes.MAIN_SCREEN) {
                             MainScreen(
                                 userData = googleAuthUiClient.getSignedInUser(),
+                                onNavigate = {
+                                    navController.navigate(it.route)
+                                }
+                            )
+                        }
+
+                        composable(Routes.SEARCH_SCREEN) {
+                            SearchScreen(
                                 onNavigate = {
                                     navController.navigate(it.route)
                                 }

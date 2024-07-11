@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -70,7 +71,7 @@ fun MainScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(color = Color.Gray, shape = RoundedCornerShape(10.dp))
-                .padding(vertical = 3.dp)
+                .padding(vertical = 10.dp)
                 .padding(horizontal = 10.dp)
         ) {
             AsyncImage(
@@ -81,6 +82,10 @@ fun MainScreen(
                     .clip(CircleShape)
             )
             Icon(
+                modifier = Modifier
+                    .clickable {
+                        viewModel.onEvent(MainEvent.OnSearchIconClick)
+                    },
                 imageVector = Icons.Default.Search,
                 contentDescription = "search_icon"
             )

@@ -9,7 +9,7 @@ interface BookRepository {
 
     suspend fun getBooksByQuery(
         query: String
-    ): Flow<Resource<List<BookInfo>>>
+    ): Flow<Resource<BookList>>
 
     suspend fun getBookInfo(
         bookId: String

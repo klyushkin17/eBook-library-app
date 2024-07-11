@@ -21,12 +21,12 @@ class BookRepositoryImpl @Inject constructor(
 ): BookRepository {
     override suspend fun getBooksByQuery(
         query: String
-    ): Flow<Resource<List<BookInfo>>> {
+    ): Flow<Resource<BookList>> {
         return flow {
             emit(Resource.Loading(true))
             try {
                 val result = api.getSearchedBooks(query = "$query+inauthor:$query")
-                Resource.Success(data = result.toBookList())
+                emit(Resource.Success(data = result.toBookList()))
             } catch (e: IOException) {
                 e.printStackTrace()
                 emit(Resource.Error(message = "Couldn't load data"))
