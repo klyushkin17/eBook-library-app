@@ -8,7 +8,7 @@ import com.example.e_book_libruary_app.domain.model.BookList
 
 fun BookInfoDto.toBookInfo(): BookInfo {
     return BookInfo(
-        id = id,
+        bookId = bookId,
         title = volumeInfo.title,
         authors = volumeInfo.authors ?: emptyList(),
         publisher = volumeInfo.publisher ?: "",
@@ -29,7 +29,7 @@ fun BookListDto.toBookList(): BookList {
 fun List<BookInfoDto>.toBookInfo(): List<BookInfo> {
     return this.map {
         BookInfo(
-            id = it.id,
+            bookId = it.bookId,
             title = it.volumeInfo.title,
             authors = it.volumeInfo.authors ?: emptyList(),
             publisher = it.volumeInfo.publisher ?: "",

@@ -3,7 +3,7 @@ package com.example.e_book_libruary_app.domain.model
 import com.squareup.moshi.Json
 
 data class BookInfo(
-    val id: String,
+    val bookId: String,
     val title: String,
     val authors: List<String>,
     val publisher: String,

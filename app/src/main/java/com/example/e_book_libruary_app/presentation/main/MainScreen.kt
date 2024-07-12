@@ -96,15 +96,15 @@ fun MainScreen(
                 .fillMaxSize()
         ){
             items(1) {
-                BookList(books = state.newBooks, title = "Новинки")
+                BookList(books = state.newBooks, title = "Новинки", viewModel)
                 Spacer(modifier = Modifier.height(15.dp))
-                BookList(books = state.programmingBooks, title = "Программирование")
+                BookList(books = state.programmingBooks, title = "Программирование", viewModel)
                 Spacer(modifier = Modifier.height(15.dp))
-                BookList(books = state.fantasyBooks, title = "Фантастика")
+                BookList(books = state.fantasyBooks, title = "Фантастика", viewModel)
                 Spacer(modifier = Modifier.height(15.dp))
-                BookList(books = state.artBooks, title = "Искусство")
+                BookList(books = state.artBooks, title = "Искусство", viewModel)
                 Spacer(modifier = Modifier.height(15.dp))
-                BookList(books = state.biographyBooks, title = "Биография")
+                BookList(books = state.biographyBooks, title = "Биография", viewModel)
                 Spacer(modifier = Modifier.height(15.dp))
             }
         }
@@ -115,7 +115,8 @@ fun MainScreen(
 @Composable
 fun BookList(
     books: List<BookInfo>,
-    title: String
+    title: String,
+    viewModel: MainViewModel
 ){
     Row (
         verticalAlignment = Alignment.CenterVertically,
@@ -135,7 +136,13 @@ fun BookList(
                 modifier = Modifier.fillMaxWidth()
             ){
                 items(books) {book ->
-                    BookElement(book = book)
+                    BookElement(
+                        modifier = Modifier
+                            .clickable {
+                                viewModel.onEvent(MainEvent.OnBookClick(book.bookId))
+                            },
+                        book = book,
+                    )
                     Spacer(modifier = Modifier.width(16.dp))
                 }
             }

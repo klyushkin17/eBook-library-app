@@ -41,7 +41,7 @@ class MainViewModel @Inject constructor(
                 TODO() // exit option
             }
             is MainEvent.OnBookClick -> {
-                TODO() // Navigate
+                sendUiEvent(UiEvent.Navigate(Routes.BOOK_SCREEN + "?bookId=${event.bookId}"))
             }
         }
     }

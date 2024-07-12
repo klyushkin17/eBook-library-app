@@ -41,6 +41,7 @@ import org.jetbrains.annotations.Async
 
 @Composable
 fun BookElement(
+    modifier: Modifier = Modifier,
     book: BookInfo
 ){
     Card(

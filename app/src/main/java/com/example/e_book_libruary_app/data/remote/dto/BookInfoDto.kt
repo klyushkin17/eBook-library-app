@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 import retrofit2.http.Url
 
 data class BookInfoDto(
-    @field:Json(name = "id") val id: String,
+    @field:Json(name = "id") val bookId: String,
     @field:Json(name = "volumeInfo") val volumeInfo: VolumeInfoDto
 )
 

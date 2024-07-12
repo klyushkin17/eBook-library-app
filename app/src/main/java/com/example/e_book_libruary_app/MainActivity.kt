@@ -19,9 +19,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.e_book_libruary_app.presentation.book_card.BookCardScreen
 import com.example.e_book_libruary_app.presentation.main.MainScreen
 import com.example.e_book_libruary_app.presentation.search.SearchScreen
 import com.example.e_book_libruary_app.presentation.sign_in.GoogleAuthUiClient
@@ -117,6 +120,22 @@ class MainActivity : ComponentActivity() {
 
                         composable(Routes.SEARCH_SCREEN) {
                             SearchScreen(
+                                onNavigate = {
+                                    navController.navigate(it.route)
+                                }
+                            )
+                        }
+
+                        composable(
+                            route = Routes.BOOK_SCREEN,
+                            arguments = listOf(
+                                navArgument(name = "bookId") {
+                                    type = NavType.StringType
+                                    defaultValue = ""
+                                }
+                            )
+                        ) {
+                            BookCardScreen(
                                 onNavigate = {
                                     navController.navigate(it.route)
                                 }
