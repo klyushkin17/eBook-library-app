@@ -45,7 +45,7 @@ fun BookElement(
     book: BookInfo
 ){
     Card(
-        modifier = Modifier
+        modifier = modifier
             .height(200.dp)
             .width(140.dp),
         shape = RoundedCornerShape(5.dp),

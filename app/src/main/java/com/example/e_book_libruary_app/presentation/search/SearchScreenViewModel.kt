@@ -36,10 +36,10 @@ class SearchScreenViewModel @Inject constructor(
     fun onEvent(event: SearchScreenEvent) {
         when(event) {
             is SearchScreenEvent.OnBackArrowClick -> {
-                sendUiEvent(UiEvent.Navigate(Routes.MAIN_SCREEN))
+                sendUiEvent(UiEvent.PopBackStack)
             }
             is SearchScreenEvent.OnBookClick -> {
-
+                sendUiEvent(UiEvent.Navigate(Routes.BOOK_SCREEN + "?bookId=${event.book.bookId}"))
             }
             is SearchScreenEvent.OnSearchQueryChange -> {
                 state = state.copy(searchQuery = event.query)

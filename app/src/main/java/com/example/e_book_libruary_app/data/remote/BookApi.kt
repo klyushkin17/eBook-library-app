@@ -5,6 +5,7 @@ import com.example.e_book_libruary_app.data.remote.dto.BookListDto
 import com.example.e_book_libruary_app.domain.model.BookList
 import javax.annotation.processing.Generated
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface BookApi {
@@ -33,9 +34,10 @@ interface BookApi {
         @Query("key") apiKey: String = API_KEY
     ): BookListDto
 
-    @GET("volumes")
+    @GET("volumes/{bookId}")
     suspend fun getBookInfo(
-        @Query("volumeId") volumeId: String,
+        @Path("bookId") bookId: String,
+        @Query("projection") projection: String = "full",
         @Query("key") apiKey: String = API_KEY
     ): BookInfoDto
 

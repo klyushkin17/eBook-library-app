@@ -122,12 +122,15 @@ class MainActivity : ComponentActivity() {
                             SearchScreen(
                                 onNavigate = {
                                     navController.navigate(it.route)
+                                },
+                                onPopBackStack = {
+                                    navController.popBackStack()
                                 }
                             )
                         }
 
                         composable(
-                            route = Routes.BOOK_SCREEN,
+                            route = Routes.BOOK_SCREEN + "?bookId={bookId}",
                             arguments = listOf(
                                 navArgument(name = "bookId") {
                                     type = NavType.StringType
@@ -138,6 +141,9 @@ class MainActivity : ComponentActivity() {
                             BookCardScreen(
                                 onNavigate = {
                                     navController.navigate(it.route)
+                                },
+                                onPopBackStack = {
+                                    navController.popBackStack()
                                 }
                             )
                         }

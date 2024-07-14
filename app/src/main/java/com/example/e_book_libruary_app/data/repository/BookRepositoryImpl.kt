@@ -42,7 +42,7 @@ class BookRepositoryImpl @Inject constructor(
         bookId: String
     ): Resource<BookInfo> {
         return try {
-            val result = api.getBookInfo(volumeId = bookId)
+            val result = api.getBookInfo(bookId = bookId)
             Resource.Success(data = result.toBookInfo())
         } catch (e: IOException) {
             e.printStackTrace()

@@ -1,6 +1,7 @@
 package com.example.e_book_libruary_app.presentation.search
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,6 +24,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,9 +41,19 @@ import com.example.e_book_libruary_app.util.UiEvent
 @Composable
 fun SearchScreen(
     onNavigate: (UiEvent.Navigate) -> Unit,
-    viewModel: SearchScreenViewModel = hiltViewModel()
+    viewModel: SearchScreenViewModel = hiltViewModel(),
+    onPopBackStack: () -> Unit
 ){
     val state = viewModel.state
+
+    LaunchedEffect(key1 = true) {
+        viewModel.uiEvent.collect{event ->
+            when(event) {
+                is UiEvent.Navigate -> onNavigate(event)
+                is UiEvent.PopBackStack -> onPopBackStack()
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -64,6 +76,10 @@ fun SearchScreen(
                     .padding(horizontal = 10.dp)
             ) {
                 Icon(
+                    modifier = Modifier
+                        .clickable {
+                            viewModel.onEvent(SearchScreenEvent.OnBackArrowClick)
+                        },
                     imageVector = Icons.Default.ArrowBack,
                     contentDescription = "search_icon"
                 )
@@ -87,7 +103,13 @@ fun SearchScreen(
                     .fillMaxWidth()
             ) {
                 items(state.books) {book ->
-                    ExtendedBookElement(book = book)
+                    ExtendedBookElement(
+                        book = book,
+                        modifier = Modifier
+                            .clickable {
+                                viewModel.onEvent(SearchScreenEvent.OnBookClick(book))
+                            }
+                    )
                     Divider()
                 }
             }

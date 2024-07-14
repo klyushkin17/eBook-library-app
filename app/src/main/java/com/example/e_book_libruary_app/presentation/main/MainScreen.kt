@@ -139,7 +139,7 @@ fun BookList(
                     BookElement(
                         modifier = Modifier
                             .clickable {
-                                viewModel.onEvent(MainEvent.OnBookClick(book.bookId))
+                                viewModel.onEvent(MainEvent.OnBookClick(book))
                             },
                         book = book,
                     )

@@ -26,10 +26,11 @@ import com.example.e_book_libruary_app.domain.model.BookInfo
 
 @Composable
 fun ExtendedBookElement(
-    book: BookInfo
+    book: BookInfo,
+    modifier: Modifier = Modifier
 ){
     Column (
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(200.dp)
     ){

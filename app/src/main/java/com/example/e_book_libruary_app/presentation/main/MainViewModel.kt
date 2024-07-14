@@ -1,5 +1,6 @@
 package com.example.e_book_libruary_app.presentation.main
 
+import android.util.Log
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -41,7 +42,8 @@ class MainViewModel @Inject constructor(
                 TODO() // exit option
             }
             is MainEvent.OnBookClick -> {
-                sendUiEvent(UiEvent.Navigate(Routes.BOOK_SCREEN + "?bookId=${event.bookId}"))
+                Log.d("CheckBookId", event.book.bookId)
+                sendUiEvent(UiEvent.Navigate(Routes.BOOK_SCREEN + "?bookId=${event.book.bookId}"))
             }
         }
     }
