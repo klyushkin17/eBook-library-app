@@ -2,12 +2,15 @@ package com.example.e_book_libruary_app.presentation.main
 
 import android.annotation.SuppressLint
 import android.util.Log
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -20,8 +23,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Divider
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -49,14 +55,18 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.Navigator
 import coil.compose.AsyncImage
 import com.example.e_book_libruary_app.domain.model.BookInfo
+import com.example.e_book_libruary_app.presentation.search.SearchScreenEvent
 import com.example.e_book_libruary_app.presentation.sign_in.UserData
+import com.example.e_book_libruary_app.ui.theme.backgroundColor
 import com.example.e_book_libruary_app.ui.theme.darkGreen
 import com.example.e_book_libruary_app.ui.theme.green
 import com.example.e_book_libruary_app.ui.theme.harunoUmiFontFamily
+import com.example.e_book_libruary_app.ui.theme.montserrat
+import com.example.e_book_libruary_app.ui.theme.scaffoldBackgroundColor
 import com.example.e_book_libruary_app.ui.theme.white
 import com.example.e_book_libruary_app.util.UiEvent
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreen(
@@ -65,7 +75,9 @@ fun MainScreen(
     viewModel: MainViewModel = hiltViewModel()
 ){
     val state = viewModel.state
-
+    val pagerState = rememberPagerState(initialPage = 2){
+        state.newBooks.size
+    }
     LaunchedEffect(key1 = true) {
         viewModel.uiEvent.collect{event ->
             when(event) {
@@ -80,7 +92,12 @@ fun MainScreen(
             TopAppBar(
                 title = { /*TODO*/ },
                 modifier = Modifier
-                    .shadow(elevation = 5.dp,  shape = RoundedCornerShape(12.dp), ambientColor = Color.Black, spotColor = Color.Black)
+                    .shadow(
+                        elevation = 5.dp,
+                        shape = RoundedCornerShape(12.dp),
+                        ambientColor = Color.Black,
+                        spotColor = Color.Black
+                    )
                     .height(50.dp)
                     .padding(top = 6.dp)
                     .padding(horizontal = 4.dp)
@@ -110,46 +127,81 @@ fun MainScreen(
                     }
                 },
                 colors = TopAppBarDefaults.smallTopAppBarColors(
-                    containerColor = darkGreen,
+                    containerColor = scaffoldBackgroundColor,
                     actionIconContentColor = white
                 )
             )
         }
     ){ values ->
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(values)
-                .padding(horizontal = 3.dp)
         ) {
-            Column (
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 11.dp)
-            ){
                 LazyColumn (
                     modifier = Modifier
                         .fillMaxSize()
                 ){
                     items(1) {
-                        BookList(books = state.newBooks, title = "New", viewModel)
-                        Spacer(modifier = Modifier.height(15.dp))
-                        BookList(books = state.programmingBooks, title = "Code", viewModel)
-                        Spacer(modifier = Modifier.height(15.dp))
-                        BookList(books = state.fantasyBooks, title = "Fantasy", viewModel)
-                        Spacer(modifier = Modifier.height(15.dp))
-                        BookList(books = state.artBooks, title = "Art", viewModel)
-                        Spacer(modifier = Modifier.height(15.dp))
-                        BookList(books = state.biographyBooks, title = "Biography", viewModel)
-                        Spacer(modifier = Modifier.height(15.dp))
+                        Spacer(modifier = Modifier.height(70.dp))
+                        Box(modifier = Modifier.padding(horizontal = 16.dp)){
+                            Text(
+                                text = "New",
+                                fontSize = 21.sp,
+                                fontFamily = montserrat,
+                                fontWeight = FontWeight.Medium,
+                                color = Color.Black
+                            )
+                        }
+                        HorizontalPager(
+                            contentPadding = PaddingValues(horizontal = 26.dp),
+                            state = pagerState,
+                            modifier = Modifier
+                                .height(200.dp)
+                                .fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+
+                        ){ page ->
+                            NewBooksElement(
+                                book = state.newBooks[page],
+                                modifier = Modifier
+                                    .clickable {
+                                        viewModel.onEvent(MainEvent.OnBookClick(state.newBooks[page]))
+                                    }
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(20.dp))
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(
+                                    color = backgroundColor,
+                                    shape = RoundedCornerShape(23.dp)
+                                )
+                                .padding(top = 20.dp)
+                        ) {
+                            /*BookList(books = state.newBooks, title = "New", viewModel)
+                            Spacer(modifier = Modifier.height(15.dp))*/
+                            BookList(books = state.programmingBooks, title = "Code", viewModel)
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Box(modifier = Modifier.padding(horizontal = 16.dp)){ Divider()}
+                            Spacer(modifier = Modifier.height(11.dp))
+                            BookList(books = state.fantasyBooks, title = "Fantasy", viewModel)
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Box(modifier = Modifier.padding(horizontal = 16.dp)){ Divider()}
+                            Spacer(modifier = Modifier.height(11.dp))
+                            BookList(books = state.artBooks, title = "Art", viewModel)
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Box(modifier = Modifier.padding(horizontal = 16.dp)){ Divider()}
+                            Spacer(modifier = Modifier.height(11.dp))
+                            BookList(books = state.biographyBooks, title = "Biography", viewModel)
+                            Spacer(modifier = Modifier.height(15.dp))
+                        }
+
                     }
                 }
-
-            }
         }
     }
-
-
 }
 
 @Composable
@@ -158,36 +210,34 @@ fun BookList(
     title: String,
     viewModel: MainViewModel
 ){
-    Row (
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(color = green, shape = RoundedCornerShape(12.dp))
-            .padding(vertical = 12.dp)
-            .padding(horizontal = 15.dp)
-    ){
-        Column {
+
+    Column {
+        Box(modifier = Modifier
+            .padding(start = 16.dp)
+        ){
             Text(
                 text = title,
                 fontSize = 19.sp,
-                fontFamily = harunoUmiFontFamily,
-                fontWeight = FontWeight.Bold,
+                fontFamily = montserrat,
+                fontWeight = FontWeight.Medium,
                 color = Color.Black
             )
-            Spacer(modifier = Modifier.height(10.dp))
-            LazyRow (
-                modifier = Modifier.fillMaxWidth()
-            ){
-                items(books) {book ->
-                    BookElement(
-                        modifier = Modifier
-                            .clickable {
-                                viewModel.onEvent(MainEvent.OnBookClick(book))
-                            },
-                        book = book,
-                    )
-                    Spacer(modifier = Modifier.width(16.dp))
-                }
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+        LazyRow (
+            modifier = Modifier.fillMaxWidth()
+        ){
+            items(books) {book ->
+                Spacer(modifier = Modifier.width(16.dp))
+                BookElement(
+                    modifier = Modifier
+                        .clickable {
+                            viewModel.onEvent(MainEvent.OnBookClick(book))
+                        },
+                    book = book,
+                )
+                Spacer(modifier = Modifier.width(4.dp))
             }
         }
     }

@@ -40,3 +40,7 @@ val harunoUmiFontFamily = FontFamily(
     Font(R.font.kaiseiharunoumi_medium, FontWeight.Medium),
     Font(R.font.kaiseiharunoumi_regular, FontWeight.Normal)
 )
+
+val montserrat = FontFamily(
+    Font(R.font.montserrat_medium, FontWeight.Medium)
+)

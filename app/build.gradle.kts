@@ -84,4 +84,7 @@ dependencies {
     implementation ("com.squareup.retrofit2:converter-moshi:2.9.0")
     implementation ("com.squareup.okhttp3:okhttp:5.0.0-alpha.3")
     implementation ("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3")
+
+    //implementation("com.google.accompanist::accompanist-pager:0.20.0")
+    implementation("androidx.compose.ui:ui-util:1.4.0")
 }

@@ -1,5 +1,7 @@
 package com.example.e_book_libruary_app.presentation.main
 
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import com.example.e_book_libruary_app.domain.model.BookInfo
 import com.example.e_book_libruary_app.presentation.sign_in.UserData
 

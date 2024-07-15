@@ -44,6 +44,7 @@ import com.example.e_book_libruary_app.domain.model.BookInfo
 import com.example.e_book_libruary_app.ui.theme.darkGray
 import com.example.e_book_libruary_app.ui.theme.darkGreen
 import com.example.e_book_libruary_app.ui.theme.harunoUmiFontFamily
+import com.example.e_book_libruary_app.ui.theme.secondaryTextColor
 import com.example.e_book_libruary_app.ui.theme.white
 import org.jetbrains.annotations.Async
 
@@ -125,7 +126,7 @@ fun BookElement(
             Text(
                 text = book.authors.joinToString(separator = ", "),
                 fontSize = 9.sp,
-                color = darkGray,
+                color = secondaryTextColor,
                 maxLines = 1,
                 fontFamily = harunoUmiFontFamily,
                 fontWeight = FontWeight.Normal,
