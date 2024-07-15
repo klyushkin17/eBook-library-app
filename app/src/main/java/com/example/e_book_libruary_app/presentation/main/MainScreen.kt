@@ -119,7 +119,7 @@ fun MainScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(values )
+                .padding(values)
                 .padding(horizontal = 3.dp)
         ) {
             Column (
