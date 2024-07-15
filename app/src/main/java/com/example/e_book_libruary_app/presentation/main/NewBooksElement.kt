@@ -36,6 +36,7 @@ fun NewBooksElement(
 ){
     Card(
         colors = CardDefaults.cardColors(pagerColor),
+        elevation = CardDefaults.cardElevation(15.dp),
         modifier = modifier
             .width(320.dp)
             .padding(10.dp)
