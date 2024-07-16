@@ -23,6 +23,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.TextField
@@ -48,6 +49,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.painter.BrushPainter
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -58,6 +60,7 @@ import com.example.e_book_libruary_app.presentation.main.BookElement
 import com.example.e_book_libruary_app.presentation.main.MainEvent
 import com.example.e_book_libruary_app.presentation.main.MainViewModel
 import com.example.e_book_libruary_app.presentationeee.search.SearchScreenViewModel
+import com.example.e_book_libruary_app.ui.theme.backgroundColor
 import com.example.e_book_libruary_app.ui.theme.darkGray
 import com.example.e_book_libruary_app.ui.theme.harunoUmiFontFamily
 import com.example.e_book_libruary_app.ui.theme.scaffoldBackgroundColor
@@ -175,31 +178,28 @@ fun SearchScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 7.dp)
-                .padding(horizontal = 10.dp)
+
         ) {
-            Column(
+            LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(color = darkGray, shape = RoundedCornerShape(10.dp))
-            ){
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
-                    items(state.books) {book ->
-                        ExtendedBookElement(
-                            book = book,
-                            modifier = Modifier
-                                .clickable {
-                                    viewModel.onEvent(SearchScreenEvent.OnBookClick(book))
-                                }
-                        )
-                        Divider()
-                    }
+                    .background(color = backgroundColor)
+                    .padding(horizontal = 16.dp)
+            ) {
+                items(1) {
+                    Spacer(modifier = Modifier.height(70.dp))
+                }
+                items(state.books) {book ->
+                    ExtendedBookElement(
+                        book = book,
+                        modifier = Modifier
+                            .clickable {
+                                viewModel.onEvent(SearchScreenEvent.OnBookClick(book))
+                            }
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
                 }
             }
         }
-
     }
 }
