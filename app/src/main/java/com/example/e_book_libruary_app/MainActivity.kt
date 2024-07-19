@@ -1,5 +1,6 @@
 package com.example.e_book_libruary_app
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -9,6 +10,7 @@ import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -25,6 +27,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.e_book_libruary_app.presentation.book_card.BookCardScreen
+import com.example.e_book_libruary_app.presentation.bottom_navigation_bar.BottomNavBar
 import com.example.e_book_libruary_app.presentation.main.MainScreen
 import com.example.e_book_libruary_app.presentation.search.SearchScreen
 import com.example.e_book_libruary_app.presentation.sign_in.GoogleAuthUiClient
@@ -47,6 +50,7 @@ class MainActivity : ComponentActivity() {
         )
     }
 
+    @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -56,18 +60,23 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     val navController = rememberNavController()
-                    NavHost(navController = navController, startDestination = Routes.SIGN_IN_SCREEN) {
-                        composable(Routes.SIGN_IN_SCREEN) {
-                            val viewModel = viewModel<SignInViewModel>()
-                            val state by viewModel.state.collectAsStateWithLifecycle()
+                    Scaffold(
+                        bottomBar = {
+                            BottomNavBar(navController = navController)
+                        }
+                    ) {
+                        NavHost(navController = navController, startDestination = Routes.SIGN_IN_SCREEN) {
+                            composable(Routes.SIGN_IN_SCREEN) {
+                                val viewModel = viewModel<SignInViewModel>()
+                                val state by viewModel.state.collectAsStateWithLifecycle()
 
-                            LaunchedEffect(key1 = Unit) {
-                                if(googleAuthUiClient.getSignedInUser() != null) {
-                                    navController.navigate(Routes.MAIN_SCREEN)
+                                LaunchedEffect(key1 = Unit) {
+                                    if(googleAuthUiClient.getSignedInUser() != null) {
+                                        navController.navigate(Routes.MAIN_SCREEN)
+                                    }
                                 }
-                            }
 
-                            val launcher = rememberLauncherForActivityResult(
+                                val launcher = rememberLauncherForActivityResult(
                                     contract = ActivityResultContracts.StartIntentSenderForResult(),
                                     onResult = {result ->
                                         if(result.resultCode == RESULT_OK) {
@@ -79,75 +88,78 @@ class MainActivity : ComponentActivity() {
                                             }
                                         }
                                     }
-                            )
+                                )
 
-                            LaunchedEffect(key1 = state.isSignInSuccessful) {
-                                if(state.isSignInSuccessful) {
-                                    Toast.makeText(
-                                        applicationContext,
-                                        "Sign in is successful",
-                                        Toast.LENGTH_LONG
-                                    ).show()
+                                LaunchedEffect(key1 = state.isSignInSuccessful) {
+                                    if(state.isSignInSuccessful) {
+                                        Toast.makeText(
+                                            applicationContext,
+                                            "Sign in is successful",
+                                            Toast.LENGTH_LONG
+                                        ).show()
 
-                                    navController.navigate(Routes.MAIN_SCREEN)
-                                    viewModel.resetState()
-                                }
-                            }
-
-                            SignInScreen(
-                                state = state,
-                                onSignInClick = {
-                                    lifecycleScope.launch {
-                                        val signInIntentSender = googleAuthUiClient.signIn()
-                                        launcher.launch(
-                                            IntentSenderRequest.Builder(
-                                                signInIntentSender ?: return@launch
-                                            ).build()
-                                        )
+                                        navController.navigate(Routes.MAIN_SCREEN)
+                                        viewModel.resetState()
                                     }
                                 }
-                            )
+
+                                SignInScreen(
+                                    state = state,
+                                    onSignInClick = {
+                                        lifecycleScope.launch {
+                                            val signInIntentSender = googleAuthUiClient.signIn()
+                                            launcher.launch(
+                                                IntentSenderRequest.Builder(
+                                                    signInIntentSender ?: return@launch
+                                                ).build()
+                                            )
+                                        }
+                                    }
+                                )
+                            }
+
+                            composable(Routes.MAIN_SCREEN) {
+                                MainScreen(
+                                    userData = googleAuthUiClient.getSignedInUser(),
+                                    onNavigate = {
+                                        navController.navigate(it.route)
+                                    }
+                                )
+                            }
+
+                            composable(Routes.SEARCH_SCREEN) {
+                                SearchScreen(
+                                    onNavigate = {
+                                        navController.navigate(it.route)
+                                    },
+                                    onPopBackStack = {
+                                        navController.popBackStack()
+                                    }
+                                )
+                            }
+
+                            composable(
+                                route = Routes.BOOK_SCREEN + "?bookId={bookId}",
+                                arguments = listOf(
+                                    navArgument(name = "bookId") {
+                                        type = NavType.StringType
+                                        defaultValue = ""
+                                    }
+                                )
+                            ) {
+                                BookCardScreen(
+                                    onNavigate = {
+                                        navController.navigate(it.route)
+                                    },
+                                    onPopBackStack = {
+                                        navController.popBackStack()
+                                    }
+                                )
+                            }
                         }
 
-                        composable(Routes.MAIN_SCREEN) {
-                            MainScreen(
-                                userData = googleAuthUiClient.getSignedInUser(),
-                                onNavigate = {
-                                    navController.navigate(it.route)
-                                }
-                            )
-                        }
-
-                        composable(Routes.SEARCH_SCREEN) {
-                            SearchScreen(
-                                onNavigate = {
-                                    navController.navigate(it.route)
-                                },
-                                onPopBackStack = {
-                                    navController.popBackStack()
-                                }
-                            )
-                        }
-
-                        composable(
-                            route = Routes.BOOK_SCREEN + "?bookId={bookId}",
-                            arguments = listOf(
-                                navArgument(name = "bookId") {
-                                    type = NavType.StringType
-                                    defaultValue = ""
-                                }
-                            )
-                        ) {
-                            BookCardScreen(
-                                onNavigate = {
-                                    navController.navigate(it.route)
-                                },
-                                onPopBackStack = {
-                                    navController.popBackStack()
-                                }
-                            )
-                        }
                     }
+
                 }
             }
         }
