@@ -38,8 +38,11 @@ class MainViewModel @Inject constructor(
             is MainEvent.OnSearchIconClick -> {
                 sendUiEvent(UiEvent.Navigate(Routes.SEARCH_SCREEN))
             }
-            is MainEvent.OnProfileIconClick -> {
-                TODO() // exit option
+            is MainEvent.OnSignOutClick -> {
+                viewModelScope.launch {
+                    event.googleAuthUiClient.signOut()
+                    sendUiEvent(UiEvent.Navigate(Routes.SIGN_IN_SCREEN))
+                }
             }
             is MainEvent.OnBookClick -> {
                 Log.d("CheckBookId", event.book.bookId)

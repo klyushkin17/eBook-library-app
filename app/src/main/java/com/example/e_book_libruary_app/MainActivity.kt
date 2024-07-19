@@ -123,7 +123,8 @@ class MainActivity : ComponentActivity() {
                                     userData = googleAuthUiClient.getSignedInUser(),
                                     onNavigate = {
                                         navController.navigate(it.route)
-                                    }
+                                    },
+                                    googleAuthUiClient = googleAuthUiClient
                                 )
                             }
 
@@ -157,9 +158,7 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                         }
-
                     }
-
                 }
             }
         }

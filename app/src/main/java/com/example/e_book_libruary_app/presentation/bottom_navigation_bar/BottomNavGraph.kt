@@ -24,7 +24,8 @@ fun BottomNavGraph(
                 userData = googleAuthUiClient.getSignedInUser(),
                 onNavigate = {
                     navController.navigate(it.route)
-                }
+                },
+                googleAuthUiClient = googleAuthUiClient
             )
         }
 
