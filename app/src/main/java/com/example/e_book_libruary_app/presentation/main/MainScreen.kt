@@ -198,22 +198,24 @@ fun MainScreen(
                                 color = Color.Black
                             )
                         }
-                        HorizontalPager(
-                            contentPadding = PaddingValues(horizontal = 26.dp),
-                            state = pagerState,
-                            modifier = Modifier
-                                .height(200.dp)
-                                .fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-
-                        ){ page ->
-                            NewBooksElement(
-                                book = state.newBooks[page],
+                        if (state.newBooks.isNotEmpty()) {
+                            HorizontalPager(
+                                contentPadding = PaddingValues(horizontal = 26.dp),
+                                state = pagerState,
                                 modifier = Modifier
-                                    .clickable {
-                                        viewModel.onEvent(MainEvent.OnBookClick(state.newBooks[page]))
-                                    }
-                            )
+                                    .height(200.dp)
+                                    .fillMaxWidth(),
+                                verticalAlignment = Alignment.CenterVertically,
+
+                                ){ page ->
+                                NewBooksElement(
+                                    book = state.newBooks[page],
+                                    modifier = Modifier
+                                        .clickable {
+                                            viewModel.onEvent(MainEvent.OnBookClick(state.newBooks[page]))
+                                        }
+                                )
+                            }
                         }
                         Spacer(modifier = Modifier.height(20.dp))
                         Column(

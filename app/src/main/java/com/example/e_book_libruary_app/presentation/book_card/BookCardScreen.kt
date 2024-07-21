@@ -3,6 +3,7 @@ package com.example.e_book_libruary_app.presentation.book_card
 import android.graphics.Paint.Align
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -123,9 +124,14 @@ fun BookCardScreen(
                     horizontalArrangement = Arrangement.Start
                 ) {
                     Icon(
+                        modifier = Modifier
+                            .clickable {
+                                viewModel.onEvent(BookCardScreenEvent.OnBackIconClick)
+                            },
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = "back_button",
                         tint = white
+
                     )
                 }
                 Spacer(modifier = Modifier.height(82.dp))
