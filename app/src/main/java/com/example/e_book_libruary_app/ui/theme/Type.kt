@@ -36,9 +36,9 @@ val Typography = Typography(
 )
 
 val harunoUmiFontFamily = FontFamily(
-    Font(R.font.kaiseiharunoumi_bold, FontWeight.Bold),
-    Font(R.font.kaiseiharunoumi_medium, FontWeight.Medium),
-    Font(R.font.kaiseiharunoumi_regular, FontWeight.Normal)
+    Font(R.font.garamond_bold, FontWeight.Bold),
+    Font(R.font.garamond_medium, FontWeight.Medium),
+    Font(R.font.garamond_regular, FontWeight.Normal)
 )
 
 val montserrat = FontFamily(

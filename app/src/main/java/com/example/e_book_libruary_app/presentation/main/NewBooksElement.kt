@@ -79,7 +79,7 @@ fun NewBooksElement(
                 Column {
                     Text(
                         text = book.title,
-                        fontSize = 11.sp,
+                        fontSize = 13.sp,
                         color = Color.Black,
                         fontFamily = harunoUmiFontFamily,
                         fontWeight = FontWeight.Bold,
@@ -88,7 +88,7 @@ fun NewBooksElement(
                     Spacer(modifier = Modifier.height(1.dp))
                     Text(
                         text = book.authors.joinToString(separator = ", "),
-                        fontSize = 9.sp,
+                        fontSize = 11.sp,
                         color = secondaryTextColor,
                         maxLines = 1,
                         fontFamily = harunoUmiFontFamily,
@@ -96,8 +96,15 @@ fun NewBooksElement(
                     )
                 }
                 Text(
-                    text = book.description,
-                    fontSize = 9.sp,
+                    text = book.description
+                        .replace("<p>", "")
+                        .replace("</p>", "")
+                        .replace("<b>", "")
+                        .replace("</b>", "")
+                        .replace("<i>", "")
+                        .replace("</i>", "")
+                        .replace("<br>", ""),
+                    fontSize = 10.sp,
                     color = Color.Black,
                     maxLines = 6,
                     fontFamily = harunoUmiFontFamily,

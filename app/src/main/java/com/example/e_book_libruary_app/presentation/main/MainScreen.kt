@@ -227,8 +227,6 @@ fun MainScreen(
                                 )
                                 .padding(top = 20.dp)
                         ) {
-                            /*BookList(books = state.newBooks, title = "New", viewModel)
-                            Spacer(modifier = Modifier.height(15.dp))*/
                             BookList(books = state.programmingBooks, title = "Code", viewModel)
                             Spacer(modifier = Modifier.height(4.dp))
                             Box(modifier = Modifier.padding(horizontal = 16.dp)){ Divider()}
@@ -242,7 +240,7 @@ fun MainScreen(
                             Box(modifier = Modifier.padding(horizontal = 16.dp)){ Divider()}
                             Spacer(modifier = Modifier.height(11.dp))
                             BookList(books = state.biographyBooks, title = "Biography", viewModel)
-                            Spacer(modifier = Modifier.height(15.dp))
+                            Spacer(modifier = Modifier.height(75.dp))
                         }
 
                     }

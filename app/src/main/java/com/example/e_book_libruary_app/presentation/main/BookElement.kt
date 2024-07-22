@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.layout.AlignmentLine
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -55,7 +56,7 @@ fun BookElement(
 ){
     Column(
         modifier = modifier
-            .height(165.dp)
+            .height(173.dp)
             .width(100.dp)
     ) {
         Card(
@@ -66,19 +67,46 @@ fun BookElement(
             elevation = 3.dp
         ){
             Box(modifier = Modifier.fillMaxSize()) {
-                SubcomposeAsyncImage(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(book.imageUrl.replace("http://", "https://"))
-                        .crossfade(true)
-                        .build(),
-                    contentScale = ContentScale.Crop,
-                    contentDescription = "book_poster",
-                    loading = {
-                        CircularProgressIndicator()
-                    },
-                    modifier = Modifier
-                        .fillMaxHeight()
-                )
+                if (book.imageUrl != "") {
+                    SubcomposeAsyncImage(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(book.imageUrl.replace("http://", "https://"))
+                            .crossfade(true)
+                            .build(),
+                        contentScale = ContentScale.Crop,
+                        contentDescription = "book_poster",
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .align(Alignment.Center),
+                        loading = {
+                            CircularProgressIndicator(
+                                color = white,
+                                strokeWidth = 2.dp,
+                                strokeCap = StrokeCap.Round
+                            )
+                        },
+                    )
+                }
+                else {
+                    SubcomposeAsyncImage(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(R.drawable.default_book_poster)
+                            .crossfade(true)
+                            .build(),
+                        contentScale = ContentScale.Crop,
+                        contentDescription = "book_poster",
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .align(Alignment.Center),
+                        loading = {
+                            CircularProgressIndicator(
+                                color = white,
+                                strokeWidth = 2.dp,
+                                strokeCap = StrokeCap.Round
+                            )
+                        },
+                    )
+                }
                 Box(modifier = Modifier
                     .fillMaxSize()
                     .background(

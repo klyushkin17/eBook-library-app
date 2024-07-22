@@ -31,10 +31,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.example.e_book_libruary_app.R
+import com.example.e_book_libruary_app.ui.theme.backgroundColor
 import com.example.e_book_libruary_app.ui.theme.darkGreen
 import com.example.e_book_libruary_app.ui.theme.green
 import com.example.e_book_libruary_app.ui.theme.harunoUmiFontFamily
 import com.example.e_book_libruary_app.ui.theme.lightGreen
+import com.example.e_book_libruary_app.ui.theme.scaffoldBackgroundColor
 import com.example.e_book_libruary_app.ui.theme.white
 import com.google.android.gms.fido.u2f.api.common.ChannelIdValue.UnsupportedChannelIdValueTypeException
 
@@ -57,7 +59,7 @@ fun SignInScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = lightGreen),
+            .background(color = backgroundColor),
         Arrangement.Center,
         Alignment.CenterHorizontally
     ){
@@ -71,7 +73,7 @@ fun SignInScreen(
         Spacer(modifier = Modifier.height(20.dp))
         Button(
             shape = RoundedCornerShape(12.dp),
-            colors = ButtonDefaults.buttonColors(darkGreen),
+            colors = ButtonDefaults.buttonColors(scaffoldBackgroundColor),
             onClick = {
                 onSignInClick()
             },

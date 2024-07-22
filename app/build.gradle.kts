@@ -72,7 +72,7 @@ dependencies {
 
     implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0")
     implementation ("androidx.lifecycle:lifecycle-runtime-compose:2.6.0")
-    implementation (libs.androidx.navigation.compose)
+    implementation ("androidx.navigation:navigation-compose:2.7.7")
     implementation ("io.coil-kt:coil-compose:2.2.2")
 
     implementation("com.google.dagger:hilt-android:2.48")

@@ -218,6 +218,9 @@ fun SearchScreen(
 
                     }
                 }
+                items(1) {
+                    Spacer(modifier = Modifier.height(70.dp))
+                }
             }
         }
     }

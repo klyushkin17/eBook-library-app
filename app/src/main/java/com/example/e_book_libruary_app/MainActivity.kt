@@ -8,6 +8,8 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -65,7 +67,14 @@ class MainActivity : ComponentActivity() {
                             BottomNavBar(navController = navController)
                         }
                     ) {
-                        NavHost(navController = navController, startDestination = Routes.SIGN_IN_SCREEN) {
+                        NavHost(
+                            navController = navController,
+                            startDestination = Routes.SIGN_IN_SCREEN,
+                            enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left, tween(200))},
+                            exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right, tween(200))},
+                            popEnterTransition =  { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left, tween(200))},
+                            popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right, tween(200))},
+                        ) {
                             composable(Routes.SIGN_IN_SCREEN) {
                                 val viewModel = viewModel<SignInViewModel>()
                                 val state by viewModel.state.collectAsStateWithLifecycle()
