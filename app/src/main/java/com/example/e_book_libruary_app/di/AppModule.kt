@@ -1,5 +1,8 @@
 package com.example.e_book_libruary_app.di
 
+import android.app.Application
+import androidx.room.Room
+import com.example.e_book_libruary_app.data.local.BookshelfDatabase
 import com.example.e_book_libruary_app.data.remote.BookApi
 import dagger.Module
 import dagger.Provides
@@ -22,5 +25,15 @@ object AppModule {
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
             .create()
+    }
+
+    @Provides
+    @Singleton
+    fun provideBookshelfDatabase(app: Application): BookshelfDatabase {
+        return Room.databaseBuilder(
+            app,
+            BookshelfDatabase::class.java,
+            "bookshelf.db"
+        ).build()
     }
 }

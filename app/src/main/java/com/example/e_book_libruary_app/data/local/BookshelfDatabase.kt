@@ -2,12 +2,19 @@ package com.example.e_book_libruary_app.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.example.e_book_libruary_app.data.local.entities.BookEntity
+import com.example.e_book_libruary_app.data.local.entities.BookshelfEntity
+import com.example.e_book_libruary_app.data.local.entities.relations.BookshelfBookCrossRef
 
 @Database(
-    entities = [BookshelfEntity::class, BookEntity::class],
-    version = 1
+    entities = [
+        BookshelfEntity::class,
+        BookEntity::class,
+        BookshelfBookCrossRef::class
+    ],
+    version = 2
 )
 abstract class BookshelfDatabase: RoomDatabase() {
 
-    abstract val dao: BookshelfDao
+    abstract val bookshelfDao: BookshelfDao
 }

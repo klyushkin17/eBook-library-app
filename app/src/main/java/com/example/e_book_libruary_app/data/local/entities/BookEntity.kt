@@ -1,11 +1,11 @@
-package com.example.e_book_libruary_app.data.local
+package com.example.e_book_libruary_app.data.local.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
 data class BookEntity(
-    val bookId: String,
+    @PrimaryKey(autoGenerate = false) val bookId: String,
     val title: String,
     //val authors: List<String>?,
     val publisher: String?,
@@ -14,5 +14,4 @@ data class BookEntity(
     val mainCategory: String?,
     val averageRating: Float?,
     val imageUrl: String?,
-    @PrimaryKey val id: Int? = null
 )

@@ -4,15 +4,27 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
+import com.example.e_book_libruary_app.data.local.entities.BookEntity
+import com.example.e_book_libruary_app.data.local.entities.BookshelfEntity
+import com.example.e_book_libruary_app.data.local.entities.relations.BookshelfBookCrossRef
+import com.example.e_book_libruary_app.data.local.entities.relations.BookshelfWithBook
 
 @Dao
 interface BookshelfDao {
-   /* @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertBook()*/
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertBook(book: BookEntity)
 
-    /*@Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertBookshelf()
-*/
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertBookshelf(bookshelf: BookshelfEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertBookshelfBookCrossRef(crossRef: BookshelfBookCrossRef)
+
+    @Transaction
+    @Query("SELECT * FROM bookshelfentity WHERE bookshelfName = :bookshelfName")
+    fun getBooksOfBookshelf(bookshelfName: String): List<BookshelfWithBook>
+
     /*@Query("delete from bookshelfentity where :bookshelfId == bookshelfId")
     suspend fun deleteBookshelf(
         bookshelfId: Int

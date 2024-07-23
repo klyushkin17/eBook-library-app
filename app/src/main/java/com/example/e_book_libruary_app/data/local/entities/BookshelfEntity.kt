@@ -1,11 +1,10 @@
-package com.example.e_book_libruary_app.data.local
+package com.example.e_book_libruary_app.data.local.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
 data class BookshelfEntity(
-    val bookshelfName: String,
+    @PrimaryKey(autoGenerate = false) val bookshelfName: String,
     //val books: List<BookEntity>,
-    @PrimaryKey val bookshelfId: Int? = null
 )
