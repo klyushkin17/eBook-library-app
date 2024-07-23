@@ -80,7 +80,7 @@ fun NewBooksElement(
                     Text(
                         text = book.title,
                         fontSize = 13.sp,
-                        color = Color.Black,
+                        color = Color.White,
                         fontFamily = harunoUmiFontFamily,
                         fontWeight = FontWeight.Bold,
                         maxLines = 2
@@ -105,7 +105,7 @@ fun NewBooksElement(
                         .replace("</i>", "")
                         .replace("<br>", ""),
                     fontSize = 10.sp,
-                    color = Color.Black,
+                    color = Color.White,
                     maxLines = 6,
                     fontFamily = harunoUmiFontFamily,
                     fontWeight = FontWeight.Normal,

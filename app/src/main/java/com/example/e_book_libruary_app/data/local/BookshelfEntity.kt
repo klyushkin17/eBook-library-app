@@ -6,6 +6,6 @@ import androidx.room.PrimaryKey
 @Entity
 data class BookshelfEntity(
     val bookshelfName: String,
-    val books: List<BookEntity>,
+    //val books: List<BookEntity>,
     @PrimaryKey val bookshelfId: Int? = null
 )

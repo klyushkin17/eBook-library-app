@@ -46,7 +46,6 @@ import com.example.e_book_libruary_app.ui.theme.darkGray
 import com.example.e_book_libruary_app.ui.theme.darkGreen
 import com.example.e_book_libruary_app.ui.theme.harunoUmiFontFamily
 import com.example.e_book_libruary_app.ui.theme.secondaryTextColor
-import com.example.e_book_libruary_app.ui.theme.white
 import org.jetbrains.annotations.Async
 
 @Composable
@@ -80,7 +79,7 @@ fun BookElement(
                             .align(Alignment.Center),
                         loading = {
                             CircularProgressIndicator(
-                                color = white,
+                                color = Color.White,
                                 strokeWidth = 2.dp,
                                 strokeCap = StrokeCap.Round
                             )
@@ -100,7 +99,7 @@ fun BookElement(
                             .align(Alignment.Center),
                         loading = {
                             CircularProgressIndicator(
-                                color = white,
+                                color = Color.White,
                                 strokeWidth = 2.dp,
                                 strokeCap = StrokeCap.Round
                             )
@@ -137,7 +136,7 @@ fun BookElement(
                         Spacer(modifier = Modifier.width(2.dp))
                         Text(
                             text = book.rating.toString(),
-                            color = white,
+                            color = Color.White,
                             fontSize = 12.sp,
                             fontFamily = harunoUmiFontFamily
                         )
@@ -163,7 +162,7 @@ fun BookElement(
             Text(
                 text = book.title,
                 fontSize = 11.sp,
-                color = Color.Black,
+                color = Color.White,
                 fontFamily = harunoUmiFontFamily,
                 fontWeight = FontWeight.Bold,
                 maxLines = 2

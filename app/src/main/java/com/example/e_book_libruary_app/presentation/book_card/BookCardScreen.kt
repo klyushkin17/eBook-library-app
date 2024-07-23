@@ -59,13 +59,11 @@ import coil.request.ImageRequest
 import com.example.e_book_libruary_app.R
 import com.example.e_book_libruary_app.presentation.search.SearchScreenEvent
 import com.example.e_book_libruary_app.ui.theme.backgroundColor
+import com.example.e_book_libruary_app.ui.theme.frameColor
 import com.example.e_book_libruary_app.ui.theme.harunoUmiFontFamily
-import com.example.e_book_libruary_app.ui.theme.lightGrayColor
 import com.example.e_book_libruary_app.ui.theme.montserrat
 import com.example.e_book_libruary_app.ui.theme.scaffoldBackgroundColor
-import com.example.e_book_libruary_app.ui.theme.searchTextColor
 import com.example.e_book_libruary_app.ui.theme.secondaryTextColor
-import com.example.e_book_libruary_app.ui.theme.white
 import com.example.e_book_libruary_app.util.UiEvent
 
 
@@ -91,7 +89,7 @@ fun BookCardScreen(
         }
     }
     androidx.compose.material3.Scaffold(
-        containerColor = white,
+        containerColor = frameColor,
         topBar = {
             TopAppBar(
                 title = { /*TODO*/ },
@@ -108,7 +106,7 @@ fun BookCardScreen(
                                 },
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = "back_icon",
-                            tint = white
+                            tint = Color.White
                         )
                     }
 
@@ -215,7 +213,7 @@ fun BookCardScreen(
                                                 .align(Alignment.Center),
                                             loading = {
                                                 CircularProgressIndicator(
-                                                    color = white,
+                                                    color = Color.White,
                                                     strokeWidth = 2.dp,
                                                     strokeCap = StrokeCap.Round
                                                 )
@@ -234,7 +232,7 @@ fun BookCardScreen(
                                                 .align(Alignment.Center),
                                             loading = {
                                                 CircularProgressIndicator(
-                                                    color = white,
+                                                    color = Color.White,
                                                     strokeWidth = 2.dp,
                                                     strokeCap = StrokeCap.Round
                                                 )
@@ -274,7 +272,7 @@ fun BookCardScreen(
                             Text(
                                 text = state.book?.authors?.joinToString(separator = ", ") ?: "",
                                 fontSize = 15.sp,
-                                color = lightGrayColor,
+                                color = secondaryTextColor,
                                 fontFamily = harunoUmiFontFamily,
                                 maxLines = 2,
                                 textAlign = TextAlign.Center

@@ -62,11 +62,10 @@ import com.example.e_book_libruary_app.presentation.main.MainViewModel
 import com.example.e_book_libruary_app.presentationeee.search.SearchScreenViewModel
 import com.example.e_book_libruary_app.ui.theme.backgroundColor
 import com.example.e_book_libruary_app.ui.theme.darkGray
+import com.example.e_book_libruary_app.ui.theme.frameColor
 import com.example.e_book_libruary_app.ui.theme.harunoUmiFontFamily
 import com.example.e_book_libruary_app.ui.theme.scaffoldBackgroundColor
-import com.example.e_book_libruary_app.ui.theme.searchTextColor
 import com.example.e_book_libruary_app.ui.theme.secondaryTextColor
-import com.example.e_book_libruary_app.ui.theme.white
 import com.example.e_book_libruary_app.util.UiEvent
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -89,7 +88,7 @@ fun SearchScreen(
     }
 
     Scaffold(
-        containerColor = white,
+        containerColor = frameColor,
         topBar = {
             TopAppBar(
                 title = { /*TODO*/ },
@@ -113,7 +112,7 @@ fun SearchScreen(
                                 },
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = "search_icon",
-                            tint = white
+                            tint = Color.White
                         )
                     }
 
@@ -133,11 +132,11 @@ fun SearchScreen(
                                 .fillMaxWidth(),
                             textStyle = TextStyle(
                                 fontSize = 14.sp,
-                                color = searchTextColor,
+                                color = Color.White,
                                 fontFamily = harunoUmiFontFamily,
                                 fontWeight = FontWeight.Normal,
                             ),
-                            cursorBrush = Brush.verticalGradient(listOf(white, white)),
+                            cursorBrush = Brush.verticalGradient(listOf(Color.White, Color.White)),
                             singleLine = true,
                             decorationBox = {
                                 Column(modifier = Modifier
@@ -152,15 +151,15 @@ fun SearchScreen(
                                         },
                                         textStyle = TextStyle(
                                             fontSize = 14.sp,
-                                            color = searchTextColor,
+                                            color = Color.White,
                                             fontFamily = harunoUmiFontFamily,
                                             fontWeight = FontWeight.Normal,
                                         ),
-                                        cursorBrush = Brush.verticalGradient(listOf(white, white)),
+                                        cursorBrush = Brush.verticalGradient(listOf(Color.White, Color.White)),
                                         singleLine = true,
                                     )
                                     Spacer(modifier = Modifier.height(1.dp))
-                                    Divider(color = white)
+                                    Divider(color = Color.White)
 
                                 }
                             }
@@ -169,7 +168,7 @@ fun SearchScreen(
                 },
                 colors = TopAppBarDefaults.smallTopAppBarColors(
                     containerColor = scaffoldBackgroundColor,
-                    actionIconContentColor = white
+                    actionIconContentColor = Color.White
                 )
             )
         }
@@ -210,7 +209,7 @@ fun SearchScreen(
                             Text(
                                 text = "Oups, nothing found...",
                                 fontSize = 14.sp,
-                                color = searchTextColor,
+                                color = secondaryTextColor,
                                 fontFamily = harunoUmiFontFamily,
                                 fontWeight = FontWeight.Normal,
                             )

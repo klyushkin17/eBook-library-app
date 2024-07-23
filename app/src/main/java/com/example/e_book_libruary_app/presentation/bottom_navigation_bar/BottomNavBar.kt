@@ -35,7 +35,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.e_book_libruary_app.ui.theme.navBarIndicatorColor
 import com.example.e_book_libruary_app.ui.theme.scaffoldBackgroundColor
 import com.example.e_book_libruary_app.ui.theme.unselectedIconColor
-import com.example.e_book_libruary_app.ui.theme.white
 import com.example.e_book_libruary_app.util.Routes
 import com.example.e_book_libruary_app.ui.theme.unselectedIconColor as unselectedIconColor1
 
@@ -79,7 +78,7 @@ fun BottomNavBar(
                                 items[index].selectedIcon
                             } else items[index].unselectedIcon,
                             contentDescription = items[index].route,
-                            tint = white
+                            tint = Color.White
                         )
                     },
                     colors = NavigationBarItemColors(

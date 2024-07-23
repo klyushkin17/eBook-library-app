@@ -7,29 +7,29 @@ import androidx.room.Query
 
 @Dao
 interface BookshelfDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertBook()
+   /* @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertBook()*/
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    /*@Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertBookshelf()
-
-    @Query("delete from bookshelfentity where :bookshelfId == bookshelfId")
+*/
+    /*@Query("delete from bookshelfentity where :bookshelfId == bookshelfId")
     suspend fun deleteBookshelf(
         bookshelfId: Int
-    )
+    ): Int*/
 
-    @Query("update bookshelfentity set books = :books where bookshelfId == :bookshelfId")
+    /*@Query("update bookshelfentity set books = :books where bookshelfId == :bookshelfId")
     suspend fun updateBookDataInBookshelf(
         bookshelfId: Int,
         books: List<BookEntity>,
-    )
+    )*/
 
-    @Query("update bookshelfentity set bookshelfName = :bookshelfName where bookshelfId == :bookshelfId")
+    /*@Query("update bookshelfentity set bookshelfName = :bookshelfName where bookshelfId == :bookshelfId")
     suspend fun updateBookshelfName(
         bookshelfName: String,
         bookshelfId: Int,
-    )
+    )*/
 
-    @Query("select * from bookshelfentity")
-    suspend fun getBookshelves(): List<BookshelfEntity>
+    /*@Query("select * from bookshelfentity")
+    suspend fun getBookshelves(): List<BookshelfEntity>*/
 }

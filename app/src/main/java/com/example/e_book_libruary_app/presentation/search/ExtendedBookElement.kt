@@ -38,7 +38,7 @@ import com.example.e_book_libruary_app.domain.model.BookInfo
 import com.example.e_book_libruary_app.ui.theme.extendedBookElementBackgroundColor
 import com.example.e_book_libruary_app.ui.theme.harunoUmiFontFamily
 import com.example.e_book_libruary_app.ui.theme.secondaryTextColor
-import com.example.e_book_libruary_app.ui.theme.white
+
 
 @Composable
 fun ExtendedBookElement(
@@ -81,7 +81,7 @@ fun ExtendedBookElement(
                                 .align(Alignment.Center),
                             loading = {
                                 CircularProgressIndicator(
-                                    color = white,
+                                    color = Color.White,
                                     strokeWidth = 2.dp,
                                     strokeCap = StrokeCap.Round
                                 )
@@ -101,7 +101,7 @@ fun ExtendedBookElement(
                                 .align(Alignment.Center),
                             loading = {
                                 CircularProgressIndicator(
-                                    color = white,
+                                    color = Color.White,
                                     strokeWidth = 2.dp,
                                     strokeCap = StrokeCap.Round
                                 )
@@ -121,7 +121,7 @@ fun ExtendedBookElement(
                     Text(
                         text = book.title,
                         fontSize = 16.sp,
-                        color = Color.Black,
+                        color = Color.White,
                         fontFamily = harunoUmiFontFamily,
                         fontWeight = FontWeight.Bold,
                         maxLines = 2
@@ -147,9 +147,10 @@ fun ExtendedBookElement(
                         contentDescription = "rating_star",
                         contentScale = ContentScale.FillHeight
                     )
+                    Spacer(modifier = Modifier.width(2.dp))
                     Text(
                         text = book.rating.toString(),
-                        color = Color.Black,
+                        color = Color.White,
                         fontSize = 14.sp,
                         fontFamily = harunoUmiFontFamily,
                     )

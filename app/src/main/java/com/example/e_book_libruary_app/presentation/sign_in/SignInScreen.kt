@@ -37,7 +37,6 @@ import com.example.e_book_libruary_app.ui.theme.green
 import com.example.e_book_libruary_app.ui.theme.harunoUmiFontFamily
 import com.example.e_book_libruary_app.ui.theme.lightGreen
 import com.example.e_book_libruary_app.ui.theme.scaffoldBackgroundColor
-import com.example.e_book_libruary_app.ui.theme.white
 import com.google.android.gms.fido.u2f.api.common.ChannelIdValue.UnsupportedChannelIdValueTypeException
 
 @Composable
@@ -86,7 +85,7 @@ fun SignInScreen(
                 fontFamily = harunoUmiFontFamily,
                 fontWeight = FontWeight.Normal,
                 fontSize = 15.sp,
-                color = white
+                color = Color.White
             )
         }
     }

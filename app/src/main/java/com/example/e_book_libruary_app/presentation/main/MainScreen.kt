@@ -71,11 +71,11 @@ import com.example.e_book_libruary_app.presentation.sign_in.UserData
 import com.example.e_book_libruary_app.presentation.tools.DropDownItem
 import com.example.e_book_libruary_app.ui.theme.backgroundColor
 import com.example.e_book_libruary_app.ui.theme.darkGreen
+import com.example.e_book_libruary_app.ui.theme.frameColor
 import com.example.e_book_libruary_app.ui.theme.green
 import com.example.e_book_libruary_app.ui.theme.harunoUmiFontFamily
 import com.example.e_book_libruary_app.ui.theme.montserrat
 import com.example.e_book_libruary_app.ui.theme.scaffoldBackgroundColor
-import com.example.e_book_libruary_app.ui.theme.white
 import com.example.e_book_libruary_app.util.UiEvent
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -108,7 +108,7 @@ fun MainScreen(
         }
     }
     Scaffold (
-        containerColor = white,
+        containerColor = frameColor,
         topBar = {
             TopAppBar(
                 title = { /*TODO*/ },
@@ -173,7 +173,7 @@ fun MainScreen(
                 },
                 colors = TopAppBarDefaults.smallTopAppBarColors(
                     containerColor = scaffoldBackgroundColor,
-                    actionIconContentColor = white
+                    actionIconContentColor = Color.White
                 )
             )
         }
@@ -265,7 +265,7 @@ fun BookList(
                 fontSize = 19.sp,
                 fontFamily = montserrat,
                 fontWeight = FontWeight.Medium,
-                color = Color.Black
+                color = Color.White
             )
         }
 
