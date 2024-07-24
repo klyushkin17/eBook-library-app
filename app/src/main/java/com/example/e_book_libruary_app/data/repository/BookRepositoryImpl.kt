@@ -2,6 +2,12 @@ package com.example.e_book_libruary_app.data.repository
 
 import android.util.Log
 import coil.network.HttpException
+import com.example.e_book_libruary_app.data.local.BookshelfDao
+import com.example.e_book_libruary_app.data.local.BookshelfDatabase
+import com.example.e_book_libruary_app.data.local.entities.BookEntity
+import com.example.e_book_libruary_app.data.local.entities.BookshelfEntity
+import com.example.e_book_libruary_app.data.local.entities.relations.BookshelfBookCrossRef
+import com.example.e_book_libruary_app.data.local.entities.relations.BookshelfWithBook
 import com.example.e_book_libruary_app.data.mapper.toBookInfo
 import com.example.e_book_libruary_app.data.mapper.toBookList
 import com.example.e_book_libruary_app.data.remote.BookApi
@@ -17,8 +23,12 @@ import javax.inject.Singleton
 
 @Singleton
 class BookRepositoryImpl @Inject constructor(
-    private val api: BookApi
+    private val api: BookApi,
+    private val db: BookshelfDatabase
 ): BookRepository {
+
+    private val dao = db.bookshelfDao
+
     override suspend fun getBooksByQuery(
         query: String
     ): Flow<Resource<BookList>> {
@@ -87,5 +97,31 @@ class BookRepositoryImpl @Inject constructor(
             }
             emit(Resource.Loading(false))
         }
+    }
+
+    override suspend fun insertBookshelf(bookshelf: BookshelfEntity) {
+        dao.insertBookshelf(bookshelf)
+    }
+
+    override suspend fun addBookToBookshelf(book: BookEntity, bookshelfName: String) {
+        dao.insertBook(book)
+        dao.insertBookshelfBookCrossRef(BookshelfBookCrossRef(book.bookId, bookshelfName))
+    }
+
+    override suspend fun deleteBookFromBookshelf(bookshelfName: String, bookId: String) {
+        dao.deleteBookshelfBookCrossRef(bookId, bookshelfName)
+    }
+
+    override suspend fun deleteBookshelf(bookshelfName: String) {
+        dao.deleteBookshelfBookCrossRefByBookshelf(bookshelfName)
+        dao.deleteBookshelf(bookshelfName)
+    }
+
+    override suspend fun getBookshelves(): Flow<List<BookshelfEntity>> {
+        return dao.getBookshelves()
+    }
+
+    override suspend fun getBooksOfBookshelf(bookshelfName: String): Flow<List<BookshelfWithBook>> {
+        return dao.getBooksOfBookshelf(bookshelfName)
     }
 }

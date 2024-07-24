@@ -9,6 +9,7 @@ import com.example.e_book_libruary_app.data.local.entities.BookEntity
 import com.example.e_book_libruary_app.data.local.entities.BookshelfEntity
 import com.example.e_book_libruary_app.data.local.entities.relations.BookshelfBookCrossRef
 import com.example.e_book_libruary_app.data.local.entities.relations.BookshelfWithBook
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface BookshelfDao {
@@ -22,8 +23,26 @@ interface BookshelfDao {
     fun insertBookshelfBookCrossRef(crossRef: BookshelfBookCrossRef)
 
     @Transaction
+    @Query("DELETE FROM bookshelfbookcrossref WHERE bookshelfName = :bookshelfName AND bookId = :bookId")
+    fun deleteBookshelfBookCrossRef(bookId: String, bookshelfName: String) : Void
+
+    @Transaction
+    @Query("DELETE FROM bookshelfbookcrossref WHERE bookshelfName = :bookshelfName")
+    fun deleteBookshelfBookCrossRefByBookshelf(bookshelfName: String) : Void
+
+    @Transaction
+    @Query("DELETE FROM bookshelfentity WHERE bookshelfName = :bookshelfName")
+    fun deleteBookshelf(bookshelfName: String) : Void
+
+    @Transaction
+    @Query("SELECT * FROM bookshelfentity")
+    fun getBookshelves(): Flow<List<BookshelfEntity>>
+
+    @Transaction
     @Query("SELECT * FROM bookshelfentity WHERE bookshelfName = :bookshelfName")
-    fun getBooksOfBookshelf(bookshelfName: String): List<BookshelfWithBook>
+    fun getBooksOfBookshelf(bookshelfName: String): Flow<List<BookshelfWithBook>>
+
+
 
     /*@Query("delete from bookshelfentity where :bookshelfId == bookshelfId")
     suspend fun deleteBookshelf(

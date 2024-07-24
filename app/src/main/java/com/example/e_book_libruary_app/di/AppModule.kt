@@ -2,8 +2,11 @@ package com.example.e_book_libruary_app.di
 
 import android.app.Application
 import androidx.room.Room
+import com.example.e_book_libruary_app.data.local.BookshelfDao
 import com.example.e_book_libruary_app.data.local.BookshelfDatabase
 import com.example.e_book_libruary_app.data.remote.BookApi
+import com.example.e_book_libruary_app.data.repository.BookRepositoryImpl
+import com.example.e_book_libruary_app.domain.repository.BookRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
