@@ -9,11 +9,16 @@ import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.AccountCircle
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemColors
@@ -47,11 +52,12 @@ fun BottomNavBar(
     val currentDestination = navBackStackEntry?.destination
 
     val items = listOf(
+        BottomNavBarItem.Bookshelves,
         BottomNavBarItem.Home,
         BottomNavBarItem.Search
     )
 
-    if (currentDestination?.route in setOf(Routes.MAIN_SCREEN, Routes.SEARCH_SCREEN)) {
+    if (currentDestination?.route in setOf(Routes.MAIN_SCREEN, Routes.SEARCH_SCREEN, Routes.BOOKSHELVES_SCREEN)) {
         NavigationBar(
             modifier = Modifier
                 .shadow(
@@ -101,6 +107,11 @@ enum class BottomNavBarItem(
     val unselectedIcon: ImageVector,
     val route: String
 ) {
+    Bookshelves(
+        selectedIcon = Icons.Filled.Favorite,
+        unselectedIcon = Icons.Outlined.FavoriteBorder,
+        route = Routes.BOOKSHELVES_SCREEN
+    ),
     Home(
         selectedIcon = Icons.Filled.Home,
         unselectedIcon = Icons.Outlined.Home,
@@ -115,8 +126,9 @@ enum class BottomNavBarItem(
 
 fun checkCurrentDestination(currentScreen: String?): Int {
     return when (currentScreen){
-        Routes.MAIN_SCREEN -> 0
-        Routes.SEARCH_SCREEN -> 1
+        Routes.BOOKSHELVES_SCREEN -> 0
+        Routes.MAIN_SCREEN -> 1
+        Routes.SEARCH_SCREEN -> 2
         else -> 0
     }
 }

@@ -1,10 +1,13 @@
 package com.example.e_book_libruary_app.data.mapper
 
 import androidx.compose.runtime.saveable.mapSaver
+import com.example.e_book_libruary_app.data.local.entities.BookEntity
+import com.example.e_book_libruary_app.data.local.entities.BookshelfEntity
 import com.example.e_book_libruary_app.data.remote.dto.BookInfoDto
 import com.example.e_book_libruary_app.data.remote.dto.BookListDto
 import com.example.e_book_libruary_app.domain.model.BookInfo
 import com.example.e_book_libruary_app.domain.model.BookList
+import com.example.e_book_libruary_app.domain.model.Bookshelf
 
 fun BookInfoDto.toBookInfo(): BookInfo {
     return BookInfo(
@@ -17,6 +20,46 @@ fun BookInfoDto.toBookInfo(): BookInfo {
         pageCount = volumeInfo.pageCount,
         mainCategory = volumeInfo.mainCategory ?: "",
         rating = volumeInfo.rating ?: 0.0f
+    )
+}
+
+fun BookEntity.toBookInfo(): BookInfo {
+    return BookInfo(
+        bookId = bookId,
+        title = title,
+        authors = authors ?: emptyList(),
+        publisher = publisher ?: "",
+        description = description ?: "",
+        pageCount = pageCount,
+        mainCategory = mainCategory ?: "",
+        rating = rating ?: 0.0f,
+        imageUrl = imageUrl ?: ""
+    )
+}
+
+fun BookInfo.toBookEntity(): BookEntity {
+    return BookEntity(
+        bookId = bookId,
+        title = title,
+        authors = authors,
+        publisher = publisher,
+        description = description,
+        pageCount = pageCount,
+        mainCategory = mainCategory,
+        rating = rating,
+        imageUrl = imageUrl
+    )
+}
+
+fun BookshelfEntity.toBookshelf(): Bookshelf {
+    return Bookshelf(
+        bookshelfName = bookshelfName
+    )
+}
+
+fun Bookshelf.toBookshelf(): BookshelfEntity {
+    return BookshelfEntity(
+        bookshelfName = bookshelfName
     )
 }
 

@@ -77,7 +77,6 @@ dependencies {
     implementation ("com.google.accompanist:accompanist-flowlayout:0.17.0")
     implementation ("io.coil-kt:coil-compose:2.2.2")
 
-
     implementation("com.google.dagger:hilt-android:2.48")
     kapt("com.google.dagger:hilt-android-compiler:2.48")
     kapt("androidx.hilt:hilt-compiler:1.0.0")
@@ -92,6 +91,7 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     kapt (libs.androidx.room.compiler)
 
-
     implementation("androidx.compose.ui:ui-util:1.4.0")
+
+    implementation("com.google.code.gson:gson:2.10.1")
 }

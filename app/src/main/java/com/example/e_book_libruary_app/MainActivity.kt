@@ -29,6 +29,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.e_book_libruary_app.presentation.book_card.BookCardScreen
+import com.example.e_book_libruary_app.presentation.bookshelves.BookshelvesScreen
 import com.example.e_book_libruary_app.presentation.bottom_navigation_bar.BottomNavBar
 import com.example.e_book_libruary_app.presentation.main.MainScreen
 import com.example.e_book_libruary_app.presentation.search.SearchScreen
@@ -158,6 +159,17 @@ class MainActivity : ComponentActivity() {
                                 )
                             ) {
                                 BookCardScreen(
+                                    onNavigate = {
+                                        navController.navigate(it.route)
+                                    },
+                                    onPopBackStack = {
+                                        navController.popBackStack()
+                                    }
+                                )
+                            }
+
+                            composable(Routes.BOOKSHELVES_SCREEN) {
+                                BookshelvesScreen(
                                     onNavigate = {
                                         navController.navigate(it.route)
                                     },
