@@ -84,3 +84,11 @@ fun List<BookInfoDto>.toBookInfo(): List<BookInfo> {
         )
     }
 }
+
+fun List<BookshelfEntity>.toBookshelf(): List<Bookshelf> {
+    return this.map {
+        Bookshelf(
+            bookshelfName = it.bookshelfName
+        )
+    }
+}

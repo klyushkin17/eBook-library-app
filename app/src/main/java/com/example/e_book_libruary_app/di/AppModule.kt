@@ -37,6 +37,6 @@ object AppModule {
             app,
             BookshelfDatabase::class.java,
             "bookshelf.db"
-        ).build()
+        ).createFromAsset("database/bookshelves.db").build()
     }
 }

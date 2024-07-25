@@ -311,6 +311,10 @@ fun BookCardScreen(
                                     ?.replace("</b>", "")
                                     ?.replace("<i>", "")
                                     ?.replace("</i>", "")
+                                    ?.replace("<ul>", "")
+                                    ?.replace("</ul>", "")
+                                    ?.replace("<li>", "")
+                                    ?.replace("</li>", "")
                                     ?.replace("<br>", "") ?: "",
                                 fontSize = 15.sp,
                                 fontFamily = harunoUmiFontFamily,
