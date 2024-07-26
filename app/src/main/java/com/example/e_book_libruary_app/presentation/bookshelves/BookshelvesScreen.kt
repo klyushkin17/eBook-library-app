@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -139,7 +140,7 @@ fun BookshelvesScreen(
             FloatingActionButton(
                 modifier = Modifier
                     .padding(bottom = 60.dp),
-                onClick = { /*TODO*/ },
+                onClick = { viewModel.onEvent(BookshelvesScreenEvent.OnAddBookshelfButtonClick) },
                 containerColor = scaffoldBackgroundColor,
                 shape = CircleShape
             ) {
@@ -151,62 +152,70 @@ fun BookshelvesScreen(
             }
         }
     ){
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = backgroundColor)
-                .padding(horizontal = 9.dp)
-        ){
-            items(1) {
-                Spacer(modifier = Modifier.height(72.dp))
-            }
-            items(state.bookshelves) { bookshelf ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(62.dp)
-                        .background(
-                            color = scaffoldBackgroundColor,
-                            shape = RoundedCornerShape(12.dp)
-                        )
-                        .padding(horizontal = 25.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(color = backgroundColor)
+                    .padding(horizontal = 9.dp)
+            ){
+                items(1) {
+                    Spacer(modifier = Modifier.height(72.dp))
+                }
+                items(state.bookshelves) { bookshelf ->
                     Row(
                         modifier = Modifier
-                            .fillMaxHeight(),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Text(
-                            text = bookshelf.bookshelfName,
-                            color = Color.White,
-                            fontSize = 16.sp,
-                            fontFamily = montserrat,
-                            fontWeight = FontWeight.Medium,
-                        )
-                        Spacer(modifier = Modifier.width(11.dp))
-                        if (bookshelf.bookshelfName == "Favorites") {
-                            Icon(
-                                modifier = Modifier
-                                    .height(15.dp),
-                                imageVector = Icons.Default.FavoriteBorder,
-                                contentDescription = "favorites_icon",
-                                tint = Color.White
+                            .fillMaxWidth()
+                            .height(62.dp)
+                            .background(
+                                color = scaffoldBackgroundColor,
+                                shape = RoundedCornerShape(12.dp)
                             )
+                            .padding(horizontal = 25.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxHeight(),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Text(
+                                text = bookshelf.bookshelfName,
+                                color = Color.White,
+                                fontSize = 16.sp,
+                                fontFamily = montserrat,
+                                fontWeight = FontWeight.Medium,
+                                maxLines = 1
+                            )
+                            Spacer(modifier = Modifier.width(11.dp))
+                            if (bookshelf.bookshelfName == "Favorites") {
+                                Icon(
+                                    modifier = Modifier
+                                        .height(15.dp),
+                                    imageVector = Icons.Default.FavoriteBorder,
+                                    contentDescription = "favorites_icon",
+                                    tint = Color.White
+                                )
+                            }
                         }
+                        Icon(
+                            modifier = Modifier
+                                .height(18.dp),
+                            imageVector = Icons.Default.KeyboardArrowRight,
+                            contentDescription = "forward_icon",
+                            tint = Color.White
+                        )
                     }
-                    Icon(
-                        modifier = Modifier
-                            .height(18.dp),
-                        imageVector = Icons.Default.KeyboardArrowRight,
-                        contentDescription = "forward_icon",
-                        tint = Color.White
-                    )
+                    Spacer(modifier = Modifier.height(10.dp))
                 }
-                Spacer(modifier = Modifier.height(10.dp))
+            }
+
+            if (viewModel.state.isDialogShown) {
+                AddBookshelfDialog()
             }
         }
+
     }
 }
 

@@ -315,7 +315,8 @@ fun BookCardScreen(
                                     ?.replace("</ul>", "")
                                     ?.replace("<li>", "")
                                     ?.replace("</li>", "")
-                                    ?.replace("<br>", "") ?: "",
+                                    ?.replace("<br>", "")
+                                    ?.replace("</br>", "")?: "",
                                 fontSize = 15.sp,
                                 fontFamily = harunoUmiFontFamily,
                                 fontWeight = FontWeight.Normal,

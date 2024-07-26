@@ -141,7 +141,9 @@ fun MainScreen(
                         )
                         DropdownMenu(
                             expanded = isContextMenuVisible,
-                            onDismissRequest = { isContextMenuVisible = false }
+                            onDismissRequest = { isContextMenuVisible = false },
+                            modifier = Modifier
+                                .background(backgroundColor)
                         ) {
                             dropDownItem.forEach { item ->
                                 androidx.compose.material.DropdownMenuItem(
@@ -152,7 +154,10 @@ fun MainScreen(
                                 ){
                                     Text(
                                         text = item.text,
-                                        color = Color.Black
+                                        color = Color.White,
+                                        fontFamily = montserrat,
+                                        fontWeight = FontWeight.Medium,
+                                        fontSize = 14.sp
                                     )
                                 }
                             }

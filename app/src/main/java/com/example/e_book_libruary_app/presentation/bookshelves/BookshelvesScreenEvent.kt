@@ -7,4 +7,7 @@ sealed class BookshelvesScreenEvent {
     object OnBackIconClick: BookshelvesScreenEvent()
     data class OnBookshelfClick(val bookshelf: Bookshelf): BookshelvesScreenEvent()
     object OnAddBookshelfButtonClick: BookshelvesScreenEvent()
+    object OnDismissDialog: BookshelvesScreenEvent()
+    data class OnCreateBookshelfButtonClick(val bookshelfName: String): BookshelvesScreenEvent()
+    data class OnDialogTextFieldValueChange (val textFieldValue: String): BookshelvesScreenEvent()
 }
