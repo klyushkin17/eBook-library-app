@@ -33,7 +33,6 @@ class BookCardScreenViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             val bookId = savedStateHandle.get<String>("bookId") ?: return@launch
-            Log.d("CheckBookId",  bookId)
             val bookInfoResult = async { bookRepository.getBookInfo(bookId) }
             when (val result = bookInfoResult.await()){
                 is Resource.Success -> {

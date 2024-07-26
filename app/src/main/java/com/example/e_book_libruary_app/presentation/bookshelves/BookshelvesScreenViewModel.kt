@@ -10,6 +10,7 @@ import com.example.e_book_libruary_app.data.local.entities.BookshelfEntity
 import com.example.e_book_libruary_app.data.mapper.toBookshelf
 import com.example.e_book_libruary_app.domain.model.Bookshelf
 import com.example.e_book_libruary_app.domain.repository.BookRepository
+import com.example.e_book_libruary_app.util.Routes
 import com.example.e_book_libruary_app.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -39,7 +40,7 @@ class BookshelvesScreenViewModel @Inject constructor(
                 sendUiEvent(UiEvent.PopBackStack)
             }
             is BookshelvesScreenEvent.OnBookshelfClick -> {
-
+                sendUiEvent(UiEvent.Navigate(Routes.BOOKSHELF_SCREEN + "?bookshelfName=${event.bookshelf.bookshelfName}"))
             }
             is BookshelvesScreenEvent.OnAddBookshelfButtonClick -> {
                 viewModelScope.launch {

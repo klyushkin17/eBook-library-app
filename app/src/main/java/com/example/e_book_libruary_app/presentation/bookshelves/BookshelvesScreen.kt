@@ -70,7 +70,6 @@ fun BookshelvesScreen(
     viewModel: BookshelvesScreenViewModel = hiltViewModel()
 ){
     val state = viewModel.state
-    val scrollState = rememberScrollState()
 
     LaunchedEffect(key1 = true) {
         viewModel.uiEvent.collect{ event ->
@@ -171,7 +170,10 @@ fun BookshelvesScreen(
                                 color = scaffoldBackgroundColor,
                                 shape = RoundedCornerShape(12.dp)
                             )
-                            .padding(horizontal = 25.dp),
+                            .padding(horizontal = 25.dp)
+                            .clickable {
+                                viewModel.onEvent(BookshelvesScreenEvent.OnBookshelfClick(bookshelf))
+                            },
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
