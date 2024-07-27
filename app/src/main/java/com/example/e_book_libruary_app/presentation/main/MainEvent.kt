@@ -7,4 +7,6 @@ sealed class MainEvent {
     data class OnBookClick(val book: BookInfo): MainEvent()
     data class OnSignOutClick(val googleAuthUiClient: GoogleAuthUiClient): MainEvent()
     object OnSearchIconClick: MainEvent()
+    object OnUserAvatarClick: MainEvent()
+    object OnDismissContextMenu: MainEvent()
 }

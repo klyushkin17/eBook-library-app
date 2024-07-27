@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
@@ -94,8 +95,10 @@ fun BookshelfScreen(
                             .fillMaxHeight(),
                         verticalAlignment = Alignment.CenterVertically
                     ){
-                        IconButton(onClick = { /*TODO*/ }) {
-                            androidx.compose.material3.Icon(
+                        IconButton(onClick = {
+                            viewModel.onEvent(BookshelfScreenEvent.OnBackArrowClick)
+                        }) {
+                            Icon(
                                 modifier = Modifier
                                     .clickable {
                                         viewModel.onEvent(BookshelfScreenEvent.OnBackArrowClick)
@@ -143,9 +146,11 @@ fun BookshelfScreen(
                 items(1) {
                     Spacer(modifier = Modifier.height(72.dp))
                 }
+                items(state.books) { book ->
+                    ExtendedBookElementOfBookshelf(book = book)
+                }
             }
         }
-
     }
 }
 

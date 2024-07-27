@@ -91,9 +91,6 @@ fun MainScreen(
     val pagerState = rememberPagerState(initialPage = 2){
         state.newBooks.size
     }
-    var  isContextMenuVisible by rememberSaveable {
-        mutableStateOf(false)
-    }
 
     val dropDownItem = listOf(
         DropDownItem("Sign out")
@@ -134,14 +131,16 @@ fun MainScreen(
                                 .pointerInput(true) {
                                     detectTapGestures(
                                         onPress = {
-                                            isContextMenuVisible = true
+                                            viewModel.onEvent(MainEvent.OnUserAvatarClick)
                                         }
                                     )
                                 }
                         )
                         DropdownMenu(
-                            expanded = isContextMenuVisible,
-                            onDismissRequest = { isContextMenuVisible = false },
+                            expanded = state.isContextMenuVisible,
+                            onDismissRequest = {
+                                viewModel.onEvent(MainEvent.OnDismissContextMenu)
+                            },
                             modifier = Modifier
                                 .background(backgroundColor)
                         ) {
@@ -149,7 +148,7 @@ fun MainScreen(
                                 androidx.compose.material.DropdownMenuItem(
                                     onClick = {
                                         viewModel.onEvent(MainEvent.OnSignOutClick(googleAuthUiClient))
-                                        isContextMenuVisible = false
+                                        viewModel.onEvent(MainEvent.OnDismissContextMenu)
                                     }
                                 ){
                                     Text(

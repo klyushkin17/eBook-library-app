@@ -8,6 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.e_book_libruary_app.data.local.BookshelfDao
 import com.example.e_book_libruary_app.domain.repository.BookRepository
 import com.example.e_book_libruary_app.util.Resource
 import com.example.e_book_libruary_app.util.UiEvent
@@ -50,6 +51,26 @@ class BookCardScreenViewModel @Inject constructor(
         when(event) {
             is BookCardScreenEvent.OnBackIconClick -> {
                 sendUiEvent(UiEvent.PopBackStack)
+            }
+            is BookCardScreenEvent.OnMoreIconClick -> {
+                state = state.copy(
+                    isContextMenuVisible = true
+                )
+            }
+            is BookCardScreenEvent.OnDismissContextMenu -> {
+                state = state.copy(
+                    isContextMenuVisible = false
+                )
+            }
+            is BookCardScreenEvent.OnDismissDialogClick -> {
+                state = state.copy(
+                    isDialogShown = false
+                )
+            }
+            is BookCardScreenEvent.OnAddToClick -> {
+                state = state.copy(
+                    isDialogShown = true
+                )
             }
         }
     }

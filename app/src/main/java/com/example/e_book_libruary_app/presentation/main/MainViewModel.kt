@@ -48,6 +48,16 @@ class MainViewModel @Inject constructor(
                 Log.d("CheckBookId", event.book.bookId)
                 sendUiEvent(UiEvent.Navigate(Routes.BOOK_SCREEN + "?bookId=${event.book.bookId}"))
             }
+            is MainEvent.OnUserAvatarClick -> {
+                state = state.copy(
+                    isContextMenuVisible = true
+                )
+            }
+            is MainEvent.OnDismissContextMenu -> {
+                state = state.copy(
+                    isContextMenuVisible = false
+                )
+            }
         }
     }
 

@@ -42,7 +42,7 @@ import com.example.e_book_libruary_app.ui.theme.secondaryTextColor
 
 
 @Composable
-fun ExtendedBookElement(
+fun ExtendedBookElementOfBookshelf(
     book: BookInfo,
     modifier: Modifier = Modifier
 ){

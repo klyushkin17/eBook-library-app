@@ -11,4 +11,5 @@ data class MainState (
     val artBooks: List<BookInfo> = emptyList(),
     val biographyBooks: List<BookInfo> = emptyList(),
     val fantasyBooks: List<BookInfo> = emptyList(),
+    val isContextMenuVisible: Boolean = false,
 )

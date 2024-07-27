@@ -7,10 +7,13 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.example.e_book_libruary_app.data.mapper.toBookInfo
+import com.example.e_book_libruary_app.data.mapper.toBookInfoFromEntity
 import com.example.e_book_libruary_app.domain.repository.BookRepository
 import com.example.e_book_libruary_app.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -32,13 +35,20 @@ class BookshelfScreenViewModel @Inject constructor (
             state = state.copy(
                 bookshelfName = bookshelfName
             )
+            bookRepository
+                .getBooksOfBookshelf(bookshelfName)
+                .collect{ result ->
+                    state = state.copy(
+                        books = result.first().book.toBookInfoFromEntity()
+                    )
+                }
         }
     }
 
     fun onEvent(event: BookshelfScreenEvent) {
         when(event) {
             is BookshelfScreenEvent.OnBackArrowClick -> {
-
+                sendUiEvent(UiEvent.PopBackStack)
             }
             is BookshelfScreenEvent.OnMoreClick -> {
 
@@ -46,6 +56,12 @@ class BookshelfScreenViewModel @Inject constructor (
             is BookshelfScreenEvent.OnBookClick -> {
 
             }
+        }
+    }
+
+    private fun sendUiEvent(event: UiEvent) {
+        viewModelScope.launch {
+            _uiEvent.send(event)
         }
     }
 }

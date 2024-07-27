@@ -92,3 +92,19 @@ fun List<BookshelfEntity>.toBookshelf(): List<Bookshelf> {
         )
     }
 }
+
+fun List<BookEntity>.toBookInfoFromEntity(): List<BookInfo> {
+    return this.map {
+        BookInfo(
+            bookId = it.bookId,
+            title = it.title,
+            authors = it.authors ?: emptyList(),
+            publisher = it.publisher ?: "",
+            imageUrl = it.imageUrl ?: "",
+            description = it.description ?: "",
+            pageCount = it.pageCount,
+            mainCategory = it.mainCategory ?: "",
+            rating = it.rating ?: 0.0f
+        )
+    }
+}
