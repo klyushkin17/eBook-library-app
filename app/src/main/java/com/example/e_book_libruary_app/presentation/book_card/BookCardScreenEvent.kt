@@ -6,4 +6,5 @@ sealed class BookCardScreenEvent {
     object OnDismissContextMenu: BookCardScreenEvent()
     object OnAddToClick: BookCardScreenEvent()
     object OnDismissDialogClick: BookCardScreenEvent()
+    data class  OnCheckboxClick(val index: Int, val isChecked: Boolean): BookCardScreenEvent()
 }

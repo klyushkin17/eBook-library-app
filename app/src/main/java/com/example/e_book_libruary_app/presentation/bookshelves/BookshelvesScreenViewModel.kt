@@ -90,12 +90,10 @@ class BookshelvesScreenViewModel @Inject constructor(
         viewModelScope.launch {
             bookRepository
                 .getBookshelves()
-                .collect{ result ->
-                    result.let { bookshelves ->
-                        state = state.copy(
-                            bookshelves = bookshelves.toBookshelf()
-                        )
-                    }
+                .collect{ bookshelves ->
+                    state = state.copy(
+                        bookshelves = bookshelves.toBookshelf()
+                    )
                 }
         }
     }

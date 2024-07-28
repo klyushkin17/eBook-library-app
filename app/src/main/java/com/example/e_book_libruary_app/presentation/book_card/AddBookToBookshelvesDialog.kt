@@ -18,10 +18,14 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -41,6 +45,8 @@ import kotlin.concurrent.fixedRateTimer
 fun AddBookToBookshelvesDialog(
     viewModel: BookCardScreenViewModel = hiltViewModel()
 ) {
+    val state = viewModel.state
+    
     Dialog(
         onDismissRequest = {
             viewModel.onEvent(BookCardScreenEvent.OnDismissDialogClick)
@@ -73,6 +79,26 @@ fun AddBookToBookshelvesDialog(
                     color = Color.White
                 )
                 Spacer(modifier = Modifier.height(24.dp))
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 8.dp)
+                ) {
+                    state.bookshelfCheckboxes.forEachIndexed { index, info ->
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Checkbox(
+                                checked = info.isChecked,
+                                onCheckedChange = { isChecked ->
+                                    viewModel.onEvent(BookCardScreenEvent.OnCheckboxClick(index, isChecked))
+                                },
+                            )
+                            Text(text = info.text)
+                        }
+                    }
+                }
 
                 Spacer(modifier = Modifier.height(20.dp))
                 Row(

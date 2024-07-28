@@ -2,6 +2,7 @@ package com.example.e_book_libruary_app.presentation.book_card
 
 import android.os.Bundle
 import android.util.Log
+import androidx.collection.intSetOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -9,7 +10,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.e_book_libruary_app.data.local.BookshelfDao
+import com.example.e_book_libruary_app.data.mapper.toBookshelf
 import com.example.e_book_libruary_app.domain.repository.BookRepository
+import com.example.e_book_libruary_app.presentation.tools.ToggleableInfo
 import com.example.e_book_libruary_app.util.Resource
 import com.example.e_book_libruary_app.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -53,24 +56,61 @@ class BookCardScreenViewModel @Inject constructor(
                 sendUiEvent(UiEvent.PopBackStack)
             }
             is BookCardScreenEvent.OnMoreIconClick -> {
-                state = state.copy(
-                    isContextMenuVisible = true
-                )
+                viewModelScope.launch {
+                    state = state.copy(
+                        isContextMenuVisible = true
+                    )
+                }
             }
             is BookCardScreenEvent.OnDismissContextMenu -> {
-                state = state.copy(
-                    isContextMenuVisible = false
-                )
+                viewModelScope.launch {
+                    state = state.copy(
+                        isContextMenuVisible = false
+                    )
+                }
             }
             is BookCardScreenEvent.OnDismissDialogClick -> {
-                state = state.copy(
-                    isDialogShown = false
-                )
+                viewModelScope.launch {
+                    state = state.copy(
+                        isDialogShown = false
+                    )
+                }
             }
             is BookCardScreenEvent.OnAddToClick -> {
-                state = state.copy(
-                    isDialogShown = true
-                )
+                viewModelScope.launch {
+                    state = state.copy(
+                        isDialogShown = true
+                    )
+                }
+                viewModelScope.launch {
+                    bookRepository
+                        .getBookshelves()
+                        .collect{ bookshelves ->
+                            val bookshelfCheckboxes = mutableListOf<ToggleableInfo>()
+                            bookshelves.forEach() { bookshelf ->
+                                bookshelfCheckboxes.add(
+                                    ToggleableInfo(
+                                        isChecked = false,
+                                        text = bookshelf.bookshelfName
+                                    )
+                                )
+                            }
+                            state = state.copy(
+                                bookshelfCheckboxes = bookshelfCheckboxes
+                            )
+                        }
+                }
+            }
+            is BookCardScreenEvent.OnCheckboxClick -> {
+                viewModelScope.launch {
+                    val newBookshelfCheckboxes = state.bookshelfCheckboxes.toMutableList()
+                    newBookshelfCheckboxes[event.index] = newBookshelfCheckboxes[event.index].copy(
+                        isChecked = event.isChecked
+                    )
+                    state = state.copy(
+                        bookshelfCheckboxes = newBookshelfCheckboxes
+                    )
+                }
             }
         }
     }
