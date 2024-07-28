@@ -34,5 +34,7 @@ interface BookRepository {
 
     suspend fun getBookshelves(): Flow<List<BookshelfEntity>>
 
+    suspend fun getBooks(): Flow<List<BookEntity>>
+
     suspend fun getBooksOfBookshelf(bookshelfName: String): Flow<List<BookshelfWithBook>>
 }

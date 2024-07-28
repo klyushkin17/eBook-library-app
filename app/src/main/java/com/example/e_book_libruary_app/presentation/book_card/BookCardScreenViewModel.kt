@@ -10,12 +10,16 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.e_book_libruary_app.data.local.BookshelfDao
+import com.example.e_book_libruary_app.data.mapper.toBookEntity
 import com.example.e_book_libruary_app.data.mapper.toBookshelf
+import com.example.e_book_libruary_app.domain.model.BookInfo
 import com.example.e_book_libruary_app.domain.repository.BookRepository
 import com.example.e_book_libruary_app.presentation.tools.ToggleableInfo
 import com.example.e_book_libruary_app.util.Resource
 import com.example.e_book_libruary_app.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -72,7 +76,8 @@ class BookCardScreenViewModel @Inject constructor(
             is BookCardScreenEvent.OnDismissDialogClick -> {
                 viewModelScope.launch {
                     state = state.copy(
-                        isDialogShown = false
+                        isDialogShown = false,
+                        isContextMenuVisible = false
                     )
                 }
             }
@@ -112,7 +117,34 @@ class BookCardScreenViewModel @Inject constructor(
                     )
                 }
             }
+            is BookCardScreenEvent.OnAddBookToBookshelvesClick -> {
+                CoroutineScope(Dispatchers.IO).launch {
+                    state.bookshelfCheckboxes.onEach { bookshelfInfo ->
+                        if (bookshelfInfo.isChecked) {
+                            Log.d("Check checkboxes", bookshelfInfo.text)
+                            insertBookIntoBookshelf(state.book, bookshelfInfo.text)
+                        }
+                    }
+                    onEvent(BookCardScreenEvent.OnDismissDialogClick)
+                }
+            }
         }
+    }
+
+    private suspend fun insertBookIntoBookshelf(book: BookInfo?, bookshelfName: String) {
+        bookRepository
+            .addBookToBookshelf(book?.toBookEntity() ?:
+            BookInfo(
+                bookId = "null",
+                title = "null",
+                authors = emptyList(),
+                publisher = "null",
+                imageUrl = "null",
+                description = "null",
+                pageCount = 0,
+                mainCategory = "null",
+                rating = 0.0f
+            ).toBookEntity(), bookshelfName)
     }
 
     private fun sendUiEvent(event: UiEvent) {

@@ -6,20 +6,26 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.TextSelectionColors
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxColors
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -46,7 +52,8 @@ fun AddBookToBookshelvesDialog(
     viewModel: BookCardScreenViewModel = hiltViewModel()
 ) {
     val state = viewModel.state
-    
+    val scrollState = rememberScrollState()
+
     Dialog(
         onDismissRequest = {
             viewModel.onEvent(BookCardScreenEvent.OnDismissDialogClick)
@@ -68,9 +75,9 @@ fun AddBookToBookshelvesDialog(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 15.dp)
-                    .padding(bottom = 16.dp)
-                    .padding(top = 23.dp)
+                    .verticalScroll(scrollState)
             ) {
+                Spacer(modifier = Modifier.height(23.dp))
                 Text(
                     text = "Add to...",
                     fontFamily = montserrat,
@@ -78,13 +85,12 @@ fun AddBookToBookshelvesDialog(
                     fontSize = 18.sp,
                     color = Color.White
                 )
-                Spacer(modifier = Modifier.height(24.dp))
-
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 8.dp)
+                        .padding(start = 7.dp)
                 ) {
+                    Spacer(modifier = Modifier.height(13.dp))
                     state.bookshelfCheckboxes.forEachIndexed { index, info ->
                         Row(
                             verticalAlignment = Alignment.CenterVertically
@@ -94,15 +100,45 @@ fun AddBookToBookshelvesDialog(
                                 onCheckedChange = { isChecked ->
                                     viewModel.onEvent(BookCardScreenEvent.OnCheckboxClick(index, isChecked))
                                 },
+                                colors = CheckboxColors(
+                                    checkedCheckmarkColor = Color.White,
+                                    uncheckedBoxColor = Color.Transparent,
+                                    checkedBoxColor = scaffoldBackgroundColor,
+                                    checkedBorderColor = scaffoldBackgroundColor,
+                                    uncheckedBorderColor = scaffoldBackgroundColor,
+                                    uncheckedCheckmarkColor = Color.Transparent,
+                                    disabledUncheckedBoxColor = Color.Transparent,
+                                    disabledBorderColor = Color.Gray,
+                                    disabledIndeterminateBorderColor = Color.Gray,
+                                    disabledCheckedBoxColor = Color.Gray,
+                                    disabledUncheckedBorderColor = Color.Gray,
+                                    disabledIndeterminateBoxColor = Color.Transparent
+                                )
                             )
-                            Text(text = info.text)
+                            Text(
+                                text = info.text,
+                                color = Color.White,
+                                fontSize = 15.sp,
+                                fontFamily = montserrat,
+                                fontWeight = FontWeight.Medium,
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            if (info.text == "Favorites") {
+                                Icon(
+                                    modifier = Modifier
+                                        .height(14.dp),
+                                    imageVector = Icons.Default.FavoriteBorder,
+                                    contentDescription = "favorites_icon",
+                                    tint = Color.White
+                                )
+                            }
                         }
                     }
+                    Spacer(modifier = Modifier.height(20.dp))
                 }
-
-                Spacer(modifier = Modifier.height(20.dp))
                 Row(
                     modifier = Modifier
+                        .height(36.dp)
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
                 ) {
@@ -110,10 +146,10 @@ fun AddBookToBookshelvesDialog(
                         shape = RoundedCornerShape(12.dp),
                         colors = ButtonDefaults.buttonColors(scaffoldBackgroundColor),
                         onClick = {
-                            TODO()
+                            viewModel.onEvent(BookCardScreenEvent.OnAddBookToBookshelvesClick)
                         },
                         modifier = Modifier
-                            .height(36.dp)
+                            .fillMaxHeight()
                             .width(96.dp)
                     ) {
                         Text(
@@ -125,6 +161,7 @@ fun AddBookToBookshelvesDialog(
                         )
                     }
                 }
+                Spacer(modifier = Modifier.height(16.dp))
             }
         }
     }

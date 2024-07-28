@@ -105,7 +105,10 @@ class BookRepositoryImpl @Inject constructor(
 
     override suspend fun addBookToBookshelf(book: BookEntity, bookshelfName: String) {
         dao.insertBook(book)
-        dao.insertBookshelfBookCrossRef(BookshelfBookCrossRef(book.bookId, bookshelfName))
+        dao.insertBookshelfBookCrossRef(BookshelfBookCrossRef(
+            bookshelfName = bookshelfName,
+            bookId = book.bookId
+        ))
     }
 
     override suspend fun deleteBookFromBookshelf(bookshelfName: String, bookId: String) {
@@ -119,6 +122,10 @@ class BookRepositoryImpl @Inject constructor(
 
     override suspend fun getBookshelves(): Flow<List<BookshelfEntity>> {
         return dao.getBookshelves()
+    }
+
+    override suspend fun getBooks(): Flow<List<BookEntity>> {
+        return dao.getBooks()
     }
 
     override suspend fun getBooksOfBookshelf(bookshelfName: String): Flow<List<BookshelfWithBook>> {

@@ -39,28 +39,10 @@ interface BookshelfDao {
     fun getBookshelves(): Flow<List<BookshelfEntity>>
 
     @Transaction
+    @Query("SELECT * FROM bookentity")
+    fun getBooks(): Flow<List<BookEntity>>
+
+    @Transaction
     @Query("SELECT * FROM bookshelfentity WHERE bookshelfName = :bookshelfName")
     fun getBooksOfBookshelf(bookshelfName: String): Flow<List<BookshelfWithBook>>
-
-
-
-    /*@Query("delete from bookshelfentity where :bookshelfId == bookshelfId")
-    suspend fun deleteBookshelf(
-        bookshelfId: Int
-    ): Int*/
-
-    /*@Query("update bookshelfentity set books = :books where bookshelfId == :bookshelfId")
-    suspend fun updateBookDataInBookshelf(
-        bookshelfId: Int,
-        books: List<BookEntity>,
-    )*/
-
-    /*@Query("update bookshelfentity set bookshelfName = :bookshelfName where bookshelfId == :bookshelfId")
-    suspend fun updateBookshelfName(
-        bookshelfName: String,
-        bookshelfId: Int,
-    )*/
-
-    /*@Query("select * from bookshelfentity")
-    suspend fun getBookshelves(): List<BookshelfEntity>*/
 }

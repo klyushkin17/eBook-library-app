@@ -211,6 +211,9 @@ fun BookshelvesScreen(
                     }
                     Spacer(modifier = Modifier.height(10.dp))
                 }
+                items(1) {
+                    Spacer(modifier = Modifier.height(70.dp))
+                }
             }
 
             if (viewModel.state.isDialogShown) {

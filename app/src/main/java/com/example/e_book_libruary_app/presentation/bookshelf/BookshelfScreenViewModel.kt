@@ -39,7 +39,7 @@ class BookshelfScreenViewModel @Inject constructor (
                 .getBooksOfBookshelf(bookshelfName)
                 .collect{ result ->
                     state = state.copy(
-                        books = result.first().book.toBookInfoFromEntity()
+                        books = result.first().books.toBookInfoFromEntity()
                     )
                 }
         }

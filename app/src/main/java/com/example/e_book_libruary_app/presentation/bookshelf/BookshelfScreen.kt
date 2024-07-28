@@ -11,10 +11,12 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -78,6 +80,16 @@ fun BookshelfScreen(
                             fontFamily = montserrat,
                             fontWeight = FontWeight.Medium
                         )
+                        Spacer(modifier = Modifier.width(11.dp))
+                        if (state.bookshelfName == "Favorites") {
+                            Icon(
+                                modifier = Modifier
+                                    .height(17.dp),
+                                imageVector = Icons.Default.FavoriteBorder,
+                                contentDescription = "favorites_icon",
+                                tint = Color.White
+                            )
+                        }
                     }
 
                 },
