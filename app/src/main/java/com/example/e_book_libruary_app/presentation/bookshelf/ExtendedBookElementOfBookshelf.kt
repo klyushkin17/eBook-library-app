@@ -32,6 +32,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import com.example.e_book_libruary_app.R
@@ -44,7 +46,8 @@ import com.example.e_book_libruary_app.ui.theme.secondaryTextColor
 @Composable
 fun ExtendedBookElementOfBookshelf(
     book: BookInfo,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: BookshelfScreenViewModel = hiltViewModel()
 ){
     Column (
         modifier = modifier
@@ -175,8 +178,9 @@ fun ExtendedBookElementOfBookshelf(
                         contentDescription = "delete_icon",
                         tint = Color.White,
                         modifier = Modifier
+                            .height(15.dp)
                             .clickable {
-
+                                viewModel.onEvent(BookshelfScreenEvent.OnRemoveBookClick(book.title))
                             }
                     )
                 }

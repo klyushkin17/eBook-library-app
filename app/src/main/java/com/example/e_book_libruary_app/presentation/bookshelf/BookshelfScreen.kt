@@ -19,6 +19,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -37,7 +38,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.e_book_libruary_app.domain.model.Bookshelf
+import com.example.e_book_libruary_app.presentation.book_card.BookCardScreenEvent
 import com.example.e_book_libruary_app.presentation.main.MainEvent
+import com.example.e_book_libruary_app.presentation.tools.DropDownItem
 import com.example.e_book_libruary_app.ui.theme.backgroundColor
 import com.example.e_book_libruary_app.ui.theme.frameColor
 import com.example.e_book_libruary_app.ui.theme.montserrat
@@ -53,6 +56,10 @@ fun BookshelfScreen(
     viewModel: BookshelfScreenViewModel = hiltViewModel()
 ){
     val state = viewModel.state
+
+    val dropDownItem = listOf(
+        DropDownItem("Delete bookshelf")
+    )
 
     LaunchedEffect(key1 = true) {
         viewModel.uiEvent.collect{ event ->
@@ -129,7 +136,7 @@ fun BookshelfScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         IconButton(onClick = {
-                            TODO()
+                            viewModel.onEvent(BookshelfScreenEvent.OnMoreIconClick)
                         }) {
                             Icon(
                                 imageVector = Icons.Default.MoreVert,
@@ -137,6 +144,34 @@ fun BookshelfScreen(
                                 tint = Color.White
                             )
 
+                        }
+                        DropdownMenu(
+                            expanded = state.isContextMenuShown,
+                            onDismissRequest = {
+                                viewModel.onEvent(BookshelfScreenEvent.OnDismissContextMenu)
+                            },
+                            modifier = Modifier
+                                .background(backgroundColor)
+                        ) {
+                            dropDownItem.forEach { item ->
+                                androidx.compose.material.DropdownMenuItem(
+                                    onClick = {
+                                        when(dropDownItem.indexOf(item)){
+                                            0 -> {
+                                                viewModel.onEvent(BookshelfScreenEvent.OnDeleteBookshelfClick)
+                                            }
+                                        }
+                                    }
+                                ){
+                                    androidx.compose.material3.Text(
+                                        text = item.text,
+                                        color = Color.White,
+                                        fontFamily = montserrat,
+                                        fontWeight = FontWeight.Medium,
+                                        fontSize = 14.sp
+                                    )
+                                }
+                            }
                         }
                     }
                 },
@@ -159,8 +194,21 @@ fun BookshelfScreen(
                     Spacer(modifier = Modifier.height(72.dp))
                 }
                 items(state.books) { book ->
-                    ExtendedBookElementOfBookshelf(book = book)
+                    ExtendedBookElementOfBookshelf(
+                        book = book,
+                        modifier = Modifier
+                            .clickable {
+                                viewModel.onEvent(BookshelfScreenEvent.OnBookClick(book))
+                            }
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
                 }
+                items(1){
+                    Spacer(modifier = Modifier.height(10.dp))
+                }
+            }
+            if (state.isDialogShown) {
+                DeleteBookOrBookshelfDialog()
             }
         }
     }

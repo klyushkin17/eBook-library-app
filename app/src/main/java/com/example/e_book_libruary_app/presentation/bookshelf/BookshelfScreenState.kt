@@ -4,5 +4,10 @@ import com.example.e_book_libruary_app.domain.model.BookInfo
 
 data class BookshelfScreenState(
     val books: List<BookInfo> = emptyList(),
-    val bookshelfName: String = ""
+    val bookshelfName: String = "",
+    val isContextMenuShown: Boolean = false,
+    val isDialogShown: Boolean = false,
+    val typeOfDialog: String = "",
+    val deletingBookTitle: String = ""
+
 )

@@ -7,5 +7,4 @@ sealed class SearchScreenEvent {
     object OnBackArrowClick: SearchScreenEvent()
     data class OnBookClick(val book: BookInfo): SearchScreenEvent()
     data class OnSearchQueryChange(val query: String): SearchScreenEvent()
-
 }
