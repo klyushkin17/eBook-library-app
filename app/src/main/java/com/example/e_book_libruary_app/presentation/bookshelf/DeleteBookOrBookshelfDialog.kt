@@ -32,6 +32,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.e_book_libruary_app.presentation.bookshelves.BookshelvesScreenEvent
+import com.example.e_book_libruary_app.presentation.bookshelves.BookshelvesScreenViewModel
 import com.example.e_book_libruary_app.ui.theme.backgroundColor
 import com.example.e_book_libruary_app.ui.theme.montserrat
 import com.example.e_book_libruary_app.ui.theme.scaffoldBackgroundColor
@@ -79,6 +80,7 @@ fun DeleteBookOrBookshelfDialog(
                     )
                     Spacer(modifier = Modifier.height(1.dp))
                     if (state.typeOfDialog == "book") {
+                        Spacer(modifier = Modifier.height(5.dp))
                         Text(
                             text = buildAnnotatedString {
                                 val focusedStyle = SpanStyle(
@@ -91,7 +93,7 @@ fun DeleteBookOrBookshelfDialog(
                                 pushStyle(standardStyle)
                                 append("do you want to remove ")
                                 pushStyle(focusedStyle)
-                                append(state.deletingBookTitle)
+                                append(state.deletingBook.title)
                                 pop()
                                 append(" book?")
                             },
@@ -120,6 +122,12 @@ fun DeleteBookOrBookshelfDialog(
                         shape = RoundedCornerShape(12.dp),
                         colors = ButtonDefaults.buttonColors(scaffoldBackgroundColor),
                         onClick = {
+                            if (state.typeOfDialog == "bookshelf") {
+                                viewModel.onEvent(BookshelfScreenEvent.OnDialogDeleteBookshelfClick)
+                            }
+                            else {
+                                viewModel.onEvent(BookshelfScreenEvent.OnDialogRemoveBookClick(state.deletingBook.bookId))
+                            }
                         },
                         modifier = Modifier
                             .height(36.dp)
@@ -132,7 +140,7 @@ fun DeleteBookOrBookshelfDialog(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
-                                text = "Delete",
+                                text = if (state.typeOfDialog == "bookshelf") "Delete" else "Remove",
                                 fontFamily = montserrat,
                                 fontWeight = FontWeight.Medium,
                                 fontSize = 11.sp,

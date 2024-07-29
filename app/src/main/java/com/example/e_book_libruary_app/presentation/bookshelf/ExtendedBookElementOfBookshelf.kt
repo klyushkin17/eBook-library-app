@@ -180,7 +180,7 @@ fun ExtendedBookElementOfBookshelf(
                         modifier = Modifier
                             .height(15.dp)
                             .clickable {
-                                viewModel.onEvent(BookshelfScreenEvent.OnRemoveBookClick(book.title))
+                                viewModel.onEvent(BookshelfScreenEvent.OnRemoveBookClick(book))
                             }
                     )
                 }

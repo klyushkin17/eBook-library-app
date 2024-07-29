@@ -1,12 +1,15 @@
 package com.example.e_book_libruary_app.presentation.bookshelves
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.e_book_libruary_app.data.local.entities.BookshelfEntity
+import com.example.e_book_libruary_app.data.mapper.toBookInfoFromEntity
 import com.example.e_book_libruary_app.data.mapper.toBookshelf
 import com.example.e_book_libruary_app.domain.model.Bookshelf
 import com.example.e_book_libruary_app.domain.repository.BookRepository
@@ -16,19 +19,23 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class BookshelvesScreenViewModel @Inject constructor(
-    private val bookRepository: BookRepository
+    private val bookRepository: BookRepository,
 ): ViewModel() {
 
     var state by mutableStateOf(BookshelvesScreenState())
 
     init {
-        getBookshelves()
+        viewModelScope.launch {
+            getBookshelves()
+        }
     }
 
     private val _uiEvent = Channel<UiEvent>()
@@ -70,7 +77,7 @@ class BookshelvesScreenViewModel @Inject constructor(
     }
 
     private fun addNewBookshelf(bookshelfName: String) {
-        if(bookshelfName != "") {
+        if (bookshelfName != "") {
             CoroutineScope(Dispatchers.IO).launch {
                 bookRepository
                     .insertBookshelf(
@@ -86,16 +93,14 @@ class BookshelvesScreenViewModel @Inject constructor(
         }
     }
 
-    private fun getBookshelves() {
-        viewModelScope.launch {
-            bookRepository
-                .getBookshelves()
-                .collect{ bookshelves ->
-                    state = state.copy(
-                        bookshelves = bookshelves.toBookshelf()
-                    )
-                }
-        }
+    private suspend fun getBookshelves() {
+        bookRepository
+            .getBookshelves()
+            .collect{ bookshelves ->
+                state = state.copy(
+                    bookshelves = bookshelves.toBookshelf()
+                )
+            }
     }
 
     private fun sendUiEvent(event: UiEvent) {

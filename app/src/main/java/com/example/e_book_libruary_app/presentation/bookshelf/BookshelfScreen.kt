@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.e_book_libruary_app.domain.model.Bookshelf
 import com.example.e_book_libruary_app.presentation.book_card.BookCardScreenEvent
+import com.example.e_book_libruary_app.presentation.bookshelves.BookshelvesScreenViewModel
 import com.example.e_book_libruary_app.presentation.main.MainEvent
 import com.example.e_book_libruary_app.presentation.tools.DropDownItem
 import com.example.e_book_libruary_app.ui.theme.backgroundColor
@@ -53,13 +54,15 @@ import com.example.e_book_libruary_app.util.UiEvent
 fun BookshelfScreen(
     onNavigate: (UiEvent.Navigate) -> Unit,
     onPopBackStack: () -> Unit,
-    viewModel: BookshelfScreenViewModel = hiltViewModel()
+    viewModel: BookshelfScreenViewModel = hiltViewModel(),
 ){
     val state = viewModel.state
 
-    val dropDownItem = listOf(
+    val dropDownItems = listOf(
         DropDownItem("Delete bookshelf")
     )
+
+    val favoritesDropDownItems = emptyList<DropDownItem>()
 
     LaunchedEffect(key1 = true) {
         viewModel.uiEvent.collect{ event ->
@@ -153,23 +156,43 @@ fun BookshelfScreen(
                             modifier = Modifier
                                 .background(backgroundColor)
                         ) {
-                            dropDownItem.forEach { item ->
-                                androidx.compose.material.DropdownMenuItem(
-                                    onClick = {
-                                        when(dropDownItem.indexOf(item)){
-                                            0 -> {
-                                                viewModel.onEvent(BookshelfScreenEvent.OnDeleteBookshelfClick)
+                            if (state.bookshelfName == "Favorites"){
+                                favoritesDropDownItems.forEach { item ->
+                                    androidx.compose.material.DropdownMenuItem(
+                                        onClick = {
+                                            when(favoritesDropDownItems.indexOf(item)){
                                             }
                                         }
+                                    ){
+                                        androidx.compose.material3.Text(
+                                            text = item.text,
+                                            color = Color.White,
+                                            fontFamily = montserrat,
+                                            fontWeight = FontWeight.Medium,
+                                            fontSize = 14.sp
+                                        )
                                     }
-                                ){
-                                    androidx.compose.material3.Text(
-                                        text = item.text,
-                                        color = Color.White,
-                                        fontFamily = montserrat,
-                                        fontWeight = FontWeight.Medium,
-                                        fontSize = 14.sp
-                                    )
+                                }
+                            }
+                            else {
+                                dropDownItems.forEach { item ->
+                                    androidx.compose.material.DropdownMenuItem(
+                                        onClick = {
+                                            when(dropDownItems.indexOf(item)){
+                                                0 -> {
+                                                    viewModel.onEvent(BookshelfScreenEvent.OnDeleteBookshelfClick)
+                                                }
+                                            }
+                                        }
+                                    ){
+                                        androidx.compose.material3.Text(
+                                            text = item.text,
+                                            color = Color.White,
+                                            fontFamily = montserrat,
+                                            fontWeight = FontWeight.Medium,
+                                            fontSize = 14.sp
+                                        )
+                                    }
                                 }
                             }
                         }

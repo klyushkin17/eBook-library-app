@@ -1,5 +1,6 @@
 package com.example.e_book_libruary_app.presentation.bookshelf
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -14,7 +15,10 @@ import com.example.e_book_libruary_app.domain.repository.BookRepository
 import com.example.e_book_libruary_app.util.Routes
 import com.example.e_book_libruary_app.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -41,7 +45,7 @@ class BookshelfScreenViewModel @Inject constructor (
                 .getBooksOfBookshelf(bookshelfName)
                 .collect{ result ->
                     state = state.copy(
-                        books = result.first().books.toBookInfoFromEntity()
+                        books = result.firstOrNull()?.books?.toBookInfoFromEntity() ?: emptyList()
                     )
                 }
         }
@@ -90,11 +94,37 @@ class BookshelfScreenViewModel @Inject constructor (
                     state = state.copy(
                         isDialogShown = true,
                         typeOfDialog = "book",
-                        deletingBookTitle = event.bookTitle
+                        deletingBook = event.book
                     )
                 }
             }
+            is BookshelfScreenEvent.OnDialogDeleteBookshelfClick -> {
+                viewModelScope.launch {
+                    onEvent(BookshelfScreenEvent.OnDismissDialog)
+                    sendUiEvent(UiEvent.Navigate(Routes.BOOKSHELVES_SCREEN))
+                }
+                CoroutineScope(Dispatchers.IO).launch {
+                    deleteBookshelf()
+                }
+
+            }
+            is BookshelfScreenEvent.OnDialogRemoveBookClick -> {
+                CoroutineScope(Dispatchers.IO).launch {
+                    removeBookFromBookshelf(event.bookId)
+                    onEvent(BookshelfScreenEvent.OnDismissDialog)
+                }
+            }
         }
+    }
+
+    private suspend fun deleteBookshelf() {
+        bookRepository
+            .deleteBookshelf(state.bookshelfName)
+    }
+
+    private suspend fun removeBookFromBookshelf(bookId: String) {
+        bookRepository
+            .deleteBookFromBookshelf(bookId = bookId, bookshelfName = state.bookshelfName)
     }
 
     private fun sendUiEvent(event: UiEvent) {
