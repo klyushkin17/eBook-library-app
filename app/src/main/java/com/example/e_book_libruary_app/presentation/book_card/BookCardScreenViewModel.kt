@@ -77,8 +77,8 @@ class BookCardScreenViewModel @Inject constructor(
                 viewModelScope.launch {
                     state = state.copy(
                         isDialogShown = false,
-                        isContextMenuVisible = false
                     )
+                    onEvent(BookCardScreenEvent.OnDismissContextMenu)
                 }
             }
             is BookCardScreenEvent.OnAddToClick -> {
@@ -121,7 +121,6 @@ class BookCardScreenViewModel @Inject constructor(
                 CoroutineScope(Dispatchers.IO).launch {
                     state.bookshelfCheckboxes.onEach { bookshelfInfo ->
                         if (bookshelfInfo.isChecked) {
-                            Log.d("Check checkboxes", bookshelfInfo.text)
                             insertBookIntoBookshelf(state.book, bookshelfInfo.text)
                         }
                     }

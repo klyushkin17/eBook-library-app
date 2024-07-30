@@ -20,7 +20,9 @@ import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,21 +36,31 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import com.example.e_book_libruary_app.R
 import com.example.e_book_libruary_app.domain.model.BookInfo
+import com.example.e_book_libruary_app.presentation.book_card.BookCardScreenEvent
+import com.example.e_book_libruary_app.presentation.book_card.BookCardScreenViewModel
+import com.example.e_book_libruary_app.presentation.tools.DropDownItem
+import com.example.e_book_libruary_app.presentationeee.search.SearchScreenViewModel
+import com.example.e_book_libruary_app.ui.theme.backgroundColor
 import com.example.e_book_libruary_app.ui.theme.extendedBookElementBackgroundColor
 import com.example.e_book_libruary_app.ui.theme.harunoUmiFontFamily
+import com.example.e_book_libruary_app.ui.theme.montserrat
 import com.example.e_book_libruary_app.ui.theme.secondaryTextColor
 
 
 @Composable
 fun ExtendedBookElement(
     book: BookInfo,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: SearchScreenViewModel = hiltViewModel()
 ){
+    val state = viewModel.state
+
     Column (
         modifier = modifier
             .fillMaxWidth()
@@ -124,7 +136,7 @@ fun ExtendedBookElement(
                 Column(
                     modifier = Modifier
                         .fillMaxHeight()
-                        .weight(0.9f)
+                        .weight(0.85f)
                         .padding(vertical = 4.dp),
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
@@ -168,18 +180,20 @@ fun ExtendedBookElement(
                     }
                 }
                 Column(
+                    horizontalAlignment = Alignment.End,
                     verticalArrangement = Arrangement.Top,
                     modifier = Modifier
-                        .weight(0.1f)
+                        .weight(0.15f)
                         .fillMaxHeight()
                 ) {
                     Icon(
-                        imageVector = Icons.Default.MoreVert,
-                        contentDescription = "more_icon",
+                        imageVector = Icons.Default.FavoriteBorder,
+                        contentDescription = "heart_icon",
                         tint = Color.White,
                         modifier = Modifier
+                            .height(17.dp)
                             .clickable {
-
+                                viewModel.onEvent(SearchScreenEvent.OnHeartIconClick(book))
                             }
                     )
                 }

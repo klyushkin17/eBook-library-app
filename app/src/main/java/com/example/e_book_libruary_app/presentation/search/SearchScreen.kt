@@ -59,6 +59,7 @@ import coil.compose.AsyncImage
 import com.example.e_book_libruary_app.presentation.main.BookElement
 import com.example.e_book_libruary_app.presentation.main.MainEvent
 import com.example.e_book_libruary_app.presentation.main.MainViewModel
+import com.example.e_book_libruary_app.presentation.tools.DropDownItem
 import com.example.e_book_libruary_app.presentationeee.search.SearchScreenViewModel
 import com.example.e_book_libruary_app.ui.theme.backgroundColor
 import com.example.e_book_libruary_app.ui.theme.darkGray
@@ -174,52 +175,60 @@ fun SearchScreen(
         }
 
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-
-        ) {
-            LazyColumn(
+        Box(modifier = Modifier
+            .fillMaxSize()
+        )
+        {
+            Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(color = backgroundColor)
-                    .padding(horizontal = 16.dp)
-            ) {
-                items(1) {
-                    Spacer(modifier = Modifier.height(70.dp))
-                }
-                if (state.books.isNotEmpty()) {
-                    items(state.books) {book ->
-                        ExtendedBookElement(
-                            book = book,
-                            modifier = Modifier
-                                .clickable {
-                                    viewModel.onEvent(SearchScreenEvent.OnBookClick(book))
-                                }
-                        )
-                        Spacer(modifier = Modifier.height(10.dp))
-                    }
-                }
-                else {
-                    items(1) {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ){
-                            Text(
-                                text = "Oups, nothing found...",
-                                fontSize = 14.sp,
-                                color = secondaryTextColor,
-                                fontFamily = harunoUmiFontFamily,
-                                fontWeight = FontWeight.Normal,
-                            )
-                        }
 
+            ) {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(color = backgroundColor)
+                        .padding(horizontal = 16.dp)
+                ) {
+                    items(1) {
+                        Spacer(modifier = Modifier.height(70.dp))
+                    }
+                    if (state.books.isNotEmpty()) {
+                        items(state.books) {book ->
+                            ExtendedBookElement(
+                                book = book,
+                                modifier = Modifier
+                                    .clickable {
+                                        viewModel.onEvent(SearchScreenEvent.OnBookClick(book))
+                                    }
+                            )
+                            Spacer(modifier = Modifier.height(10.dp))
+                        }
+                    }
+                    else {
+                        items(1) {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ){
+                                Text(
+                                    text = "Oups, nothing found...",
+                                    fontSize = 14.sp,
+                                    color = secondaryTextColor,
+                                    fontFamily = harunoUmiFontFamily,
+                                    fontWeight = FontWeight.Normal,
+                                )
+                            }
+
+                        }
+                    }
+                    items(1) {
+                        Spacer(modifier = Modifier.height(70.dp))
                     }
                 }
-                items(1) {
-                    Spacer(modifier = Modifier.height(70.dp))
-                }
+            }
+            if (state.isDialogShown) {
+                AddBookToBookshelvesDialogForSearchScreen()
             }
         }
     }
