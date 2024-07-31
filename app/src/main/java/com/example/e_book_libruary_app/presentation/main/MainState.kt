@@ -12,4 +12,11 @@ data class MainState (
     val biographyBooks: List<BookInfo> = emptyList(),
     val fantasyBooks: List<BookInfo> = emptyList(),
     val isContextMenuVisible: Boolean = false,
+    val contentLoadingInfo: List<Boolean> = mutableListOf(
+        false,
+        false,
+        false,
+        false,
+        false
+    )
 )

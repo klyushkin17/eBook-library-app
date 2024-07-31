@@ -75,7 +75,13 @@ class MainViewModel @Inject constructor(
                             }
                         }
                         is Resource.Error -> Unit
-                        is Resource.Loading -> Unit
+                        is Resource.Loading -> {
+                            val newContentLoadingInfo = state.contentLoadingInfo.toMutableList()
+                            newContentLoadingInfo[0] = result.isLoading
+                            state = state.copy(
+                                contentLoadingInfo = newContentLoadingInfo
+                            )
+                        }
                     }
                 }
 
@@ -93,7 +99,13 @@ class MainViewModel @Inject constructor(
                             }
                         }
                         is Resource.Error -> Unit
-                        is Resource.Loading -> Unit
+                        is Resource.Loading -> {
+                            val newContentLoadingInfo = state.contentLoadingInfo.toMutableList()
+                            newContentLoadingInfo[1] = result.isLoading
+                            state = state.copy(
+                                contentLoadingInfo = newContentLoadingInfo
+                            )
+                        }
                     }
                 }
         }
@@ -110,7 +122,13 @@ class MainViewModel @Inject constructor(
                             }
                         }
                         is Resource.Error -> Unit
-                        is Resource.Loading -> Unit
+                        is Resource.Loading -> {
+                            val newContentLoadingInfo = state.contentLoadingInfo.toMutableList()
+                            newContentLoadingInfo[2] = result.isLoading
+                            state = state.copy(
+                                contentLoadingInfo = newContentLoadingInfo
+                            )
+                        }
                     }
                 }
         }
@@ -127,7 +145,13 @@ class MainViewModel @Inject constructor(
                             }
                         }
                         is Resource.Error -> Unit
-                        is Resource.Loading -> Unit
+                        is Resource.Loading -> {
+                            val newContentLoadingInfo = state.contentLoadingInfo.toMutableList()
+                            newContentLoadingInfo[3] = result.isLoading
+                            state = state.copy(
+                                contentLoadingInfo = newContentLoadingInfo
+                            )
+                        }
                     }
                 }
         }
@@ -145,7 +169,13 @@ class MainViewModel @Inject constructor(
                             }
                         }
                         is Resource.Error -> Unit
-                        is Resource.Loading -> Unit
+                        is Resource.Loading -> {
+                            val newContentLoadingInfo = state.contentLoadingInfo.toMutableList()
+                            newContentLoadingInfo[4] = result.isLoading
+                            state = state.copy(
+                                contentLoadingInfo = newContentLoadingInfo
+                            )
+                        }
                     }
                 }
         }

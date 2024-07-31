@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -181,12 +182,12 @@ fun MainScreen(
                 )
             )
         }
-    ){ values ->
-
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
+    ){
+        if (state.contentLoadingInfo.all{!it}){
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
                 LazyColumn (
                     modifier = Modifier
                         .fillMaxSize()
@@ -224,7 +225,7 @@ fun MainScreen(
                         Spacer(modifier = Modifier.height(20.dp))
                         Column(
                             modifier = Modifier
-                                .fillMaxWidth()
+                                .fillMaxSize()
                                 .background(
                                     color = backgroundColor,
                                     shape = RoundedCornerShape(23.dp)
@@ -249,6 +250,10 @@ fun MainScreen(
 
                     }
                 }
+            }
+        }
+        else {
+            ShimmerLoadingMainScreen()
         }
     }
 }
@@ -260,8 +265,12 @@ fun BookList(
     viewModel: MainViewModel
 ){
 
-    Column {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
         Box(modifier = Modifier
+            .fillMaxSize()
             .padding(start = 16.dp)
         ){
             Text(
@@ -275,7 +284,7 @@ fun BookList(
 
         Spacer(modifier = Modifier.height(8.dp))
         LazyRow (
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxSize()
         ){
             items(books) {book ->
                 Spacer(modifier = Modifier.width(16.dp))
