@@ -14,4 +14,10 @@ data class BookEntity(
     val mainCategory: String?,
     val rating: Float?,
     val imageUrl: String?,
+    val categories: List<String>?,
+    val publishedDate: String?,
+    val saleability: String?,
+    val isEbook: Int?,
+    val price: Float?,
+    val currencyCode: String?
 )

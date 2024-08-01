@@ -368,33 +368,43 @@ fun BookCardScreen(
                                         .padding(horizontal = 16.dp),
                                     horizontalAlignment = Alignment.Start
                                 ) {
-                                    Text(
-                                        text = "About the book",
-                                        fontSize = 19.sp,
-                                        fontFamily = montserrat,
-                                        fontWeight = FontWeight.Medium,
-                                        color = Color.White
-                                    )
-                                    Spacer(modifier = Modifier.height(12.dp))
-                                    Text(
-                                        text = state.book?.description
-                                            ?.replace("<p>", "")
-                                            ?.replace("</p>", "")
-                                            ?.replace("<b>", "")
-                                            ?.replace("</b>", "")
-                                            ?.replace("<i>", "")
-                                            ?.replace("</i>", "")
-                                            ?.replace("<ul>", "")
-                                            ?.replace("</ul>", "")
-                                            ?.replace("<li>", "")
-                                            ?.replace("</li>", "")
-                                            ?.replace("<br>", "")
-                                            ?.replace("</br>", "")?: "",
-                                        fontSize = 15.sp,
-                                        fontFamily = harunoUmiFontFamily,
-                                        fontWeight = FontWeight.Normal,
-                                        color = Color.White
-                                    )
+                                    state.book?.description.let {
+                                        Column(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                        ) {
+                                            Text(
+                                                text = "About the book",
+                                                fontSize = 19.sp,
+                                                fontFamily = montserrat,
+                                                fontWeight = FontWeight.Medium,
+                                                color = Color.White
+                                            )
+                                            Spacer(modifier = Modifier.height(12.dp))
+                                            Text(
+                                                text = state.book?.description
+                                                    ?.replace("<p>", "")
+                                                    ?.replace("</p>", "")
+                                                    ?.replace("<b>", "")
+                                                    ?.replace("</b>", "")
+                                                    ?.replace("<i>", "")
+                                                    ?.replace("</i>", "")
+                                                    ?.replace("<ul>", "")
+                                                    ?.replace("</ul>", "")
+                                                    ?.replace("<li>", "")
+                                                    ?.replace("</li>", "")
+                                                    ?.replace("<br>", "")
+                                                    ?.replace("</br>", "")?: "",
+                                                fontSize = 15.sp,
+                                                fontFamily = harunoUmiFontFamily,
+                                                fontWeight = FontWeight.Normal,
+                                                color = Color.White
+                                            )
+                                        }
+                                    }
+                                    Spacer(modifier = Modifier.height(20.dp))
+
+
                                 }
                             }
                         }
