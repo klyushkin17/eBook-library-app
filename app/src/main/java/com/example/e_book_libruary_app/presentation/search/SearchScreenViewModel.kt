@@ -54,7 +54,6 @@ class SearchScreenViewModel @Inject constructor(
                 state = state.copy(searchQuery = event.query)
                 searchJob?.cancel()
                 searchJob = viewModelScope.launch {
-                    delay(500L)
                     getBooksByQuery()
                 }
             }
@@ -136,7 +135,11 @@ class SearchScreenViewModel @Inject constructor(
                             }
                         }
                         is Resource.Error -> Unit
-                        is Resource.Loading -> Unit
+                        is Resource.Loading -> {
+                            state = state.copy(
+                                isContentLoading = result.isLoading
+                            )
+                        }
                     }
                 }
         }

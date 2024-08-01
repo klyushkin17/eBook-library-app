@@ -16,7 +16,7 @@ interface BookRepository {
 
     suspend fun getBookInfo(
         bookId: String
-    ): Resource<BookInfo>
+    ): Flow<Resource<BookInfo>>
 
     suspend fun getNewestBooks(): Flow<Resource<BookList>>
 

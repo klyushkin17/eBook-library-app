@@ -41,16 +41,25 @@ class BookCardScreenViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             val bookId = savedStateHandle.get<String>("bookId") ?: return@launch
-            val bookInfoResult = async { bookRepository.getBookInfo(bookId) }
-            when (val result = bookInfoResult.await()){
-                is Resource.Success -> {
-                    state = state.copy(
-                        book = result.data
-                    )
+            bookRepository
+                .getBookInfo(bookId)
+                .collect{ result ->
+                    when(result) {
+                        is Resource.Success -> {
+                            result.data?.let {
+                                state = state.copy(
+                                    book = result.data
+                                )
+                            }
+                        }
+                        is Resource.Error -> Unit
+                        is Resource.Loading -> {
+                            state = state.copy(
+                                isContentLoading = result.isLoading
+                            )
+                        }
+                    }
                 }
-                is Resource.Error -> Unit
-                is Resource.Loading -> Unit
-            }
         }
     }
 

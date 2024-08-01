@@ -7,5 +7,6 @@ data class BookCardScreenState(
     val book: BookInfo? = null,
     val isContextMenuVisible: Boolean = false,
     val isDialogShown: Boolean = false,
-    val bookshelfCheckboxes: List<ToggleableInfo> = emptyList()
+    val bookshelfCheckboxes: List<ToggleableInfo> = emptyList(),
+    val isContentLoading: Boolean = false,
 )

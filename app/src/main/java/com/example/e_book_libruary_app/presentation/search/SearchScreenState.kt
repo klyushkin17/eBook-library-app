@@ -18,5 +18,6 @@ data class SearchScreenState(
         mainCategory = "null",
         rating = 0.0f
     ),
-    val bookshelfCheckboxes: List<ToggleableInfo> = emptyList()
+    val bookshelfCheckboxes: List<ToggleableInfo> = emptyList(),
+    val isContentLoading: Boolean = false,
 )

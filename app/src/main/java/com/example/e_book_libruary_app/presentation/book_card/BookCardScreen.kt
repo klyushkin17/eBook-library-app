@@ -183,225 +183,230 @@ fun BookCardScreen(
             )
         }
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-        ){
-            Column (
+        if (!state.isContentLoading) {
+            Box(
                 modifier = Modifier
                     .fillMaxSize()
             ){
-                Box(modifier = Modifier
-                    .fillMaxSize()
-                ) {
-                    SubcomposeAsyncImage(
-                        model = ImageRequest.Builder(LocalContext.current)
-                            .data(state.book?.imageUrl?.replace("http://", "https://"))
-                            .crossfade(true)
-                            .build(),
-                        contentScale = ContentScale.Crop,
-                        contentDescription = "book_poster",
-                        modifier = Modifier
-                            .fillMaxHeight()
-                    )
+                Column (
+                    modifier = Modifier
+                        .fillMaxSize()
+                ){
                     Box(modifier = Modifier
                         .fillMaxSize()
-                        .background(
-                            Brush.radialGradient(
-                                colors = listOf(Color.Black, Color.Transparent),
-                                radius = 2500f
+                    ) {
+                        SubcomposeAsyncImage(
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data(state.book?.imageUrl?.replace("http://", "https://"))
+                                .crossfade(true)
+                                .build(),
+                            contentScale = ContentScale.Crop,
+                            contentDescription = "book_poster",
+                            modifier = Modifier
+                                .fillMaxHeight()
+                        )
+                        Box(modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                Brush.radialGradient(
+                                    colors = listOf(Color.Black, Color.Transparent),
+                                    radius = 2500f
+                                )
                             )
                         )
-                    )
-                    Box(modifier = Modifier
-                        .fillMaxSize()
-                        .verticalScroll(scrollState)
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(top = 300.dp)
-                                .background(
-                                    color = backgroundColor,
-                                    shape = RoundedCornerShape(23.dp)
-                                )
+                        Box(modifier = Modifier
+                            .fillMaxSize()
+                            .verticalScroll(scrollState)
                         ) {
-                        }
-                        Column(
-                            modifier = Modifier
-                                .fillMaxSize()
-                        ) {
-                            Spacer(modifier = Modifier.height(82.dp))
-                            Row(
+                            Column(
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 30.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.SpaceBetween
+                                    .fillMaxSize()
+                                    .padding(top = 300.dp)
+                                    .background(
+                                        color = backgroundColor,
+                                        shape = RoundedCornerShape(23.dp)
+                                    )
                             ) {
+                            }
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                            ) {
+                                Spacer(modifier = Modifier.height(82.dp))
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 30.dp),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.SpaceBetween
+                                ) {
+                                    Column(
+                                        horizontalAlignment = Alignment.CenterHorizontally
+                                    ) {
+                                        Text(
+                                            text = state.book?.pageCount.toString(),
+                                            color = Color.White,
+                                            fontSize = 15.sp,
+                                            fontFamily = harunoUmiFontFamily,
+                                            fontWeight = FontWeight.Bold,
+                                            textAlign = TextAlign.Center
+                                        )
+                                        Text(
+                                            text = "pages",
+                                            color = Color.White,
+                                            fontSize = 13.sp,
+                                            fontFamily = harunoUmiFontFamily,
+                                            fontWeight = FontWeight.Normal,
+                                            textAlign = TextAlign.Center
+                                        )
+                                    }
+                                    Card(
+                                        modifier = Modifier
+                                            .height(262.dp)
+                                            .width(209.dp),
+                                        shape = RoundedCornerShape(12.dp),
+                                        elevation = 3.dp
+                                    ) {
+                                        Box(modifier = Modifier.fillMaxSize()) {
+                                            if (state.book?.imageUrl != "") {
+                                                SubcomposeAsyncImage(
+                                                    model = ImageRequest.Builder(LocalContext.current)
+                                                        .data(
+                                                            state.book?.imageUrl?.replace(
+                                                                "http://",
+                                                                "https://"
+                                                            )
+                                                        )
+                                                        .crossfade(true)
+                                                        .build(),
+                                                    contentScale = ContentScale.Crop,
+                                                    contentDescription = "book_poster",
+                                                    modifier = Modifier
+                                                        .fillMaxSize()
+                                                        .align(Alignment.Center),
+                                                    loading = {
+                                                        CircularProgressIndicator(
+                                                            color = Color.White,
+                                                            strokeWidth = 2.dp,
+                                                            strokeCap = StrokeCap.Round
+                                                        )
+                                                    },
+                                                )
+                                            } else {
+                                                SubcomposeAsyncImage(
+                                                    model = ImageRequest.Builder(LocalContext.current)
+                                                        .data(R.drawable.default_book_poster)
+                                                        .crossfade(true)
+                                                        .build(),
+                                                    contentScale = ContentScale.Crop,
+                                                    contentDescription = "book_poster",
+                                                    modifier = Modifier
+                                                        .fillMaxSize()
+                                                        .align(Alignment.Center),
+                                                    loading = {
+                                                        CircularProgressIndicator(
+                                                            color = Color.White,
+                                                            strokeWidth = 2.dp,
+                                                            strokeCap = StrokeCap.Round
+                                                        )
+                                                    },
+                                                )
+                                            }
+
+                                        }
+                                    }
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Image(
+                                            modifier = Modifier
+                                                .height(15.dp),
+                                            painter = painterResource(id = R.drawable.star_icon),
+                                            contentDescription = "rating_star",
+                                            contentScale = ContentScale.FillHeight
+                                        )
+                                        Spacer(modifier = Modifier.width(2.dp))
+                                        Text(
+                                            text = state.book?.rating.toString(),
+                                            color = Color.White,
+                                            fontSize = 14.sp,
+                                            fontFamily = harunoUmiFontFamily,
+                                        )
+                                    }
+
+                                }
+                                Spacer(modifier = Modifier.height(4.dp))
                                 Column(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 85.dp),
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
                                     Text(
-                                        text = state.book?.pageCount.toString(),
-                                        color = Color.White,
+                                        text = state.book?.authors?.joinToString(separator = ", ") ?: "",
                                         fontSize = 15.sp,
+                                        color = secondaryTextColor,
+                                        fontFamily = harunoUmiFontFamily,
+                                        maxLines = 2,
+                                        textAlign = TextAlign.Center
+                                    )
+                                    Spacer(modifier = Modifier.height(1.dp))
+                                    Text(
+                                        text = state.book?.title ?: "",
+                                        fontSize = 20.sp,
+                                        color = Color.White,
                                         fontFamily = harunoUmiFontFamily,
                                         fontWeight = FontWeight.Bold,
+                                        maxLines = 2,
                                         textAlign = TextAlign.Center
                                     )
+                                }
+                                Spacer(modifier = Modifier.height(37.dp))
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 16.dp),
+                                    horizontalAlignment = Alignment.Start
+                                ) {
                                     Text(
-                                        text = "pages",
-                                        color = Color.White,
-                                        fontSize = 13.sp,
+                                        text = "About the book",
+                                        fontSize = 19.sp,
+                                        fontFamily = montserrat,
+                                        fontWeight = FontWeight.Medium,
+                                        color = Color.White
+                                    )
+                                    Spacer(modifier = Modifier.height(12.dp))
+                                    Text(
+                                        text = state.book?.description
+                                            ?.replace("<p>", "")
+                                            ?.replace("</p>", "")
+                                            ?.replace("<b>", "")
+                                            ?.replace("</b>", "")
+                                            ?.replace("<i>", "")
+                                            ?.replace("</i>", "")
+                                            ?.replace("<ul>", "")
+                                            ?.replace("</ul>", "")
+                                            ?.replace("<li>", "")
+                                            ?.replace("</li>", "")
+                                            ?.replace("<br>", "")
+                                            ?.replace("</br>", "")?: "",
+                                        fontSize = 15.sp,
                                         fontFamily = harunoUmiFontFamily,
                                         fontWeight = FontWeight.Normal,
-                                        textAlign = TextAlign.Center
+                                        color = Color.White
                                     )
                                 }
-                                Card(
-                                    modifier = Modifier
-                                        .height(262.dp)
-                                        .width(209.dp),
-                                    shape = RoundedCornerShape(12.dp),
-                                    elevation = 3.dp
-                                ) {
-                                    Box(modifier = Modifier.fillMaxSize()) {
-                                        if (state.book?.imageUrl != "") {
-                                            SubcomposeAsyncImage(
-                                                model = ImageRequest.Builder(LocalContext.current)
-                                                    .data(
-                                                        state.book?.imageUrl?.replace(
-                                                            "http://",
-                                                            "https://"
-                                                        )
-                                                    )
-                                                    .crossfade(true)
-                                                    .build(),
-                                                contentScale = ContentScale.Crop,
-                                                contentDescription = "book_poster",
-                                                modifier = Modifier
-                                                    .fillMaxSize()
-                                                    .align(Alignment.Center),
-                                                loading = {
-                                                    CircularProgressIndicator(
-                                                        color = Color.White,
-                                                        strokeWidth = 2.dp,
-                                                        strokeCap = StrokeCap.Round
-                                                    )
-                                                },
-                                            )
-                                        } else {
-                                            SubcomposeAsyncImage(
-                                                model = ImageRequest.Builder(LocalContext.current)
-                                                    .data(R.drawable.default_book_poster)
-                                                    .crossfade(true)
-                                                    .build(),
-                                                contentScale = ContentScale.Crop,
-                                                contentDescription = "book_poster",
-                                                modifier = Modifier
-                                                    .fillMaxSize()
-                                                    .align(Alignment.Center),
-                                                loading = {
-                                                    CircularProgressIndicator(
-                                                        color = Color.White,
-                                                        strokeWidth = 2.dp,
-                                                        strokeCap = StrokeCap.Round
-                                                    )
-                                                },
-                                            )
-                                        }
-
-                                    }
-                                }
-                                Row(
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Image(
-                                        modifier = Modifier
-                                            .height(15.dp),
-                                        painter = painterResource(id = R.drawable.star_icon),
-                                        contentDescription = "rating_star",
-                                        contentScale = ContentScale.FillHeight
-                                    )
-                                    Spacer(modifier = Modifier.width(2.dp))
-                                    Text(
-                                        text = state.book?.rating.toString(),
-                                        color = Color.White,
-                                        fontSize = 14.sp,
-                                        fontFamily = harunoUmiFontFamily,
-                                    )
-                                }
-
-                            }
-                            Spacer(modifier = Modifier.height(4.dp))
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 85.dp),
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                Text(
-                                    text = state.book?.authors?.joinToString(separator = ", ") ?: "",
-                                    fontSize = 15.sp,
-                                    color = secondaryTextColor,
-                                    fontFamily = harunoUmiFontFamily,
-                                    maxLines = 2,
-                                    textAlign = TextAlign.Center
-                                )
-                                Spacer(modifier = Modifier.height(1.dp))
-                                Text(
-                                    text = state.book?.title ?: "",
-                                    fontSize = 20.sp,
-                                    color = Color.White,
-                                    fontFamily = harunoUmiFontFamily,
-                                    fontWeight = FontWeight.Bold,
-                                    maxLines = 2,
-                                    textAlign = TextAlign.Center
-                                )
-                            }
-                            Spacer(modifier = Modifier.height(37.dp))
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 16.dp),
-                                horizontalAlignment = Alignment.Start
-                            ) {
-                                Text(
-                                    text = "About the book",
-                                    fontSize = 19.sp,
-                                    fontFamily = montserrat,
-                                    fontWeight = FontWeight.Medium,
-                                    color = Color.White
-                                )
-                                Spacer(modifier = Modifier.height(12.dp))
-                                Text(
-                                    text = state.book?.description
-                                        ?.replace("<p>", "")
-                                        ?.replace("</p>", "")
-                                        ?.replace("<b>", "")
-                                        ?.replace("</b>", "")
-                                        ?.replace("<i>", "")
-                                        ?.replace("</i>", "")
-                                        ?.replace("<ul>", "")
-                                        ?.replace("</ul>", "")
-                                        ?.replace("<li>", "")
-                                        ?.replace("</li>", "")
-                                        ?.replace("<br>", "")
-                                        ?.replace("</br>", "")?: "",
-                                    fontSize = 15.sp,
-                                    fontFamily = harunoUmiFontFamily,
-                                    fontWeight = FontWeight.Normal,
-                                    color = Color.White
-                                )
                             }
                         }
                     }
                 }
+                if (state.isDialogShown) {
+                    AddBookToBookshelvesDialog()
+                }
             }
-            if (state.isDialogShown) {
-                AddBookToBookshelvesDialog()
-            }
+        }
+        else {
+            ShimmerLoadingBookCardScreen()
         }
     }
 }

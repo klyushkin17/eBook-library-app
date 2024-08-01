@@ -15,6 +15,7 @@ import com.example.e_book_libruary_app.domain.model.BookInfo
 import com.example.e_book_libruary_app.domain.model.BookList
 import com.example.e_book_libruary_app.domain.repository.BookRepository
 import com.example.e_book_libruary_app.util.Resource
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import okio.IOException
@@ -50,16 +51,21 @@ class BookRepositoryImpl @Inject constructor(
 
     override suspend fun getBookInfo(
         bookId: String
-    ): Resource<BookInfo> {
-        return try {
-            val result = api.getBookInfo(bookId = bookId)
-            Resource.Success(data = result.toBookInfo())
-        } catch (e: IOException) {
-            e.printStackTrace()
-            Resource.Error(message = "Couldn't load data")
-        } catch (e: HttpException) {
-            e.printStackTrace()
-            Resource.Error(message = "Couldn't load data")
+    ): Flow<Resource<BookInfo>> {
+        return flow {
+            emit(Resource.Loading(true))
+            delay(500L)
+            try {
+                val result = api.getBookInfo(bookId = bookId)
+                emit(Resource.Success(data = result.toBookInfo()))
+            } catch (e: IOException) {
+                e.printStackTrace()
+                emit(Resource.Error(message = "Couldn't load data"))
+            } catch (e: HttpException) {
+                e.printStackTrace()
+                emit(Resource.Error(message = "Couldn't load data"))
+            }
+            emit(Resource.Loading(false))
         }
     }
 

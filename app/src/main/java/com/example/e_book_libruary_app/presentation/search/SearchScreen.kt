@@ -24,6 +24,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.TextField
@@ -177,8 +178,7 @@ fun SearchScreen(
     ) {
         Box(modifier = Modifier
             .fillMaxSize()
-        )
-        {
+        ){
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -193,35 +193,49 @@ fun SearchScreen(
                     items(1) {
                         Spacer(modifier = Modifier.height(70.dp))
                     }
-                    if (state.books.isNotEmpty()) {
-                        items(state.books) {book ->
-                            ExtendedBookElement(
-                                book = book,
-                                modifier = Modifier
-                                    .clickable {
-                                        viewModel.onEvent(SearchScreenEvent.OnBookClick(book))
-                                    }
-                            )
-                            Spacer(modifier = Modifier.height(10.dp))
+                    if (!state.isContentLoading) {
+                        if (state.books.isNotEmpty()) {
+                            items(state.books) {book ->
+                                ExtendedBookElement(
+                                    book = book,
+                                    modifier = Modifier
+                                        .clickable {
+                                            viewModel.onEvent(SearchScreenEvent.OnBookClick(book))
+                                        }
+                                )
+                                Spacer(modifier = Modifier.height(10.dp))
+                            }
+                        }
+                        else {
+                            items(1) {
+                                Box(
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentAlignment = Alignment.Center
+                                ){
+                                    Text(
+                                        text = "Oups, nothing found...",
+                                        fontSize = 14.sp,
+                                        color = secondaryTextColor,
+                                        fontFamily = harunoUmiFontFamily,
+                                        fontWeight = FontWeight.Normal,
+                                    )
+                                }
+                            }
                         }
                     }
                     else {
-                        items(1) {
+                        items(1){
                             Box(
                                 modifier = Modifier.fillMaxSize(),
                                 contentAlignment = Alignment.Center
                             ){
-                                Text(
-                                    text = "Oups, nothing found...",
-                                    fontSize = 14.sp,
-                                    color = secondaryTextColor,
-                                    fontFamily = harunoUmiFontFamily,
-                                    fontWeight = FontWeight.Normal,
+                                CircularProgressIndicator(
+                                    color = scaffoldBackgroundColor
                                 )
                             }
-
                         }
                     }
+
                     items(1) {
                         Spacer(modifier = Modifier.height(70.dp))
                     }
