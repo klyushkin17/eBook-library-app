@@ -139,20 +139,9 @@ class BookCardScreenViewModel @Inject constructor(
         }
     }
 
-    private suspend fun insertBookIntoBookshelf(book: BookInfo?, bookshelfName: String) {
+    private suspend fun insertBookIntoBookshelf(book: BookInfo, bookshelfName: String) {
         bookRepository
-            .addBookToBookshelf(book?.toBookEntity() ?:
-            BookInfo(
-                bookId = "null",
-                title = "null",
-                authors = emptyList(),
-                publisher = "null",
-                imageUrl = "null",
-                description = "null",
-                pageCount = 0,
-                mainCategory = "null",
-                rating = 0.0f
-            ).toBookEntity(), bookshelfName)
+            .addBookToBookshelf(book.toBookEntity(), bookshelfName)
     }
 
     private fun sendUiEvent(event: UiEvent) {

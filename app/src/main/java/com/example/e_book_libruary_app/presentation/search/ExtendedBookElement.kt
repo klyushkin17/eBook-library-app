@@ -85,7 +85,7 @@ fun ExtendedBookElement(
                 elevation = 3.dp
             ){
                 Box(modifier = Modifier.fillMaxSize()) {
-                    if (book.imageUrl != "") {
+                    if (book.imageUrl != null) {
                         SubcomposeAsyncImage(
                             model = ImageRequest.Builder(LocalContext.current)
                                 .data(book.imageUrl.replace("http://", "https://"))
@@ -150,15 +150,15 @@ fun ExtendedBookElement(
                             maxLines = 2
                         )
                         Spacer(modifier = Modifier.height(2.dp))
-                        Text(
-                            text = book.authors.joinToString(separator = ", "),
-                            fontSize = 12.sp,
-                            color = secondaryTextColor,
-                            fontFamily = harunoUmiFontFamily,
-                            maxLines = 1
-                        )
-
-
+                        if (book.authors != null) {
+                            Text(
+                                text = book.authors.joinToString(separator = ", "),
+                                fontSize = 12.sp,
+                                color = secondaryTextColor,
+                                fontFamily = harunoUmiFontFamily,
+                                maxLines = 1
+                            )
+                        }
                     }
                     Row(
                         verticalAlignment = Alignment.CenterVertically
@@ -171,12 +171,22 @@ fun ExtendedBookElement(
                             contentScale = ContentScale.FillHeight
                         )
                         Spacer(modifier = Modifier.width(2.dp))
-                        Text(
-                            text = book.rating.toString(),
-                            color = Color.White,
-                            fontSize = 14.sp,
-                            fontFamily = harunoUmiFontFamily,
-                        )
+                        if (book.rating != null) {
+                            Text(
+                                text = book.rating.toString(),
+                                color = Color.White,
+                                fontFamily = harunoUmiFontFamily,
+                                fontSize = 14.sp,
+                            )
+                        }
+                        else {
+                            Text(
+                                text = "—",
+                                color = Color.White,
+                                fontFamily = harunoUmiFontFamily,
+                                fontSize = 14.sp,
+                            )
+                        }
                     }
                 }
                 Column(

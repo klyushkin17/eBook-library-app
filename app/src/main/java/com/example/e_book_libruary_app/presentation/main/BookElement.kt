@@ -66,7 +66,7 @@ fun BookElement(
             elevation = 3.dp
         ){
             Box(modifier = Modifier.fillMaxSize()) {
-                if (book.imageUrl != "") {
+                if (book.imageUrl != null) {
                     SubcomposeAsyncImage(
                         model = ImageRequest.Builder(LocalContext.current)
                             .data(book.imageUrl.replace("http://", "https://"))
@@ -134,12 +134,23 @@ fun BookElement(
                             contentScale = ContentScale.FillHeight
                         )
                         Spacer(modifier = Modifier.width(2.dp))
-                        Text(
-                            text = book.rating.toString(),
-                            color = Color.White,
-                            fontSize = 12.sp,
-                            fontFamily = harunoUmiFontFamily
-                        )
+                        if (book.rating != null) {
+                            Text(
+                                text = book.rating.toString(),
+                                color = Color.White,
+                                fontSize = 12.sp,
+                                fontFamily = harunoUmiFontFamily
+                            )
+                        }
+                        else {
+                            Text(
+                                text = "—",
+                                color = Color.White,
+                                fontSize = 12.sp,
+                                fontFamily = harunoUmiFontFamily
+                            )
+                        }
+
                     }
 
                 }
@@ -150,14 +161,16 @@ fun BookElement(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            Text(
-                text = book.authors.joinToString(separator = ", "),
-                fontSize = 9.sp,
-                color = secondaryTextColor,
-                maxLines = 1,
-                fontFamily = harunoUmiFontFamily,
-                fontWeight = FontWeight.Normal,
-            )
+            if (book.authors != null) {
+                Text(
+                    text = book.authors.joinToString(separator = ", "),
+                    fontSize = 9.sp,
+                    color = secondaryTextColor,
+                    maxLines = 1,
+                    fontFamily = harunoUmiFontFamily,
+                    fontWeight = FontWeight.Normal,
+                )
+            }
             Spacer(modifier = Modifier.height(1.dp))
             Text(
                 text = book.title,

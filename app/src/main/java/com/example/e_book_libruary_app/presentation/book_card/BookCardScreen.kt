@@ -195,16 +195,31 @@ fun BookCardScreen(
                     Box(modifier = Modifier
                         .fillMaxSize()
                     ) {
-                        SubcomposeAsyncImage(
-                            model = ImageRequest.Builder(LocalContext.current)
-                                .data(state.book?.imageUrl?.replace("http://", "https://"))
-                                .crossfade(true)
-                                .build(),
-                            contentScale = ContentScale.Crop,
-                            contentDescription = "book_poster",
-                            modifier = Modifier
-                                .fillMaxHeight()
-                        )
+                        if (state.book.imageUrl != null) {
+                            SubcomposeAsyncImage(
+                                model = ImageRequest.Builder(LocalContext.current)
+                                    .data(state.book.imageUrl.replace("http://", "https://"))
+                                    .crossfade(true)
+                                    .build(),
+                                contentScale = ContentScale.Crop,
+                                contentDescription = "book_poster",
+                                modifier = Modifier
+                                    .fillMaxHeight()
+                            )
+                        }
+                        else {
+                            SubcomposeAsyncImage(
+                                model = ImageRequest.Builder(LocalContext.current)
+                                    .data(R.drawable.default_book_poster)
+                                    .crossfade(true)
+                                    .build(),
+                                contentScale = ContentScale.Crop,
+                                contentDescription = "book_poster",
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .align(Alignment.Center),
+                            )
+                        }
                         Box(modifier = Modifier
                             .fillMaxSize()
                             .background(
@@ -244,7 +259,7 @@ fun BookCardScreen(
                                         horizontalAlignment = Alignment.CenterHorizontally
                                     ) {
                                         Text(
-                                            text = state.book?.pageCount.toString(),
+                                            text = state.book.pageCount.toString(),
                                             color = Color.White,
                                             fontSize = 15.sp,
                                             fontFamily = harunoUmiFontFamily,
@@ -268,11 +283,11 @@ fun BookCardScreen(
                                         elevation = 3.dp
                                     ) {
                                         Box(modifier = Modifier.fillMaxSize()) {
-                                            if (state.book?.imageUrl != "") {
+                                            if (state.book.imageUrl != null) {
                                                 SubcomposeAsyncImage(
                                                     model = ImageRequest.Builder(LocalContext.current)
                                                         .data(
-                                                            state.book?.imageUrl?.replace(
+                                                            state.book.imageUrl.replace(
                                                                 "http://",
                                                                 "https://"
                                                             )
@@ -326,14 +341,25 @@ fun BookCardScreen(
                                             contentScale = ContentScale.FillHeight
                                         )
                                         Spacer(modifier = Modifier.width(2.dp))
-                                        Text(
-                                            text = state.book?.rating.toString(),
-                                            color = Color.White,
-                                            fontSize = 14.sp,
-                                            fontFamily = harunoUmiFontFamily,
-                                        )
+
                                     }
 
+                                    if (state.book.rating != null) {
+                                        Text(
+                                            text = state.book.rating.toString(),
+                                            color = Color.White,
+                                            fontFamily = harunoUmiFontFamily,
+                                            fontSize = 14.sp,
+                                        )
+                                    }
+                                    else {
+                                        Text(
+                                            text = "—",
+                                            color = Color.White,
+                                            fontFamily = harunoUmiFontFamily,
+                                            fontSize = 14.sp,
+                                        )
+                                    }
                                 }
                                 Spacer(modifier = Modifier.height(4.dp))
                                 Column(
@@ -342,17 +368,19 @@ fun BookCardScreen(
                                         .padding(horizontal = 85.dp),
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
-                                    Text(
-                                        text = state.book?.authors?.joinToString(separator = ", ") ?: "",
-                                        fontSize = 15.sp,
-                                        color = secondaryTextColor,
-                                        fontFamily = harunoUmiFontFamily,
-                                        maxLines = 2,
-                                        textAlign = TextAlign.Center
-                                    )
+                                    if (state.book.authors != null) {
+                                        Text(
+                                            text = state.book.authors.joinToString(separator = ", "),
+                                            fontSize = 15.sp,
+                                            color = secondaryTextColor,
+                                            fontFamily = harunoUmiFontFamily,
+                                            maxLines = 2,
+                                            textAlign = TextAlign.Center
+                                        )
+                                    }
                                     Spacer(modifier = Modifier.height(1.dp))
                                     Text(
-                                        text = state.book?.title ?: "",
+                                        text = state.book.title,
                                         fontSize = 20.sp,
                                         color = Color.White,
                                         fontFamily = harunoUmiFontFamily,
@@ -368,7 +396,7 @@ fun BookCardScreen(
                                         .padding(horizontal = 16.dp),
                                     horizontalAlignment = Alignment.Start
                                 ) {
-                                    state.book?.description.let {
+                                    state.book.description?.let {
                                         Column(
                                             modifier = Modifier
                                                 .fillMaxWidth()
@@ -382,19 +410,19 @@ fun BookCardScreen(
                                             )
                                             Spacer(modifier = Modifier.height(12.dp))
                                             Text(
-                                                text = state.book?.description
-                                                    ?.replace("<p>", "")
-                                                    ?.replace("</p>", "")
-                                                    ?.replace("<b>", "")
-                                                    ?.replace("</b>", "")
-                                                    ?.replace("<i>", "")
-                                                    ?.replace("</i>", "")
-                                                    ?.replace("<ul>", "")
-                                                    ?.replace("</ul>", "")
-                                                    ?.replace("<li>", "")
-                                                    ?.replace("</li>", "")
-                                                    ?.replace("<br>", "")
-                                                    ?.replace("</br>", "")?: "",
+                                                text = state.book.description
+                                                    .replace("<p>", "")
+                                                    .replace("</p>", "")
+                                                    .replace("<b>", "")
+                                                    .replace("</b>", "")
+                                                    .replace("<i>", "")
+                                                    .replace("</i>", "")
+                                                    .replace("<ul>", "")
+                                                    .replace("</ul>", "")
+                                                    .replace("<li>", "")
+                                                    .replace("</li>", "")
+                                                    .replace("<br>", "")
+                                                    .replace("</br>", ""),
                                                 fontSize = 15.sp,
                                                 fontFamily = harunoUmiFontFamily,
                                                 fontWeight = FontWeight.Normal,
@@ -403,8 +431,6 @@ fun BookCardScreen(
                                         }
                                     }
                                     Spacer(modifier = Modifier.height(20.dp))
-
-
                                 }
                             }
                         }

@@ -72,16 +72,6 @@ fun ShimmerLoadingBookCardScreen() {
                     .fillMaxSize()
                     .verticalScroll(scrollState)
                 ) {
-                    /*Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(top = 300.dp)
-                            .background(
-                                color = backgroundColor,
-                                shape = RoundedCornerShape(23.dp)
-                            )
-                    ) {
-                    }*/
                     Column(
                         modifier = Modifier
                             .fillMaxSize()

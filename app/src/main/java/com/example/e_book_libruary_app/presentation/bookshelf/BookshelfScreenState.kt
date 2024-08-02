@@ -9,14 +9,20 @@ data class BookshelfScreenState(
     val isDialogShown: Boolean = false,
     val typeOfDialog: String = "",
     val deletingBook: BookInfo = BookInfo(
-        bookId = "null",
-        title = "null",
-        authors = emptyList(),
-        publisher = "null",
-        imageUrl = "null",
-        description = "null",
+        bookId = "default_bookId",
+        title = "default_title",
         pageCount = 0,
-        mainCategory = "null",
-        rating = 0.0f
+        authors = null,
+        publisher = null,
+        description = null,
+        mainCategory = null,
+        rating = null,
+        imageUrl = null,
+        categories = null,
+        publishedDate = null,
+        saleability = null,
+        isEbook = null,
+        price = null,
+        currencyCode = null
     )
 )

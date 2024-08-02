@@ -8,14 +8,15 @@ import com.example.e_book_libruary_app.data.remote.dto.BookListDto
 import com.example.e_book_libruary_app.domain.model.BookInfo
 import com.example.e_book_libruary_app.domain.model.BookList
 import com.example.e_book_libruary_app.domain.model.Bookshelf
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeFormatterBuilder
+import java.time.temporal.ChronoField
 import java.util.Locale
 
 fun BookInfoDto.toBookInfo(): BookInfo {
-    val pattern = "yyyy-MM-dd"
-    val formatter = DateTimeFormatter.ofPattern(pattern, Locale.getDefault())
-    val localDateTime = LocalDateTime.parse(this.volumeInfo.publishedDate, formatter)
+
     return BookInfo(
         bookId = bookId,
         title = volumeInfo.title,
@@ -27,7 +28,7 @@ fun BookInfoDto.toBookInfo(): BookInfo {
         mainCategory = volumeInfo.mainCategory,
         rating = volumeInfo.rating,
         categories = volumeInfo.categories,
-        publishedDate = localDateTime,
+        publishedDate = volumeInfo.publishedDate,
         currencyCode = saleInfo.retailPrice?.currencyCode,
         isEbook = saleInfo.isEbook,
         price = saleInfo.retailPrice?.price,
@@ -36,9 +37,6 @@ fun BookInfoDto.toBookInfo(): BookInfo {
 }
 
 fun BookEntity.toBookInfo(): BookInfo {
-    val pattern = "yyyy-MM-dd"
-    val formatter = DateTimeFormatter.ofPattern(pattern, Locale.getDefault())
-    val localDateTime = LocalDateTime.parse(this.publishedDate, formatter)
 
     val convertedIsEbook = this.isEbook?.let { it != 0 }
 
@@ -53,7 +51,7 @@ fun BookEntity.toBookInfo(): BookInfo {
         rating = rating,
         imageUrl = imageUrl,
         categories = categories,
-        publishedDate = localDateTime,
+        publishedDate = publishedDate,
         currencyCode = currencyCode,
         isEbook = convertedIsEbook,
         price = price,
@@ -62,10 +60,6 @@ fun BookEntity.toBookInfo(): BookInfo {
 }
 
 fun BookInfo.toBookEntity(): BookEntity {
-
-    val pattern = "yyyy-MM-dd"
-    val formatter = DateTimeFormatter.ofPattern(pattern)
-    val stringPublishedDate = this.publishedDate?.format(formatter)
 
     val convertedIsEbook = this.isEbook?.let { if (it) 1 else 0 }
 
@@ -80,7 +74,7 @@ fun BookInfo.toBookEntity(): BookEntity {
         rating = rating,
         imageUrl = imageUrl,
         categories = categories,
-        publishedDate = stringPublishedDate,
+        publishedDate = publishedDate,
         currencyCode = currencyCode,
         isEbook = convertedIsEbook,
         price = price,
@@ -108,11 +102,6 @@ fun BookListDto.toBookList(): BookList {
 
 fun List<BookInfoDto>.toBookInfo(): List<BookInfo> {
     return this.map {
-        val pattern = "yyyy-MM-dd"
-        val formatter = DateTimeFormatter.ofPattern(pattern, Locale.getDefault())
-        val localDateTime = LocalDateTime.parse(it.volumeInfo.publishedDate, formatter)
-
-
         BookInfo(
             bookId = it.bookId,
             title = it.volumeInfo.title,
@@ -124,7 +113,7 @@ fun List<BookInfoDto>.toBookInfo(): List<BookInfo> {
             mainCategory = it.volumeInfo.mainCategory,
             rating = it.volumeInfo.rating,
             categories = it.volumeInfo.categories,
-            publishedDate = localDateTime,
+            publishedDate = it.volumeInfo.publishedDate,
             currencyCode = it.saleInfo.retailPrice?.currencyCode,
             isEbook = it.saleInfo.isEbook,
             price = it.saleInfo.retailPrice?.price,
@@ -143,10 +132,6 @@ fun List<BookshelfEntity>.toBookshelf(): List<Bookshelf> {
 
 fun List<BookEntity>.toBookInfoFromEntity(): List<BookInfo> {
     return this.map { element ->
-        val pattern = "yyyy-MM-dd"
-        val formatter = DateTimeFormatter.ofPattern(pattern, Locale.getDefault())
-        val localDateTime = LocalDateTime.parse(element.publishedDate, formatter)
-
         val convertedIsEbook = element.isEbook?.let { it != 0 }
 
         BookInfo(
@@ -160,7 +145,7 @@ fun List<BookEntity>.toBookInfoFromEntity(): List<BookInfo> {
             rating = element.rating,
             imageUrl = element.imageUrl,
             categories = element.categories,
-            publishedDate = localDateTime,
+            publishedDate = element.publishedDate,
             currencyCode = element.currencyCode,
             isEbook = convertedIsEbook,
             price = element.price,

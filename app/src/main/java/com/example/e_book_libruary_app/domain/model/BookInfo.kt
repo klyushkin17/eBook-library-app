@@ -1,6 +1,7 @@
 package com.example.e_book_libruary_app.domain.model
 
 import com.squareup.moshi.Json
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 data class BookInfo(
@@ -14,7 +15,7 @@ data class BookInfo(
     val rating: Float?,
     val imageUrl: String?,
     val categories: List<String>?,
-    val publishedDate: LocalDateTime?,
+    val publishedDate: String?,
     val saleability: String?,
     val isEbook: Boolean?,
     val price: Float?,
