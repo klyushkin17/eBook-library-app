@@ -1,5 +1,7 @@
 package com.example.e_book_libruary_app.data.mapper
 
+import android.util.Log
+import androidx.compose.runtime.currentComposer
 import androidx.compose.runtime.saveable.mapSaver
 import com.example.e_book_libruary_app.data.local.entities.BookEntity
 import com.example.e_book_libruary_app.data.local.entities.BookshelfEntity
@@ -17,6 +19,16 @@ import java.util.Locale
 
 fun BookInfoDto.toBookInfo(): BookInfo {
 
+    val cutCategories = volumeInfo.categories?.toMutableList()
+    cutCategories?.replaceAll { category ->
+        if (category.contains('/')) {
+            category.substringBefore('/')
+        } else {
+            category
+        }
+    }
+    val finalCategories = cutCategories?.toSet()
+
     return BookInfo(
         bookId = bookId,
         title = volumeInfo.title,
@@ -27,7 +39,7 @@ fun BookInfoDto.toBookInfo(): BookInfo {
         pageCount = volumeInfo.pageCount,
         mainCategory = volumeInfo.mainCategory,
         rating = volumeInfo.rating,
-        categories = volumeInfo.categories,
+        categories = finalCategories,
         publishedDate = volumeInfo.publishedDate,
         currencyCode = saleInfo.retailPrice?.currencyCode,
         isEbook = saleInfo.isEbook,
@@ -50,7 +62,7 @@ fun BookEntity.toBookInfo(): BookInfo {
         mainCategory = mainCategory,
         rating = rating,
         imageUrl = imageUrl,
-        categories = categories,
+        categories = categories?.toSet(),
         publishedDate = publishedDate,
         currencyCode = currencyCode,
         isEbook = convertedIsEbook,
@@ -73,7 +85,7 @@ fun BookInfo.toBookEntity(): BookEntity {
         mainCategory = mainCategory,
         rating = rating,
         imageUrl = imageUrl,
-        categories = categories,
+        categories = categories?.toList(),
         publishedDate = publishedDate,
         currencyCode = currencyCode,
         isEbook = convertedIsEbook,
@@ -102,6 +114,16 @@ fun BookListDto.toBookList(): BookList {
 
 fun List<BookInfoDto>.toBookInfo(): List<BookInfo> {
     return this.map {
+        val cutCategories = it.volumeInfo.categories?.toMutableList()
+        cutCategories?.replaceAll { category ->
+            if (category.contains('/')) {
+                category.substringBefore('/')
+            } else {
+                category
+            }
+        }
+        val finalCategories = cutCategories?.toSet()
+
         BookInfo(
             bookId = it.bookId,
             title = it.volumeInfo.title,
@@ -112,7 +134,7 @@ fun List<BookInfoDto>.toBookInfo(): List<BookInfo> {
             pageCount = it.volumeInfo.pageCount,
             mainCategory = it.volumeInfo.mainCategory,
             rating = it.volumeInfo.rating,
-            categories = it.volumeInfo.categories,
+            categories = finalCategories,
             publishedDate = it.volumeInfo.publishedDate,
             currencyCode = it.saleInfo.retailPrice?.currencyCode,
             isEbook = it.saleInfo.isEbook,
@@ -144,7 +166,7 @@ fun List<BookEntity>.toBookInfoFromEntity(): List<BookInfo> {
             mainCategory = element.mainCategory,
             rating = element.rating,
             imageUrl = element.imageUrl,
-            categories = element.categories,
+            categories = element.categories?.toSet(),
             publishedDate = element.publishedDate,
             currencyCode = element.currencyCode,
             isEbook = convertedIsEbook,

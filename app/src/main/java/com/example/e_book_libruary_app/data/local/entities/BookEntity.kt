@@ -18,6 +18,6 @@ data class BookEntity(
     val publishedDate: String?,
     val saleability: String?,
     val isEbook: Int?,
-    val price: Float?,
+    val price: Float?,  
     val currencyCode: String?
 )

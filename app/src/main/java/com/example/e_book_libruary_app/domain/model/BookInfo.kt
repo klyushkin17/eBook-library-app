@@ -14,7 +14,7 @@ data class BookInfo(
     val mainCategory: String?,
     val rating: Float?,
     val imageUrl: String?,
-    val categories: List<String>?,
+    val categories: Set<String>?,
     val publishedDate: String?,
     val saleability: String?,
     val isEbook: Boolean?,

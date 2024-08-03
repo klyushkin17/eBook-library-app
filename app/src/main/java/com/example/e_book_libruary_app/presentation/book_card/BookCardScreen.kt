@@ -2,12 +2,14 @@ package com.example.e_book_libruary_app.presentation.book_card
 
 import android.annotation.SuppressLint
 import android.graphics.Paint.Align
+import android.util.Log
 import androidx.compose.animation.expandVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,7 +22,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
@@ -31,10 +35,12 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -61,6 +67,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import com.example.e_book_libruary_app.R
+import com.example.e_book_libruary_app.presentation.bookshelves.BookshelvesScreenEvent
 import com.example.e_book_libruary_app.presentation.main.MainEvent
 import com.example.e_book_libruary_app.presentation.search.SearchScreenEvent
 import com.example.e_book_libruary_app.presentation.tools.DropDownItem
@@ -83,6 +90,7 @@ fun BookCardScreen(
 ){
     val state = viewModel.state
     val scrollState = rememberScrollState()
+    val horizontalScrollState = rememberScrollState()
 
     val dropDownItem = listOf(
         DropDownItem("Add to...")
@@ -181,6 +189,70 @@ fun BookCardScreen(
                     actionIconContentColor = Color.White
                 )
             )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                modifier = Modifier
+                    .padding(bottom = 20.dp),
+                onClick = {  },
+                containerColor = scaffoldBackgroundColor,
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Log.d("CheckPrice", state.book.saleability ?: "nothing")
+                if (state.book.saleability == "FOR_SALE") {
+                    if (state.book.price != null && state.book.currencyCode != null) {
+                        Row(
+                            modifier = Modifier
+                                .padding(horizontal = 10.dp),
+                            verticalAlignment = Alignment.Bottom
+                        ) {
+                            Text(
+                                text = state.book.price.toString(),
+                                fontSize = 15.sp,
+                                fontFamily = montserrat,
+                                fontWeight = FontWeight.Medium,
+                                color = Color.White
+                            )
+                            Spacer(modifier = Modifier.width(5.dp))
+                            Text(
+                                text = state.book.currencyCode,
+                                fontSize = 10.sp,
+                                fontFamily = montserrat,
+                                fontWeight = FontWeight.Medium,
+                                color = Color.White
+                            )
+                        }
+                    }
+                    else {
+                        Row(
+                            modifier = Modifier
+                                .padding(10.dp)
+                        ) {
+                            Text(
+                                text = "BUY",
+                                fontSize = 15.sp,
+                                fontFamily = montserrat,
+                                fontWeight = FontWeight.Medium,
+                                color = Color.White
+                            )
+                        }
+                    }
+                }
+                else {
+                    Row(
+                        modifier = Modifier
+                            .padding(10.dp)
+                    ) {
+                        Text(
+                            text = "NOT FOR SALE",
+                            fontSize = 15.sp,
+                            fontFamily = montserrat,
+                            fontWeight = FontWeight.Medium,
+                            color = Color.White
+                        )
+                    }
+                }
+            }
         }
     ) {
         if (!state.isContentLoading) {
@@ -341,24 +413,23 @@ fun BookCardScreen(
                                             contentScale = ContentScale.FillHeight
                                         )
                                         Spacer(modifier = Modifier.width(2.dp))
+                                        if (state.book.rating != null) {
+                                            Text(
+                                                text = state.book.rating.toString(),
+                                                color = Color.White,
+                                                fontFamily = harunoUmiFontFamily,
+                                                fontSize = 14.sp,
+                                            )
+                                        }
+                                        else {
+                                            Text(
+                                                text = "—",
+                                                color = Color.White,
+                                                fontFamily = harunoUmiFontFamily,
+                                                fontSize = 14.sp,
+                                            )
+                                        }
 
-                                    }
-
-                                    if (state.book.rating != null) {
-                                        Text(
-                                            text = state.book.rating.toString(),
-                                            color = Color.White,
-                                            fontFamily = harunoUmiFontFamily,
-                                            fontSize = 14.sp,
-                                        )
-                                    }
-                                    else {
-                                        Text(
-                                            text = "—",
-                                            color = Color.White,
-                                            fontFamily = harunoUmiFontFamily,
-                                            fontSize = 14.sp,
-                                        )
                                     }
                                 }
                                 Spacer(modifier = Modifier.height(4.dp))
@@ -392,14 +463,102 @@ fun BookCardScreen(
                                 Spacer(modifier = Modifier.height(37.dp))
                                 Column(
                                     modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(horizontal = 16.dp),
+                                        .fillMaxWidth(),
                                     horizontalAlignment = Alignment.Start
                                 ) {
+                                    if (state.book.mainCategory != null ||
+                                        state.book.categories != null) {
+                                        Text(
+                                            text = "Categories",
+                                            fontSize = 19.sp,
+                                            fontFamily = montserrat,
+                                            fontWeight = FontWeight.Medium,
+                                            color = Color.White,
+                                            modifier = Modifier
+                                                .padding(start = 16.dp)
+                                        )
+                                        Spacer(modifier = Modifier.height(12.dp))
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .horizontalScroll(horizontalScrollState)
+                                        ) {
+                                            Spacer(modifier = Modifier.width(16.dp))
+                                            state.book.mainCategory?.let {
+                                                Box(modifier = Modifier
+                                                    .padding(
+                                                        horizontal = 12.dp,
+                                                        vertical = 7.dp
+                                                    )
+                                                    .background(
+                                                        color = scaffoldBackgroundColor,
+                                                        shape = RoundedCornerShape(12.dp)
+                                                    )
+                                                ) {
+                                                    Text(
+                                                        text = state.book.mainCategory,
+                                                        fontSize = 10.sp,
+                                                        fontFamily = montserrat,
+                                                        fontWeight = FontWeight.Medium,
+                                                        color = Color.White
+                                                    )
+                                                }
+                                                Spacer(modifier = Modifier.width(8.dp))
+                                            }
+                                            state.book.categories?.let { categories ->
+                                                categories.forEachIndexed { index, category ->
+                                                    if (index == 0) {
+                                                        Box(modifier = Modifier
+                                                            .background(
+                                                                color = scaffoldBackgroundColor,
+                                                                shape = RoundedCornerShape(12.dp)
+                                                            )
+                                                            .padding(
+                                                                horizontal = 12.dp,
+                                                                vertical = 7.dp
+                                                            )
+                                                        ) {
+                                                            Text(
+                                                                text = category,
+                                                                fontSize = 10.sp,
+                                                                fontFamily = montserrat,
+                                                                fontWeight = FontWeight.Medium,
+                                                                color = Color.White
+                                                            )
+                                                        }
+                                                    }
+                                                    else {
+                                                        Box(modifier = Modifier
+                                                            .background(
+                                                                color = backgroundColor,
+                                                                shape = RoundedCornerShape(12.dp)
+                                                            )
+                                                            .padding(
+                                                                horizontal = 12.dp,
+                                                                vertical = 7.dp
+                                                            )
+                                                        ) {
+                                                            Text(
+                                                                text = category,
+                                                                fontSize = 10.sp,
+                                                                fontFamily = montserrat,
+                                                                fontWeight = FontWeight.Medium,
+                                                                color = Color.White
+                                                            )
+                                                        }
+                                                    }
+
+                                                    Spacer(modifier = Modifier.width(8.dp))
+                                                }
+                                            }
+                                        }
+                                        Spacer(modifier = Modifier.height(30.dp))
+                                    }
                                     state.book.description?.let {
                                         Column(
                                             modifier = Modifier
                                                 .fillMaxWidth()
+                                                .padding(horizontal = 16.dp)
                                         ) {
                                             Text(
                                                 text = "About the book",
@@ -429,8 +588,32 @@ fun BookCardScreen(
                                                 color = Color.White
                                             )
                                         }
+                                        Spacer(modifier = Modifier.height(30.dp))
                                     }
-                                    Spacer(modifier = Modifier.height(20.dp))
+                                    state.book.publishedDate?.let {
+                                        Row(
+                                            verticalAlignment = Alignment.Bottom,
+                                            modifier = Modifier
+                                                .padding(horizontal = 16.dp)
+                                        ) {
+                                            Text(
+                                                text = "Published:",
+                                                fontSize = 19.sp,
+                                                fontFamily = montserrat,
+                                                fontWeight = FontWeight.Medium,
+                                                color = Color.White
+                                            )
+                                            Spacer(modifier = Modifier.width(6.dp))
+                                            Text(
+                                                text = state.book.publishedDate.toString().replace('-', '.'),
+                                                fontSize = 14.sp,
+                                                fontFamily = harunoUmiFontFamily,
+                                                fontWeight = FontWeight.Medium,
+                                                color = Color.White
+                                            )
+                                        }
+                                    }
+                                    Spacer(modifier = Modifier.height(50.dp))
                                 }
                             }
                         }
