@@ -54,6 +54,15 @@ class MainActivity : ComponentActivity() {
         )
     }
 
+    private fun getStartScreen(): String {
+        if (googleAuthUiClient.getSignedInUser() != null) {
+            return Routes.MAIN_SCREEN
+        }
+        else {
+            return Routes.SIGN_IN_SCREEN
+        }
+    }
+
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,7 +80,7 @@ class MainActivity : ComponentActivity() {
                     ) {
                         NavHost(
                             navController = navController,
-                            startDestination = Routes.SIGN_IN_SCREEN,
+                            startDestination = getStartScreen(),
                             enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left, tween(200))},
                             exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right, tween(200))},
                             popEnterTransition =  { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left, tween(200))},
