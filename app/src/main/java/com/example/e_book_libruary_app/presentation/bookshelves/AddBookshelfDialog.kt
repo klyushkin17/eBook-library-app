@@ -32,6 +32,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.e_book_libruary_app.ui.theme.backgroundColor
+import com.example.e_book_libruary_app.ui.theme.disabledButtonColor
 import com.example.e_book_libruary_app.ui.theme.harunoUmiFontFamily
 import com.example.e_book_libruary_app.ui.theme.montserrat
 import com.example.e_book_libruary_app.ui.theme.scaffoldBackgroundColor
@@ -42,6 +43,7 @@ fun AddBookshelfDialog(
     viewModel: BookshelvesScreenViewModel = hiltViewModel()
 ) {
     val maxBookshelfCharacters = 20
+    val state = viewModel.state
 
     Dialog(
         onDismissRequest = {
@@ -85,9 +87,19 @@ fun AddBookshelfDialog(
                             fontWeight = FontWeight.Medium
                         )
                     },
+                    supportingText = {
+                        if (state.isBookshelfNameIsAlreadyExists){
+                            Text(
+                                text = "Bookshelf with this name is already exists",
+                                fontSize = 10.sp,
+                                fontFamily = montserrat,
+                                fontWeight = FontWeight.Medium
+                            )
+                        }
+                    },
+                    isError = state.isBookshelfNameIsAlreadyExists,
                     textStyle = TextStyle(
                         fontSize = 14.sp,
-                        color = Color.White,
                         fontFamily = montserrat,
                         fontWeight = FontWeight.Medium,
                     ),
@@ -105,14 +117,14 @@ fun AddBookshelfDialog(
                         unfocusedPlaceholderColor = Color.White,
                         unfocusedLeadingIconColor = Color.White,
                         unfocusedTrailingIconColor = Color.White,
-                        unfocusedSupportingTextColor = Color.White,
+                        unfocusedSupportingTextColor = Color.Red,
                         focusedLabelColor = Color.White,
                         focusedPrefixColor = Color.White,
                         focusedSuffixColor = Color.White,
                         focusedPlaceholderColor = Color.White,
                         focusedTrailingIconColor = Color.White,
                         focusedLeadingIconColor = Color.White,
-                        focusedSupportingTextColor = Color.White,
+                        focusedSupportingTextColor = Color.Red,
                         disabledTextColor = Color.White,
                         disabledPrefixColor = Color.White,
                         disabledSuffixColor = Color.White,
@@ -122,19 +134,22 @@ fun AddBookshelfDialog(
                         disabledPlaceholderColor = Color.White,
                         disabledLeadingIconColor = Color.White,
                         disabledTrailingIconColor = Color.White,
-                        disabledSupportingTextColor = Color.White,
+                        disabledSupportingTextColor = Color.Red,
                         errorPlaceholderColor = Color.White,
                         errorLeadingIconColor = Color.White,
                         errorCursorColor = Color.White,
                         errorPrefixColor = Color.White,
                         errorSuffixColor = Color.White,
                         errorContainerColor = backgroundColor,
-                        errorIndicatorColor = Color.White,
-                        errorTextColor = Color.White,
+                        errorIndicatorColor = Color.Red,
+                        errorTextColor = Color.Red,
                         errorLabelColor = Color.White,
                         errorTrailingIconColor = Color.White,
-                        errorSupportingTextColor = Color.White,
-                        textSelectionColors = TextSelectionColors(handleColor = Color.White, backgroundColor = Color.White)
+                        errorSupportingTextColor = Color.Red,
+                        textSelectionColors = TextSelectionColors(
+                            handleColor = Color.White,
+                            backgroundColor = Color.White
+                        )
                     )
                 )
                 Row(
@@ -144,10 +159,14 @@ fun AddBookshelfDialog(
                 ) {
                     androidx.compose.material.Button(
                         shape = RoundedCornerShape(12.dp),
-                        colors = ButtonDefaults.buttonColors(scaffoldBackgroundColor),
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = scaffoldBackgroundColor,
+                            disabledBackgroundColor = disabledButtonColor
+                        ),
                         onClick = {
                             viewModel.onEvent(BookshelvesScreenEvent.OnCreateBookshelfButtonClick(viewModel.state.dialogTextFieldValue))
                         },
+                        enabled = !state.isBookshelfNameIsAlreadyExists,
                         modifier = Modifier
                             .height(36.dp)
                             .width(96.dp)

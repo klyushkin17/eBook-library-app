@@ -68,8 +68,18 @@ class BookshelvesScreenViewModel @Inject constructor(
             }
             is BookshelvesScreenEvent.OnDialogTextFieldValueChange -> {
                 viewModelScope.launch {
+                    var isBookshelfNameIsAlreadyExistsTemp = false
+                    if (
+                        state.bookshelves.any { bookshelf ->
+                            bookshelf.bookshelfName == event.textFieldValue
+                        }
+                    ) {
+                        isBookshelfNameIsAlreadyExistsTemp = true
+                    }
+
                     state = state.copy(
-                        dialogTextFieldValue = event.textFieldValue
+                        dialogTextFieldValue = event.textFieldValue,
+                        isBookshelfNameIsAlreadyExists = isBookshelfNameIsAlreadyExistsTemp
                     )
                 }
             }

@@ -17,6 +17,7 @@ val lightGreen = Color(0xFFA2B29F)
 
 
 val scaffoldBackgroundColor = Color(0xFF272727)
+val disabledButtonColor = Color(0xFF363636)
 val pagerColor = Color(0xFF272727)
 val backgroundColor = Color(0xFF46494C)
 val frameColor = Color(0xFFDCDCDD)

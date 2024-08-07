@@ -16,7 +16,7 @@ interface BookshelfDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertBook(book: BookEntity)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertBookshelf(bookshelf: BookshelfEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
