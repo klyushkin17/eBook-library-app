@@ -19,7 +19,11 @@ data class BookCardScreenState(
         saleability = null,
         isEbook = null,
         price = null,
-        currencyCode = null
+        currencyCode = null,
+        isPdfAvailable = null,
+        isAcsmAvailable = null,
+        acsmLink = null,
+        pdfLink = null,
     ),
     val isContextMenuVisible: Boolean = false,
     val isDialogShown: Boolean = false,

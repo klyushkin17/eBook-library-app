@@ -19,5 +19,9 @@ data class BookEntity(
     val saleability: String?,
     val isEbook: Int?,
     val price: Float?,  
-    val currencyCode: String?
+    val currencyCode: String?,
+    val isAcsmAvailable: Int?,
+    val isPdfAvailable: Int?,
+    val pdfLink: String?,
+    val acsmLink: String?,
 )

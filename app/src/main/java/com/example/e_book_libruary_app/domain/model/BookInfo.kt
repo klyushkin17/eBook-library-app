@@ -19,5 +19,9 @@ data class BookInfo(
     val saleability: String?,
     val isEbook: Boolean?,
     val price: Float?,
-    val currencyCode: String?
+    val currencyCode: String?,
+    val isAcsmAvailable: Boolean?,
+    val isPdfAvailable: Boolean?,
+    val pdfLink: String?,
+    val acsmLink: String?,
 )

@@ -44,13 +44,19 @@ fun BookInfoDto.toBookInfo(): BookInfo {
         currencyCode = saleInfo.retailPrice?.currencyCode,
         isEbook = saleInfo.isEbook,
         price = saleInfo.retailPrice?.price,
-        saleability = saleInfo.saleability
+        saleability = saleInfo.saleability,
+        isAcsmAvailable = accessInfo?.epub?.isAcsmAvailable,
+        isPdfAvailable = accessInfo?.pdf?.isPdfAvailable,
+        acsmLink = accessInfo?.epub?.acsmLink,
+        pdfLink = accessInfo?.pdf?.pdfLink,
     )
 }
 
 fun BookEntity.toBookInfo(): BookInfo {
 
     val convertedIsEbook = this.isEbook?.let { it != 0 }
+    val convertedIsAcsmAvailable = this.isAcsmAvailable?.let { it != 0 }
+    val convertedIsPdfAvailable = this.isPdfAvailable?.let { it != 0 }
 
     return BookInfo(
         bookId = bookId,
@@ -67,13 +73,19 @@ fun BookEntity.toBookInfo(): BookInfo {
         currencyCode = currencyCode,
         isEbook = convertedIsEbook,
         price = price,
-        saleability = saleability
+        saleability = saleability,
+        isAcsmAvailable = convertedIsAcsmAvailable,
+        isPdfAvailable = convertedIsPdfAvailable,
+        acsmLink = acsmLink,
+        pdfLink = pdfLink
     )
 }
 
 fun BookInfo.toBookEntity(): BookEntity {
 
     val convertedIsEbook = this.isEbook?.let { if (it) 1 else 0 }
+    val convertedIsAcsmAvailable = this.isAcsmAvailable?.let { if (it) 1 else 0 }
+    val convertedIsPdfAvailable = this.isPdfAvailable?.let { if (it) 1 else 0 }
 
     return BookEntity(
         bookId = bookId,
@@ -90,7 +102,11 @@ fun BookInfo.toBookEntity(): BookEntity {
         currencyCode = currencyCode,
         isEbook = convertedIsEbook,
         price = price,
-        saleability = saleability
+        saleability = saleability,
+        isPdfAvailable = convertedIsPdfAvailable,
+        isAcsmAvailable = convertedIsAcsmAvailable,
+        acsmLink = acsmLink,
+        pdfLink = pdfLink
     )
 }
 
@@ -139,7 +155,11 @@ fun List<BookInfoDto>.toBookInfo(): List<BookInfo> {
             currencyCode = it.saleInfo.retailPrice?.currencyCode,
             isEbook = it.saleInfo.isEbook,
             price = it.saleInfo.retailPrice?.price,
-            saleability = it.saleInfo.saleability
+            saleability = it.saleInfo.saleability,
+            isAcsmAvailable = it.accessInfo?.epub?.isAcsmAvailable,
+            isPdfAvailable = it.accessInfo?.pdf?.isPdfAvailable,
+            acsmLink = it.accessInfo?.epub?.acsmLink,
+            pdfLink = it.accessInfo?.pdf?.pdfLink
         )
     }
 }
@@ -155,6 +175,8 @@ fun List<BookshelfEntity>.toBookshelf(): List<Bookshelf> {
 fun List<BookEntity>.toBookInfoFromEntity(): List<BookInfo> {
     return this.map { element ->
         val convertedIsEbook = element.isEbook?.let { it != 0 }
+        val convertedIsAcsmAvailable = element.isAcsmAvailable?.let { it != 0 }
+        val convertedIsPdfAvailable = element.isPdfAvailable?.let { it != 0 }
 
         BookInfo(
             bookId = element.bookId,
@@ -171,7 +193,11 @@ fun List<BookEntity>.toBookInfoFromEntity(): List<BookInfo> {
             currencyCode = element.currencyCode,
             isEbook = convertedIsEbook,
             price = element.price,
-            saleability = element.saleability
+            saleability = element.saleability,
+            isAcsmAvailable = convertedIsAcsmAvailable,
+            isPdfAvailable = convertedIsPdfAvailable,
+            acsmLink = element.acsmLink,
+            pdfLink = element.pdfLink
         )
     }
 }

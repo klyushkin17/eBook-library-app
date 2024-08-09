@@ -7,6 +7,22 @@ data class BookInfoDto(
     @field:Json(name = "id") val bookId: String,
     @field:Json(name = "volumeInfo") val volumeInfo: VolumeInfoDto,
     @field:Json(name = "saleInfo") val saleInfo: SaleInfoDto,
+    @field:Json(name = "accessInfo") val accessInfo: AccessInfoDto?,
+)
+
+data class AccessInfoDto(
+    @field:Json(name = "epub") val epub: EpubDto,
+    @field:Json(name = "pdf") val pdf: PdfDto,
+)
+
+data class EpubDto(
+    @field:Json(name = "isAvailable") val isAcsmAvailable: Boolean?,
+    @field:Json(name = "acsTokenLink") val acsmLink: String?
+)
+
+data class PdfDto(
+    @field:Json(name = "isAvailable") val isPdfAvailable: Boolean?,
+    @field:Json(name = "acsTokenLink") val pdfLink: String?
 )
 
 data class VolumeInfoDto(

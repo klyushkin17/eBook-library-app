@@ -22,7 +22,11 @@ data class SearchScreenState(
         saleability = null,
         isEbook = null,
         price = null,
-        currencyCode = null
+        currencyCode = null,
+        isPdfAvailable = null,
+        isAcsmAvailable = null,
+        acsmLink = null,
+        pdfLink = null,
     ),
     val bookshelfCheckboxes: List<ToggleableInfo> = emptyList(),
     val isContentLoading: Boolean = false,

@@ -23,6 +23,10 @@ data class BookshelfScreenState(
         saleability = null,
         isEbook = null,
         price = null,
-        currencyCode = null
+        currencyCode = null,
+        isAcsmAvailable = null,
+        isPdfAvailable = null,
+        acsmLink = null,
+        pdfLink = null,
     )
 )
