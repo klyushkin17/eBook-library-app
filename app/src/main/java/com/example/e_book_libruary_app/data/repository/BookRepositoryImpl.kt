@@ -36,7 +36,7 @@ class BookRepositoryImpl @Inject constructor(
         return flow {
             emit(Resource.Loading(true))
             try {
-                val result = api.getSearchedBooks(query = "$query+inauthor:$query")
+                val result = api.getSearchedBooks(query = "$query+OR+inauthor:$query")
                 emit(Resource.Success(data = result.toBookList()))
             } catch (e: IOException) {
                 e.printStackTrace()
