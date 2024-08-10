@@ -16,6 +16,7 @@ import com.example.e_book_libruary_app.domain.model.BookInfo
 import com.example.e_book_libruary_app.domain.repository.BookRepository
 import com.example.e_book_libruary_app.presentation.tools.ToggleableInfo
 import com.example.e_book_libruary_app.util.Resource
+import com.example.e_book_libruary_app.util.Routes
 import com.example.e_book_libruary_app.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -135,6 +136,9 @@ class BookCardScreenViewModel @Inject constructor(
                     }
                     onEvent(BookCardScreenEvent.OnDismissDialogClick)
                 }
+            }
+            is BookCardScreenEvent.OnReadSampleButtonClick -> {
+                sendUiEvent(UiEvent.Navigate(Routes.BOOK_READER_SCREEN + "?bookAddress=${state.book.pdfLink}"))
             }
         }
     }

@@ -7,4 +7,5 @@ object Routes {
     const val BOOK_SCREEN = "book_card_screen"
     const val BOOKSHELVES_SCREEN = "bookshelves_screen"
     const val BOOKSHELF_SCREEN = "bookshelf_screen"
+    const val BOOK_READER_SCREEN = "book_reader_screen"
 }

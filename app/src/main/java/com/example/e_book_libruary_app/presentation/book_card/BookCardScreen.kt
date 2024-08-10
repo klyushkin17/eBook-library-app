@@ -28,6 +28,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
@@ -38,6 +39,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -65,6 +68,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
+import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
 import com.example.e_book_libruary_app.R
 import com.example.e_book_libruary_app.presentation.bookshelves.BookshelvesScreenEvent
@@ -72,6 +76,7 @@ import com.example.e_book_libruary_app.presentation.main.MainEvent
 import com.example.e_book_libruary_app.presentation.search.SearchScreenEvent
 import com.example.e_book_libruary_app.presentation.tools.DropDownItem
 import com.example.e_book_libruary_app.ui.theme.backgroundColor
+import com.example.e_book_libruary_app.ui.theme.disabledButtonColor
 import com.example.e_book_libruary_app.ui.theme.frameColor
 import com.example.e_book_libruary_app.ui.theme.harunoUmiFontFamily
 import com.example.e_book_libruary_app.ui.theme.montserrat
@@ -460,7 +465,62 @@ fun BookCardScreen(
                                         textAlign = TextAlign.Center
                                     )
                                 }
-                                Spacer(modifier = Modifier.height(37.dp))
+                                if (state.book.isPdfAvailable != null &&
+                                    state.book.isPdfAvailable &&
+                                    state.book.pdfLink != null
+                                ) {
+                                    Spacer(modifier = Modifier.height(18.dp))
+                                    Column(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(horizontal = 16.dp)
+                                    ) {
+                                        Button(
+                                            onClick = {
+                                                viewModel.onEvent(BookCardScreenEvent.OnReadSampleButtonClick)
+                                            },
+                                            elevation = androidx.compose.material3.ButtonDefaults.elevatedButtonElevation(
+                                                defaultElevation = 5.dp,
+                                                pressedElevation = 0.dp
+                                            ),
+                                            shape = RoundedCornerShape(12.dp),
+                                            colors = ButtonColors(
+                                                containerColor = scaffoldBackgroundColor,
+                                                contentColor = Color.White,
+                                                disabledContainerColor = backgroundColor,
+                                                disabledContentColor = Color.Transparent,
+                                            )
+                                        ) {
+                                            Row(
+                                                modifier = Modifier
+                                                    .fillMaxSize()
+                                                    .padding(vertical = 7.dp),
+                                                verticalAlignment = Alignment.CenterVertically,
+                                                horizontalArrangement = Arrangement.Center,
+                                            ) {
+                                                Icon(
+                                                    painter = rememberImagePainter(data = R.drawable.read_book_icon),
+                                                    contentDescription = "read_book_icon",
+                                                    tint = Color.White,
+                                                    modifier = Modifier
+                                                        .fillMaxHeight()
+                                                )
+                                                Spacer(modifier = Modifier.width(10.dp))
+                                                Text(
+                                                    text = "Read sample",
+                                                    fontSize = 14.sp,
+                                                    fontFamily = montserrat,
+                                                    fontWeight = FontWeight.Medium,
+                                                    color = Color.White,
+                                                )
+                                            }
+                                        }
+                                    }
+                                    Spacer(modifier = Modifier.height(22.dp))
+                                }
+                                else {
+                                    Spacer(modifier = Modifier.height(32.dp))
+                                }
                                 Column(
                                     modifier = Modifier
                                         .fillMaxWidth(),
