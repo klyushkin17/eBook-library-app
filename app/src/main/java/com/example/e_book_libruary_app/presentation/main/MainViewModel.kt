@@ -1,12 +1,17 @@
 package com.example.e_book_libruary_app.presentation.main
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import coil.annotation.ExperimentalCoilApi
+import coil.imageLoader
 import com.example.e_book_libruary_app.data.mapper.toBookInfo
 import com.example.e_book_libruary_app.domain.repository.BookRepository
 import com.example.e_book_libruary_app.util.Resource
@@ -21,7 +26,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val bookRepository: BookRepository
+    private val bookRepository: BookRepository,
 ): ViewModel() {
 
     var state by mutableStateOf(MainState())
@@ -33,6 +38,7 @@ class MainViewModel @Inject constructor(
         getBooks()
     }
 
+    @OptIn(ExperimentalCoilApi::class)
     fun onEvent(event: MainEvent) {
         when(event) {
             is MainEvent.OnSearchIconClick -> {
@@ -40,6 +46,8 @@ class MainViewModel @Inject constructor(
             }
             is MainEvent.OnSignOutClick -> {
                 viewModelScope.launch {
+                    event.context.imageLoader.diskCache?.clear()
+                    event.context.imageLoader.memoryCache?.clear()
                     event.googleAuthUiClient.signOut()
                     sendUiEvent(UiEvent.Navigate(Routes.SIGN_IN_SCREEN))
                 }

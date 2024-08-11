@@ -1,8 +1,10 @@
 package com.example.e_book_libruary_app.presentation.search
 
+import androidx.compose.runtime.Immutable
 import com.example.e_book_libruary_app.domain.model.BookInfo
 import com.example.e_book_libruary_app.presentation.tools.ToggleableInfo
 
+@Immutable
 data class SearchScreenState(
     val books: List<BookInfo> = emptyList(),
     val searchQuery: String = "",

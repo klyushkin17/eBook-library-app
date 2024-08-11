@@ -244,17 +244,49 @@ fun BookCardScreen(
                     }
                 }
                 else {
-                    Row(
-                        modifier = Modifier
-                            .padding(10.dp)
-                    ) {
-                        Text(
-                            text = "NOT FOR SALE",
-                            fontSize = 15.sp,
-                            fontFamily = montserrat,
-                            fontWeight = FontWeight.Medium,
-                            color = Color.White
-                        )
+                    if (state.book.saleability == "FREE") {
+                        Row(
+                            modifier = Modifier
+                                .padding(10.dp)
+                        ) {
+                            Text(
+                                text = "FREE",
+                                fontSize = 15.sp,
+                                fontFamily = montserrat,
+                                fontWeight = FontWeight.Medium,
+                                color = Color.White
+                            )
+                        }
+                    }
+                    else {
+                        if (state.book.saleability == "FOR_PREORDER") {
+                            Row(
+                                modifier = Modifier
+                                    .padding(10.dp)
+                            ) {
+                                Text(
+                                    text = "PREORDER",
+                                    fontSize = 15.sp,
+                                    fontFamily = montserrat,
+                                    fontWeight = FontWeight.Medium,
+                                    color = Color.White
+                                )
+                            }
+                        }
+                        else {
+                            Row(
+                                modifier = Modifier
+                                    .padding(10.dp)
+                            ) {
+                                Text(
+                                    text = "NOT FOR SALE",
+                                    fontSize = 15.sp,
+                                    fontFamily = montserrat,
+                                    fontWeight = FontWeight.Medium,
+                                    color = Color.White
+                                )
+                            }
+                        }
                     }
                 }
             }

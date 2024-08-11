@@ -56,6 +56,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -88,6 +89,7 @@ fun MainScreen(
     viewModel: MainViewModel = hiltViewModel(),
     googleAuthUiClient: GoogleAuthUiClient
 ){
+    val context = LocalContext.current
     val state = viewModel.state
     val pagerState = rememberPagerState(initialPage = 2){
         state.newBooks.size
@@ -148,7 +150,7 @@ fun MainScreen(
                             dropDownItem.forEach { item ->
                                 androidx.compose.material.DropdownMenuItem(
                                     onClick = {
-                                        viewModel.onEvent(MainEvent.OnSignOutClick(googleAuthUiClient))
+                                        viewModel.onEvent(MainEvent.OnSignOutClick(googleAuthUiClient, context))
                                         viewModel.onEvent(MainEvent.OnDismissContextMenu)
                                     }
                                 ){
