@@ -185,7 +185,10 @@ fun MainScreen(
             )
         }
     ){
-        if (state.contentLoadingInfo.all{!it}){
+        if (
+            state.contentLoadingInfo.all{ !it } &&
+            state.contentLoadingFailed.all { !it }
+        ){
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -205,25 +208,24 @@ fun MainScreen(
                                 color = Color.Black
                             )
                         }
-                        if (state.newBooks.isNotEmpty()) {
-                            HorizontalPager(
-                                contentPadding = PaddingValues(horizontal = 26.dp),
-                                state = pagerState,
-                                modifier = Modifier
-                                    .height(200.dp)
-                                    .fillMaxWidth(),
-                                verticalAlignment = Alignment.CenterVertically,
+                        HorizontalPager(
+                            contentPadding = PaddingValues(horizontal = 26.dp),
+                            state = pagerState,
+                            modifier = Modifier
+                                .height(200.dp)
+                                .fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
 
-                                ){ page ->
-                                NewBooksElement(
-                                    book = state.newBooks[page],
-                                    modifier = Modifier
-                                        .clickable {
-                                            viewModel.onEvent(MainEvent.OnBookClick(state.newBooks[page]))
-                                        }
-                                )
-                            }
+                            ) { page ->
+                            NewBooksElement(
+                                book = state.newBooks[page],
+                                modifier = Modifier
+                                    .clickable {
+                                        viewModel.onEvent(MainEvent.OnBookClick(state.newBooks[page]))
+                                    }
+                            )
                         }
+
                         Spacer(modifier = Modifier.height(20.dp))
                         Column(
                             modifier = Modifier
@@ -236,26 +238,55 @@ fun MainScreen(
                         ) {
                             BookList(books = state.programmingBooks, title = "Code", viewModel)
                             Spacer(modifier = Modifier.height(4.dp))
-                            Box(modifier = Modifier.padding(horizontal = 16.dp)){ Divider()}
+                            Box(modifier = Modifier.padding(horizontal = 16.dp)) { Divider() }
                             Spacer(modifier = Modifier.height(11.dp))
                             BookList(books = state.fantasyBooks, title = "Fantasy", viewModel)
                             Spacer(modifier = Modifier.height(4.dp))
-                            Box(modifier = Modifier.padding(horizontal = 16.dp)){ Divider()}
+                            Box(modifier = Modifier.padding(horizontal = 16.dp)) { Divider() }
                             Spacer(modifier = Modifier.height(11.dp))
                             BookList(books = state.artBooks, title = "Art", viewModel)
                             Spacer(modifier = Modifier.height(4.dp))
-                            Box(modifier = Modifier.padding(horizontal = 16.dp)){ Divider()}
+                            Box(modifier = Modifier.padding(horizontal = 16.dp)) { Divider() }
                             Spacer(modifier = Modifier.height(11.dp))
-                            BookList(books = state.biographyBooks, title = "Biography", viewModel)
+                            BookList(
+                                books = state.biographyBooks,
+                                title = "Biography",
+                                viewModel
+                            )
                             Spacer(modifier = Modifier.height(75.dp))
                         }
-
                     }
                 }
             }
         }
         else {
-            ShimmerLoadingMainScreen()
+            if (state.contentLoadingInfo.any { it }) {
+                ShimmerLoadingMainScreen()
+            }
+            else {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "Check internet",
+                        fontFamily = montserrat,
+                        color = scaffoldBackgroundColor,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium,
+                    )
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Text(
+                        text = "You, stupid",
+                        fontFamily = montserrat,
+                        color = scaffoldBackgroundColor,
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.Medium,
+                    )
+                }
+            }
         }
     }
 }

@@ -77,12 +77,22 @@ class MainViewModel @Inject constructor(
                     when(result) {
                         is Resource.Success -> {
                             result.data?.let { books ->
+                                val newContentLoadingFailed = state.contentLoadingFailed.toMutableList()
+                                newContentLoadingFailed[0] = false
                                 state = state.copy(
-                                    newBooks = books.bookList.toBookInfo()
+                                    newBooks = books.bookList.toBookInfo(),
+                                    contentLoadingInfo = newContentLoadingFailed
+
                                 )
                             }
                         }
-                        is Resource.Error -> Unit
+                        is Resource.Error -> {
+                            val newContentLoadingFailed = state.contentLoadingFailed.toMutableList()
+                            newContentLoadingFailed[0] = true
+                            state = state.copy(
+                                contentLoadingInfo = newContentLoadingFailed
+                            )
+                        }
                         is Resource.Loading -> {
                             val newContentLoadingInfo = state.contentLoadingInfo.toMutableList()
                             newContentLoadingInfo[0] = result.isLoading
@@ -101,12 +111,21 @@ class MainViewModel @Inject constructor(
                     when(result) {
                         is Resource.Success -> {
                             result.data?.let { books ->
+                                val newContentLoadingFailed = state.contentLoadingFailed.toMutableList()
+                                newContentLoadingFailed[1] = false
                                 state = state.copy(
-                                     programmingBooks = books.bookList.toBookInfo()
+                                    programmingBooks = books.bookList.toBookInfo(),
+                                    contentLoadingFailed = newContentLoadingFailed
                                 )
                             }
                         }
-                        is Resource.Error -> Unit
+                        is Resource.Error -> {
+                            val newContentLoadingFailed = state.contentLoadingFailed.toMutableList()
+                            newContentLoadingFailed[1] = true
+                            state = state.copy(
+                                contentLoadingInfo = newContentLoadingFailed
+                            )
+                        }
                         is Resource.Loading -> {
                             val newContentLoadingInfo = state.contentLoadingInfo.toMutableList()
                             newContentLoadingInfo[1] = result.isLoading
@@ -124,12 +143,21 @@ class MainViewModel @Inject constructor(
                     when(result) {
                         is Resource.Success -> {
                             result.data?.let { books ->
+                                val newContentLoadingFailed = state.contentLoadingFailed.toMutableList()
+                                newContentLoadingFailed[2] = false
                                 state = state.copy(
-                                    fantasyBooks = books.bookList.toBookInfo()
+                                    fantasyBooks = books.bookList.toBookInfo(),
+                                    contentLoadingFailed = newContentLoadingFailed
                                 )
                             }
                         }
-                        is Resource.Error -> Unit
+                        is Resource.Error -> {
+                            val newContentLoadingFailed = state.contentLoadingFailed.toMutableList()
+                            newContentLoadingFailed[2] = true
+                            state = state.copy(
+                                contentLoadingInfo = newContentLoadingFailed
+                            )
+                        }
                         is Resource.Loading -> {
                             val newContentLoadingInfo = state.contentLoadingInfo.toMutableList()
                             newContentLoadingInfo[2] = result.isLoading
@@ -147,12 +175,21 @@ class MainViewModel @Inject constructor(
                     when(result) {
                         is Resource.Success -> {
                             result.data?.let { books ->
+                                val newContentLoadingFailed = state.contentLoadingFailed.toMutableList()
+                                newContentLoadingFailed[3] = false
                                 state = state.copy(
-                                    artBooks = books.bookList.toBookInfo()
+                                    artBooks = books.bookList.toBookInfo(),
+                                    contentLoadingFailed = newContentLoadingFailed
                                 )
                             }
                         }
-                        is Resource.Error -> Unit
+                        is Resource.Error -> {
+                            val newContentLoadingFailed = state.contentLoadingFailed.toMutableList()
+                            newContentLoadingFailed[3] = true
+                            state = state.copy(
+                                contentLoadingInfo = newContentLoadingFailed
+                            )
+                        }
                         is Resource.Loading -> {
                             val newContentLoadingInfo = state.contentLoadingInfo.toMutableList()
                             newContentLoadingInfo[3] = result.isLoading
@@ -171,12 +208,21 @@ class MainViewModel @Inject constructor(
                     when(result) {
                         is Resource.Success -> {
                             result.data?.let { books ->
+                                val newContentLoadingFailed = state.contentLoadingFailed.toMutableList()
+                                newContentLoadingFailed[4] = false
                                 state = state.copy(
-                                    biographyBooks = books.bookList.toBookInfo()
+                                    biographyBooks = books.bookList.toBookInfo(),
+                                    contentLoadingFailed = newContentLoadingFailed
                                 )
                             }
                         }
-                        is Resource.Error -> Unit
+                        is Resource.Error -> {
+                            val newContentLoadingFailed = state.contentLoadingFailed.toMutableList()
+                            newContentLoadingFailed[4] = true
+                            state = state.copy(
+                                contentLoadingInfo = newContentLoadingFailed
+                            )
+                        }
                         is Resource.Loading -> {
                             val newContentLoadingInfo = state.contentLoadingInfo.toMutableList()
                             newContentLoadingInfo[4] = result.isLoading

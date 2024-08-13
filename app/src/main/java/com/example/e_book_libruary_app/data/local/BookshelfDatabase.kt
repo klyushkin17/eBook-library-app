@@ -15,7 +15,7 @@ import com.example.e_book_libruary_app.data.local.entities.relations.BookshelfBo
         BookEntity::class,
         BookshelfBookCrossRef::class
     ],
-    version = 8
+    version = 10
 )
 @TypeConverters(RoomListConverter::class)
 abstract class BookshelfDatabase: RoomDatabase() {

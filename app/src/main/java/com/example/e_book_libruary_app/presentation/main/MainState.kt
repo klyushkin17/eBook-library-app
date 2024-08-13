@@ -19,6 +19,13 @@ data class MainState (
         false,
         false,
         false,
-        false
+        false,
+    ),
+    val contentLoadingFailed: List<Boolean> = mutableListOf(
+        false,
+        false,
+        false,
+        false,
+        false,
     )
 )
