@@ -189,6 +189,7 @@ fun MainScreen(
             state.contentLoadingInfo.all{ !it } &&
             state.contentLoadingFailed.all { !it }
         ){
+            Log.d("CheckUi", "inMain")
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -262,8 +263,10 @@ fun MainScreen(
         else {
             if (state.contentLoadingInfo.any { it }) {
                 ShimmerLoadingMainScreen()
+                Log.d("CheckUi", "inLoading")
             }
             else {
+                Log.d("CheckUi", "inError")
                 Column(
                     modifier = Modifier
                         .fillMaxSize(),

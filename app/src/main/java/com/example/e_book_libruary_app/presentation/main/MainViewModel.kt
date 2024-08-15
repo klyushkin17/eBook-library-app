@@ -81,7 +81,7 @@ class MainViewModel @Inject constructor(
                                 newContentLoadingFailed[0] = false
                                 state = state.copy(
                                     newBooks = books.bookList.toBookInfo(),
-                                    contentLoadingInfo = newContentLoadingFailed
+                                    contentLoadingFailed = newContentLoadingFailed
 
                                 )
                             }
@@ -90,7 +90,7 @@ class MainViewModel @Inject constructor(
                             val newContentLoadingFailed = state.contentLoadingFailed.toMutableList()
                             newContentLoadingFailed[0] = true
                             state = state.copy(
-                                contentLoadingInfo = newContentLoadingFailed
+                                contentLoadingFailed = newContentLoadingFailed
                             )
                         }
                         is Resource.Loading -> {
@@ -123,7 +123,7 @@ class MainViewModel @Inject constructor(
                             val newContentLoadingFailed = state.contentLoadingFailed.toMutableList()
                             newContentLoadingFailed[1] = true
                             state = state.copy(
-                                contentLoadingInfo = newContentLoadingFailed
+                                contentLoadingFailed = newContentLoadingFailed
                             )
                         }
                         is Resource.Loading -> {
@@ -155,7 +155,7 @@ class MainViewModel @Inject constructor(
                             val newContentLoadingFailed = state.contentLoadingFailed.toMutableList()
                             newContentLoadingFailed[2] = true
                             state = state.copy(
-                                contentLoadingInfo = newContentLoadingFailed
+                                contentLoadingFailed = newContentLoadingFailed
                             )
                         }
                         is Resource.Loading -> {
@@ -187,7 +187,7 @@ class MainViewModel @Inject constructor(
                             val newContentLoadingFailed = state.contentLoadingFailed.toMutableList()
                             newContentLoadingFailed[3] = true
                             state = state.copy(
-                                contentLoadingInfo = newContentLoadingFailed
+                                contentLoadingFailed = newContentLoadingFailed
                             )
                         }
                         is Resource.Loading -> {
@@ -220,7 +220,7 @@ class MainViewModel @Inject constructor(
                             val newContentLoadingFailed = state.contentLoadingFailed.toMutableList()
                             newContentLoadingFailed[4] = true
                             state = state.copy(
-                                contentLoadingInfo = newContentLoadingFailed
+                                contentLoadingFailed = newContentLoadingFailed
                             )
                         }
                         is Resource.Loading -> {
