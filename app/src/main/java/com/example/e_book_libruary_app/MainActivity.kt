@@ -23,9 +23,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.e_book_libruary_app.presentation.book_card.BookCardScreen
@@ -39,6 +41,7 @@ import com.example.e_book_libruary_app.presentation.sign_in.GoogleAuthUiClient
 import com.example.e_book_libruary_app.presentation.sign_in.SignInScreen
 import com.example.e_book_libruary_app.presentation.sign_in.SignInViewModel
 import com.example.e_book_libruary_app.ui.theme.EBook_libruary_appTheme
+import com.example.e_book_libruary_app.util.NavTrees
 import com.example.e_book_libruary_app.util.Routes
 import com.google.android.gms.auth.api.identity.Identity
 import dagger.hilt.android.AndroidEntryPoint
@@ -57,10 +60,10 @@ class MainActivity : ComponentActivity() {
 
     private fun getStartScreen(): String {
         if (googleAuthUiClient.getSignedInUser() != null) {
-            return Routes.MAIN_SCREEN
+            return NavTrees.MAIN_NAV_TREE
         }
         else {
-            return Routes.SIGN_IN_SCREEN
+            return NavTrees.AUTH_NAV_TREE
         }
     }
 
@@ -87,145 +90,154 @@ class MainActivity : ComponentActivity() {
                             popEnterTransition =  { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left, tween(200))},
                             popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right, tween(200))},
                         ) {
-                            composable(Routes.SIGN_IN_SCREEN) {
-                                val viewModel = viewModel<SignInViewModel>()
-                                val state by viewModel.state.collectAsStateWithLifecycle()
 
-                                LaunchedEffect(key1 = Unit) {
-                                    if(googleAuthUiClient.getSignedInUser() != null) {
-                                        navController.navigate(Routes.MAIN_SCREEN)
+                            navigation(startDestination = Routes.SIGN_IN_SCREEN, route = NavTrees.AUTH_NAV_TREE) {
+                                composable(Routes.SIGN_IN_SCREEN) {
+                                    val viewModel = viewModel<SignInViewModel>()
+                                    val state by viewModel.state.collectAsStateWithLifecycle()
+
+                                    LaunchedEffect(key1 = Unit) {
+                                        if(googleAuthUiClient.getSignedInUser() != null) {
+                                            navController.navigate(Routes.MAIN_SCREEN)
+                                        }
                                     }
-                                }
 
-                                val launcher = rememberLauncherForActivityResult(
-                                    contract = ActivityResultContracts.StartIntentSenderForResult(),
-                                    onResult = {result ->
-                                        if(result.resultCode == RESULT_OK) {
-                                            lifecycleScope.launch {
-                                                val signInResult = googleAuthUiClient.getSignInWithIntent(
-                                                    intent = result.data ?: return@launch
-                                                )
-                                                viewModel.onSignInResult(signInResult)
+                                    val launcher = rememberLauncherForActivityResult(
+                                        contract = ActivityResultContracts.StartIntentSenderForResult(),
+                                        onResult = {result ->
+                                            if(result.resultCode == RESULT_OK) {
+                                                lifecycleScope.launch {
+                                                    val signInResult = googleAuthUiClient.getSignInWithIntent(
+                                                        intent = result.data ?: return@launch
+                                                    )
+                                                    viewModel.onSignInResult(signInResult)
+                                                }
                                             }
                                         }
-                                    }
-                                )
+                                    )
 
-                                LaunchedEffect(key1 = state.isSignInSuccessful) {
-                                    if(state.isSignInSuccessful) {
-                                        Toast.makeText(
-                                            applicationContext,
-                                            "Sign in is successful",
-                                            Toast.LENGTH_LONG
-                                        ).show()
+                                    LaunchedEffect(key1 = state.isSignInSuccessful) {
+                                        if(state.isSignInSuccessful) {
+                                            Toast.makeText(
+                                                applicationContext,
+                                                "Sign in is successful",
+                                                Toast.LENGTH_LONG
+                                            ).show()
 
-                                        navController.navigate(Routes.MAIN_SCREEN)
-                                        viewModel.resetState()
-                                    }
-                                }
-
-                                SignInScreen(
-                                    state = state,
-                                    onSignInClick = {
-                                        lifecycleScope.launch {
-                                            val signInIntentSender = googleAuthUiClient.signIn()
-                                            launcher.launch(
-                                                IntentSenderRequest.Builder(
-                                                    signInIntentSender ?: return@launch
-                                                ).build()
-                                            )
+                                            navController.navigate(NavTrees.MAIN_NAV_TREE)
+                                            viewModel.resetState()
                                         }
                                     }
-                                )
+
+                                    SignInScreen(
+                                        state = state,
+                                        onSignInClick = {
+                                            lifecycleScope.launch {
+                                                val signInIntentSender = googleAuthUiClient.signIn()
+                                                launcher.launch(
+                                                    IntentSenderRequest.Builder(
+                                                        signInIntentSender ?: return@launch
+                                                    ).build()
+                                                )
+                                            }
+                                        },
+                                    )
+                                }
                             }
 
-                            composable(Routes.MAIN_SCREEN) {
-                                MainScreen(
-                                    userData = googleAuthUiClient.getSignedInUser(),
-                                    onNavigate = {
-                                        navController.navigate(it.route)
-                                    },
-                                    googleAuthUiClient = googleAuthUiClient
-                                )
-                            }
+                            navigation(startDestination = Routes.MAIN_SCREEN, route = NavTrees.MAIN_NAV_TREE) {
+                                composable(Routes.MAIN_SCREEN) {
+                                    MainScreen(
+                                        userData = googleAuthUiClient.getSignedInUser(),
+                                        onNavigate = {
+                                            navController.navigate(it.route) {
+                                                popUpTo(NavTrees.MAIN_NAV_TREE) {
+                                                    inclusive = true
+                                                }
+                                            }
+                                        },
+                                        googleAuthUiClient = googleAuthUiClient
+                                    )
+                                }
 
-                            composable(Routes.SEARCH_SCREEN) {
-                                SearchScreen(
-                                    onNavigate = {
-                                        navController.navigate(it.route)
-                                    },
-                                    onPopBackStack = {
-                                        navController.popBackStack()
-                                    }
-                                )
-                            }
+                                composable(Routes.SEARCH_SCREEN) {
+                                    SearchScreen(
+                                        onNavigate = {
+                                            navController.navigate(it.route)
+                                        },
+                                        onPopBackStack = {
+                                            navController.popBackStack()
+                                        }
+                                    )
+                                }
 
-                            composable(
-                                route = Routes.BOOK_SCREEN + "?bookId={bookId}",
-                                arguments = listOf(
-                                    navArgument(name = "bookId") {
-                                        type = NavType.StringType
-                                        defaultValue = ""
-                                    }
-                                )
-                            ) {
-                                BookCardScreen(
-                                    onNavigate = {
-                                        navController.navigate(it.route)
-                                    },
-                                    onPopBackStack = {
-                                        navController.popBackStack()
-                                    }
-                                )
-                            }
+                                composable(
+                                    route = Routes.BOOK_SCREEN + "?bookId={bookId}",
+                                    arguments = listOf(
+                                        navArgument(name = "bookId") {
+                                            type = NavType.StringType
+                                            defaultValue = ""
+                                        }
+                                    )
+                                ) {
+                                    BookCardScreen(
+                                        onNavigate = {
+                                            navController.navigate(it.route)
+                                        },
+                                        onPopBackStack = {
+                                            navController.popBackStack()
+                                        }
+                                    )
+                                }
 
-                            composable(
-                                route = Routes.BOOKSHELF_SCREEN + "?bookshelfName={bookshelfName}",
-                                arguments = listOf(
-                                    navArgument(name = "bookshelfName") {
-                                        type = NavType.StringType
-                                        defaultValue = ""
-                                    }
-                                )
-                            ){
-                                BookshelfScreen(
-                                    onNavigate = {
-                                        navController.navigate(it.route)
-                                    },
-                                    onPopBackStack = {
-                                        navController.popBackStack()
-                                    }
-                                )
-                            }
+                                composable(
+                                    route = Routes.BOOKSHELF_SCREEN + "?bookshelfName={bookshelfName}",
+                                    arguments = listOf(
+                                        navArgument(name = "bookshelfName") {
+                                            type = NavType.StringType
+                                            defaultValue = ""
+                                        }
+                                    )
+                                ){
+                                    BookshelfScreen(
+                                        onNavigate = {
+                                            navController.navigate(it.route)
+                                        },
+                                        onPopBackStack = {
+                                            navController.popBackStack()
+                                        }
+                                    )
+                                }
 
-                            composable(Routes.BOOKSHELVES_SCREEN) {
-                                BookshelvesScreen(
-                                    onNavigate = {
-                                        navController.navigate(it.route)
-                                    },
-                                    onPopBackStack = {
-                                        navController.popBackStack()
-                                    }
-                                )
-                            }
+                                composable(Routes.BOOKSHELVES_SCREEN) {
+                                    BookshelvesScreen(
+                                        onNavigate = {
+                                            navController.navigate(it.route)
+                                        },
+                                        onPopBackStack = {
+                                            navController.popBackStack()
+                                        }
+                                    )
+                                }
 
-                            composable(
-                                route = Routes.BOOK_READER_SCREEN + "?bookAddress={bookAddress}",
-                                arguments = listOf(
-                                    navArgument(name = "bookAddress") {
-                                        type = NavType.StringType
-                                        defaultValue = ""
-                                    }
-                                )
-                            ) {
-                                BookReaderScreen(
-                                    onNavigate = {
-                                        navController.navigate(it.route)
-                                    },
-                                    onPopBackStack = {
-                                        navController.popBackStack()
-                                    }
-                                )
+                                composable(
+                                    route = Routes.BOOK_READER_SCREEN + "?bookAddress={bookAddress}",
+                                    arguments = listOf(
+                                        navArgument(name = "bookAddress") {
+                                            type = NavType.StringType
+                                            defaultValue = ""
+                                        }
+                                    )
+                                ) {
+                                    BookReaderScreen(
+                                        onNavigate = {
+                                            navController.navigate(it.route)
+                                        },
+                                        onPopBackStack = {
+                                            navController.popBackStack()
+                                        }
+                                    )
+                                }
                             }
                         }
                     }

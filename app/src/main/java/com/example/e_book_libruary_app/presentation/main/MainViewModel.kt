@@ -14,6 +14,7 @@ import coil.annotation.ExperimentalCoilApi
 import coil.imageLoader
 import com.example.e_book_libruary_app.data.mapper.toBookInfo
 import com.example.e_book_libruary_app.domain.repository.BookRepository
+import com.example.e_book_libruary_app.util.NavTrees
 import com.example.e_book_libruary_app.util.Resource
 import com.example.e_book_libruary_app.util.Routes
 import com.example.e_book_libruary_app.util.UiEvent
@@ -49,7 +50,7 @@ class MainViewModel @Inject constructor(
                     event.context.imageLoader.diskCache?.clear()
                     event.context.imageLoader.memoryCache?.clear()
                     event.googleAuthUiClient.signOut()
-                    sendUiEvent(UiEvent.Navigate(Routes.SIGN_IN_SCREEN))
+                    sendUiEvent(UiEvent.Navigate(NavTrees.AUTH_NAV_TREE))
                 }
             }
             is MainEvent.OnBookClick -> {
